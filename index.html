@@ -1,0 +1,992 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>html{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Portal Minero</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: nav translúcida fija, héroe centrado con curvas de nivel de un tajo abierto, mosaico de apps en dos columnas (tarjetas claras y oscuras alternadas), franja de plataforma y pie de página en columnas, como apple.com. */
+:root {
+  --bg: #f6f4f1;
+  --bg-alt: #ecE9e4;
+  --fg: #1c1b19;
+  --fg-muted: #6b6760;
+  --line: #d9d5ce;
+  --tile: #ffffff;
+  --tile-dark: #1d1c1a;
+  --on-dark: #f3f1ed;
+  --on-dark-muted: #a29d94;
+  --accent: #b8541f;      /* cobre */
+  --accent-strong: #9a4210;
+  --amber: #f0a31c;       /* ámbar de seguridad */
+  --nav-bg: rgba(246,244,241,.78);
+
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e0e0d; --bg-alt: #171614; --fg: #f3f1ed; --fg-muted: #9b968d; --line: #2c2a27;
+    --tile: #1a1917; --tile-dark: #232120; --accent: #e07a3a; --accent-strong: #f09256; --nav-bg: rgba(14,14,13,.78);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e0e0d; --bg-alt: #171614; --fg: #f3f1ed; --fg-muted: #9b968d; --line: #2c2a27;
+  --tile: #1a1917; --tile-dark: #232120; --accent: #e07a3a; --accent-strong: #f09256; --nav-bg: rgba(14,14,13,.78);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font); font-size: 17px; line-height: 1.47; letter-spacing: -.011em;
+  -webkit-font-smoothing: antialiased;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--nav-bg); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* Aviso de bosquejo */
+.draft { background: var(--tile-dark); color: var(--on-dark-muted); font-size: 12px; text-align: center; padding: 8px 16px; letter-spacing: 0; }
+.draft b { color: var(--amber); font-weight: 600; }
+
+/* Navegación */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--nav-bg); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid var(--line); }
+.nav .wrap { height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 9px; font-weight: 600; font-size: 15px; letter-spacing: -.01em; }
+.brand svg { width: 20px; height: 20px; }
+.nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-size: 12.5px; }
+.nav ul a { color: var(--fg-muted); transition: color .2s; }
+.nav ul a:hover { color: var(--fg); }
+@media (max-width: 640px) { .nav ul { gap: 16px; } .nav ul li:not(.keep) { display: none; } }
+
+/* Héroe */
+.hero { text-align: center; padding-top: 72px; overflow: hidden; }
+.eyebrow { font-size: 21px; font-weight: 600; color: var(--accent); margin: 0 0 6px; letter-spacing: -.01em; }
+h1 { font-size: clamp(44px, 9vw, 92px); line-height: 1.04; font-weight: 700; letter-spacing: -.035em; margin: 0 auto; max-width: 14ch; text-wrap: balance; }
+.lede { font-size: clamp(19px, 2.6vw, 26px); line-height: 1.25; color: var(--fg-muted); font-weight: 500; margin: 20px auto 0; max-width: 34ch; text-wrap: balance; letter-spacing: -.02em; }
+.cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+.btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 22px; border-radius: 980px; font-size: 17px; background: var(--accent); color: #fff; transition: background .2s; }
+.btn:hover { background: var(--accent-strong); }
+.link { display: inline-flex; align-items: center; min-height: 44px; font-size: 17px; color: var(--accent); }
+.link::after { content: "›"; margin-left: 5px; font-size: 1.15em; transition: transform .2s; }
+.link:hover::after { transform: translateX(3px); }
+.pit { margin-top: 28px; width: 100%; height: clamp(220px, 38vw, 420px); display: block; }
+.pit text { font-family: var(--font-mono); font-size: 11px; fill: var(--fg-muted); }
+
+/* Aplicaciones */
+.section-head { text-align: center; padding-top: 96px; }
+h2 { font-size: clamp(32px, 5.4vw, 56px); line-height: 1.08; font-weight: 700; letter-spacing: -.03em; margin: 0; text-wrap: balance; }
+.section-head p { color: var(--fg-muted); font-size: clamp(17px, 2vw, 21px); margin: 14px auto 0; max-width: 46ch; text-wrap: balance; }
+.chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 32px 0 28px; }
+.chip { font: inherit; font-size: 14px; border: 1px solid var(--line); background: transparent; color: var(--fg); min-height: 36px; padding: 0 16px; border-radius: 980px; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+.chip:hover { border-color: var(--fg-muted); }
+.chip[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.tile { position: relative; overflow: hidden; background: var(--tile); border-radius: 28px; padding: 36px 36px 0; min-height: 480px; display: flex; flex-direction: column; border: 1px solid var(--line); }
+.tile.wide { grid-column: span 2; min-height: 520px; }
+.tile.dark { background: var(--tile-dark); color: var(--on-dark); border-color: transparent; }
+.tile .cat { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; }
+.tile.dark .cat { color: var(--amber); }
+.tile h3 { font-size: clamp(28px, 3.4vw, 40px); line-height: 1.08; font-weight: 700; letter-spacing: -.03em; margin: 0; text-wrap: balance; }
+.tile p.desc { color: var(--fg-muted); font-size: 19px; line-height: 1.3; margin: 10px 0 0; max-width: 30ch; letter-spacing: -.015em; text-wrap: balance; }
+.tile.dark p.desc { color: var(--on-dark-muted); }
+.tile .actions { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 14px; }
+.tile.dark .link { color: var(--amber); }
+.tile .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.tag { font-family: var(--font-mono); font-size: 11.5px; padding: 3px 9px; border-radius: 980px; border: 1px solid var(--line); color: var(--fg-muted); }
+.tile.dark .tag { border-color: #3a3733; color: var(--on-dark-muted); }
+.viz { margin-top: auto; padding-top: 24px; padding-bottom: 20px; display: flex; justify-content: center; align-items: flex-end; }
+.viz svg { width: 100%; max-height: 250px; display: block; }
+.viz svg text { font-family: var(--font-mono); font-size: 11px; fill: var(--fg-muted); }
+.tile.dark .viz svg text { fill: var(--on-dark-muted); }
+.tile.wide .viz svg { max-height: 280px; }
+.bigstat { font-size: clamp(96px, 16vw, 168px); line-height: .9; font-weight: 700; letter-spacing: -.05em; font-variant-numeric: tabular-nums; margin: 0; }
+.bigstat small { display: block; font-size: 17px; letter-spacing: 0; font-weight: 500; color: var(--fg-muted); margin-top: 10px; }
+.sample { position: absolute; top: 18px; right: 20px; font-family: var(--font-mono); font-size: 10.5px; color: var(--fg-muted); border: 1px dashed var(--line); padding: 2px 8px; border-radius: 980px; }
+.tile.dark .sample { color: var(--on-dark-muted); border-color: #4a4640; }
+.note { text-align: center; color: var(--fg-muted); font-size: 13px; margin-top: 14px; }
+@media (max-width: 760px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .tile.wide { grid-column: auto; }
+  .tile, .tile.wide { min-height: 440px; padding: 28px 24px 0; border-radius: 24px; }
+}
+
+/* Plataforma */
+.platform { margin-top: 96px; background: var(--bg-alt); padding-block: 88px; }
+.platform .cols { position: relative; display: flex; gap: 20px; margin-top: 56px; padding-bottom: 4px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; cursor: grab; }
+.platform .cols::-webkit-scrollbar { display: none; }
+.platform .cols.dragging { scroll-snap-type: none; cursor: grabbing; user-select: none; }
+.slide { flex: 0 0 min(86%, 400px); min-height: 290px; scroll-snap-align: start; background: var(--tile); border: 1px solid var(--line); border-radius: 28px; padding: 32px; overflow: hidden; }
+.car-ui { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 24px; }
+.dots { display: flex; gap: 2px; }
+.dot { width: 28px; height: 28px; display: grid; place-items: center; padding: 0; border: 0; background: none; cursor: pointer; }
+.dot::before { content: ""; width: 8px; height: 8px; border-radius: 980px; background: color-mix(in srgb, var(--fg) 24%, transparent); transition: width .25s, background .25s; }
+.dot[aria-current="true"]::before { width: 24px; background: var(--fg); }
+.arrows { display: flex; gap: 10px; }
+.car-btn { width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border-radius: 50%; border: 1px solid var(--line); background: transparent; color: var(--fg); cursor: pointer; transition: background .2s, opacity .2s; }
+.car-btn:hover:not(:disabled) { background: var(--bg); }
+.car-btn:disabled { opacity: .35; cursor: default; }
+.car-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.platform h4 { font-size: 21px; font-weight: 600; letter-spacing: -.02em; margin: 0 0 8px; }
+.platform p { margin: 0; color: var(--fg-muted); font-size: 17px; }
+.platform .ico { width: 44px; height: 44px; border-radius: 12px; background: var(--tile-dark); display: grid; place-items: center; margin-bottom: 18px; }
+.platform .ico svg { width: 24px; height: 24px; stroke: var(--amber); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 760px) { .slide { flex-basis: 84%; min-height: 260px; padding: 26px; } }
+
+/* Contacto */
+.contact { text-align: center; padding-block: 96px; }
+.contact .cta { margin-top: 24px; }
+
+/* Pie */
+footer { border-top: 1px solid var(--line); font-size: 12px; color: var(--fg-muted); padding-block: 28px 40px; }
+footer .cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+footer h5 { margin: 0 0 8px; font-size: 12px; font-weight: 600; color: var(--fg); }
+footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+footer a:hover { color: var(--fg); text-decoration: underline; }
+footer .legal { padding-top: 16px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+@media (max-width: 640px) { footer .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* En uso: banda oscura con teléfono, halo de color de la app y etiquetas que flotan a distinta profundidad */
+.showcase { background: var(--tile-dark); color: var(--on-dark); margin-top: 32px; padding-bottom: 48px; overflow: clip; }
+.showcase .section-head p { color: var(--on-dark-muted); }
+.shows { display: grid; }
+.show { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(32px, 6vw, 88px); align-items: center; padding-block: 72px; }
+.show:nth-of-type(even) .stage { order: 2; }
+.stage { position: relative; display: grid; justify-items: center; align-content: center; }
+.halo { position: absolute; left: 50%; top: 46%; width: 125%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--app) 48%, transparent), transparent 72%); pointer-events: none; }
+.phone { position: relative; width: min(100%, 290px); padding: 9px; border-radius: 42px; background: #0a0a09; border: 1px solid #3d3a35; box-shadow: 0 40px 80px -24px rgba(0,0,0,.7); will-change: transform; }
+.phone::before, .phone::after { content: ""; position: absolute; right: -4px; width: 3px; border-radius: 2px; background: #2b2926; }
+.phone::before { top: 22%; height: 9%; }
+.phone::after { top: 34%; height: 15%; }
+.screen { border-radius: 33px; overflow: hidden; aspect-ratio: 1080 / 2212; background: #151413; }
+.screen video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fl { position: absolute; display: inline-flex; align-items: center; gap: 8px; max-width: 78%; padding: 8px 14px; border-radius: 980px; font-family: var(--font-mono); font-size: 12px; line-height: 1.25; color: var(--on-dark); background: rgba(243,241,237,.1); border: 1px solid rgba(243,241,237,.2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.fl::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--amber); }
+.fl1 { top: 12%; left: -6%; }
+.fl2 { top: 44%; right: -8%; }
+.fl3 { bottom: 14%; left: -2%; }
+.speed { position: relative; margin: 20px 0 0; font-family: var(--font-mono); font-size: 11.5px; color: var(--on-dark-muted); }
+.show .cat { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--amber); margin: 0 0 8px; }
+.show h3 { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.06; font-weight: 700; letter-spacing: -.03em; margin: 0; text-wrap: balance; }
+.show p.desc { color: var(--on-dark-muted); font-size: clamp(18px, 2vw, 21px); line-height: 1.3; margin: 14px 0 0; max-width: 34ch; letter-spacing: -.015em; text-wrap: balance; }
+.show ul { list-style: none; margin: 26px 0 0; padding: 0; display: grid; gap: 12px; max-width: 48ch; }
+.show li { position: relative; padding-left: 26px; font-size: 16px; line-height: 1.4; }
+.show li::before { content: ""; position: absolute; left: 0; top: .72em; width: 12px; height: 2px; background: var(--amber); }
+.show .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 22px; }
+.show .tag { border-color: #3a3733; color: var(--on-dark-muted); }
+@media (max-width: 860px) {
+  .show { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-block: 56px; }
+  .show:nth-of-type(even) .stage { order: 0; }
+  .phone { width: min(76%, 270px); }
+  .fl1 { top: 4%; left: 0; }
+  .fl2 { top: auto; bottom: 20%; right: 0; }
+  .fl3 { display: none; }
+}
+
+/* Biblioteca técnica */
+.lib-tools { display: flex; justify-content: center; margin: 32px 0 20px; }
+.search { width: min(100%, 420px); min-height: 44px; padding: 0 18px; border-radius: 980px; border: 1px solid var(--line); background: var(--tile); color: var(--fg); font: inherit; font-size: 16px; }
+.search::placeholder { color: var(--fg-muted); }
+.lib .chips { margin: 0 0 8px; }
+.lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 18px; margin-top: 24px; }
+.doc { display: flex; flex-direction: column; min-width: 0; background: var(--tile); border: 1px solid var(--line); border-radius: 24px; overflow: hidden; }
+.doc .thumb { display: grid; place-items: center; aspect-ratio: 4 / 3; background: var(--bg-alt); overflow: hidden; }
+.doc .thumb img, .doc .thumb video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s; }
+.doc:hover .thumb img, .doc:hover .thumb video { transform: scale(1.04); }
+.kind { font-family: var(--font-mono); font-size: 26px; font-weight: 600; letter-spacing: .08em; color: var(--accent); }
+.doc .body { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 18px; flex: 1; min-width: 0; }
+.doc .topic { margin: 0; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.doc h3 { margin: 0; font-size: 17px; line-height: 1.25; font-weight: 600; letter-spacing: -.015em; overflow-wrap: anywhere; }
+.doc .meta { margin: 0; font-family: var(--font-mono); font-size: 12px; color: var(--fg-muted); }
+.doc .acts { display: flex; align-items: center; gap: 18px; margin-top: auto; padding-top: 6px; }
+.doc .acts .link { font-size: 15px; min-height: 36px; }
+.linkbtn { font: inherit; font-size: 14px; color: var(--fg-muted); background: none; border: 0; padding: 0; min-height: 36px; cursor: pointer; }
+.linkbtn:hover { color: var(--fg); }
+.lib-empty { grid-column: 1 / -1; text-align: center; border: 1px dashed var(--line); border-radius: 28px; padding: 56px 24px; color: var(--fg-muted); font-size: 17px; }
+.lib-empty strong { display: block; color: var(--fg); font-size: 21px; font-weight: 600; letter-spacing: -.02em; margin-bottom: 6px; }
+.uploader { background: var(--tile-dark); color: var(--on-dark); border-radius: 28px; padding: clamp(20px, 4vw, 36px); margin-top: 36px; display: grid; gap: 16px; }
+.drop { position: relative; display: grid; gap: 6px; justify-items: center; text-align: center; padding: 32px 20px; border: 1.5px dashed #5a554d; border-radius: 20px; cursor: pointer; transition: border-color .2s, background .2s; }
+.drop strong { font-size: 19px; font-weight: 600; letter-spacing: -.015em; }
+.drop span { color: var(--on-dark-muted); font-size: 14px; max-width: 52ch; }
+.drop:hover, .drop.over, .drop:focus-within { border-color: var(--amber); background: rgba(240,163,28,.06); }
+.drop input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.staged { display: grid; gap: 8px; }
+.st { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px; align-items: center; background: rgba(243,241,237,.06); border-radius: 14px; padding: 8px 8px 8px 14px; }
+.st input { min-width: 0; font: inherit; font-size: 15px; color: var(--on-dark); background: transparent; border: 0; border-bottom: 1px solid transparent; padding: 4px 0; }
+.st input:focus { outline: none; border-bottom-color: var(--amber); }
+.st .sz { font-family: var(--font-mono); font-size: 12px; color: var(--on-dark-muted); }
+.st .x { width: 36px; height: 36px; border: 0; border-radius: 50%; background: transparent; color: var(--on-dark-muted); font-size: 20px; line-height: 1; cursor: pointer; }
+.st .x:hover { background: rgba(243,241,237,.12); color: var(--on-dark); }
+.st .er { grid-column: 1 / -1; font-size: 13px; color: #ffb4a0; }
+.up-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+.up-row label { display: grid; gap: 6px; flex: 1 1 260px; font-size: 13px; color: var(--on-dark-muted); }
+.up-row input { min-height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid #4a4640; background: #151413; color: var(--on-dark); font: inherit; font-size: 16px; }
+.up-row .btn { border: 0; font: inherit; font-size: 17px; cursor: pointer; }
+.up-row .btn:disabled { opacity: .4; cursor: default; }
+.up-msg { margin: 0; min-height: 1.4em; font-size: 14px; color: var(--on-dark-muted); }
+.more { display: block; margin: 20px auto 0; }
+.merge { display: grid; gap: 12px; padding: 14px 16px; border-radius: 14px; background: rgba(240,163,28,.1); }
+.merge[hidden] { display: none; }
+.merge label { display: grid; gap: 6px; font-size: 13px; color: var(--on-dark-muted); }
+.merge .chk { display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--on-dark); }
+.merge .chk input { width: 18px; height: 18px; min-height: 0; accent-color: var(--amber); }
+.merge input[type="text"], .merge input:not([type]) { min-height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid #4a4640; background: #151413; color: var(--on-dark); font: inherit; font-size: 16px; }
+.st .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; }
+.doc .thumb { position: relative; }
+.badge { position: absolute; left: 12px; bottom: 12px; padding: 3px 10px; border-radius: 980px; background: rgba(20,19,18,.78); color: #f3f1ed; font-family: var(--font-mono); font-size: 11.5px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+
+/* Paralaje: el script escribe --py, --rot, --sc y --op según la posición de cada elemento al desplazarse. Sin script, todo queda en su lugar. */
+[data-par], [data-sp] { transform: translate3d(var(--px, 0px), var(--py, 0px), 0) rotate(var(--rot, 0deg)) scale(var(--sc, 1)); opacity: var(--op, 1); }
+.viz > svg, .viz > .bigstat { will-change: transform; }
+.brand svg { transform: rotate(var(--logo-rot, 0deg)); }
+.nav { position: sticky; }
+.nav::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--amber); transform-origin: 0 50%; transform: scaleX(var(--prog, 0)); }
+.sv-bar { transform-box: fill-box; transform-origin: 50% 100%; }
+.sv-hole { transform-box: fill-box; transform-origin: 50% 50%; }
+.sv-stage { transform-box: fill-box; transform-origin: 0 50%; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<div class="draft"><b>Bosquejo</b> · Las aplicaciones, cifras y textos son de ejemplo. Los reemplazamos con los tuyos.</div>
+
+<nav class="nav" aria-label="Principal">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="Portal Minero, inicio">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 21 8v8l-9 6-9-6V8z" fill="var(--accent)"/><path d="M12 2v20M3 8l9 6 9-6" stroke="var(--bg)" stroke-width="1.2" fill="none" opacity=".55"/></svg>
+      Portal Minero
+    </a>
+    <ul>
+      <li><a href="#en-uso">En uso</a></li>
+      <li class="keep"><a href="#apps">Aplicaciones</a></li>
+      <li class="keep"><a href="#biblioteca">Biblioteca</a></li>
+      <li><a href="#plataforma">Plataforma</a></li>
+      <li><a href="#contacto">Soporte</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="inicio">
+  <header class="hero wrap">
+    <p class="eyebrow" data-sp="0.14">Herramientas para la mina</p>
+    <h1 data-sp="0.3">Minería, calculada.</h1>
+    <p class="lede" data-sp="0.46">Todas nuestras aplicaciones mineras en un solo lugar. De la perforación a la ley final.</p>
+    <div class="cta" data-sp="0.6">
+      <a class="btn" href="#apps">Ver aplicaciones</a>
+      <a class="link" href="#plataforma">Cómo funciona</a>
+    </div>
+    <svg class="pit" id="pit" viewBox="0 0 1000 420" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Curvas de nivel de un tajo abierto con bancos cada 15 metros"></svg>
+  </header>
+
+  <section id="en-uso" class="showcase" aria-labelledby="uso-t">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="uso-t">Así se usan en terreno.</h2>
+        <p>Grabaciones reales de las aplicaciones, aceleradas para ver el recorrido completo en menos de un minuto.</p>
+      </div>
+
+      <div class="shows">
+        <!-- Reporte Marina -->
+        <article class="show" style="--app:#ea7a1c">
+          <div class="stage">
+            <div class="halo" aria-hidden="true"></div>
+            <div class="phone"><div class="screen"><video muted loop playsinline preload="none" poster="media/reporte-marina.jpg" aria-label="Grabación de Reporte Marina: tarea, equipos, cronómetro y cálculo de toneladas"><source src="media/reporte-marina.mp4" type="video/mp4"></video></div></div>
+            <span class="fl fl1">Tonelaje por camión</span>
+            <span class="fl fl2">Cronómetro por tarea</span>
+            <span class="fl fl3">Cierre de turno</span>
+            <p class="speed">Grabación real · 4× de velocidad</p>
+          </div>
+          <div class="copy">
+            <p class="cat">Carguío y transporte</p>
+            <h3>Reporte Marina.</h3>
+            <p class="desc">Lleva cada tarea del turno con sus equipos, vueltas y tiempos, y obtén las toneladas al cierre.</p>
+            <ul>
+              <li>Elige la tarea, el origen y el destino, y suma los equipos del turno: scoop y dumper por número.</li>
+              <li>Un cronómetro por tarea, con pausa, retomar y tiempo efectivo.</li>
+              <li>Registra las baldadas del scoop y las vueltas de cada dumper. La app calcula las toneladas.</li>
+              <li>Varias tareas en curso a la vez, con reporte por tarea y resumen del turno.</li>
+            </ul>
+            <div class="tags"><span class="tag">Scoop 14 Ton</span><span class="tag">Dumper 45 Ton</span><span class="tag">Dumper 65 Ton</span></div>
+          </div>
+        </article>
+
+        <!-- SOS ART -->
+        <article class="show" style="--app:#ef5a28">
+          <div class="stage">
+            <div class="halo" aria-hidden="true"></div>
+            <div class="phone"><div class="screen"><video muted loop playsinline preload="none" poster="media/sos-art.jpg" aria-label="Grabación de SOS ART: búsqueda de tarea, controles críticos y foco de fin de semana"><source src="media/sos-art.mp4" type="video/mp4"></video></div></div>
+            <span class="fl fl1">Funciona sin conexión</span>
+            <span class="fl fl2">Control crítico por riesgo</span>
+            <span class="fl fl3">Foco de fin de semana</span>
+            <p class="speed">Grabación real · 3× de velocidad</p>
+          </div>
+          <div class="copy">
+            <p class="cat">Seguridad</p>
+            <h3>SOS ART.</h3>
+            <p class="desc">El sistema de seguridad en faena que se abre sin señal, con los controles de cada tarea a mano.</p>
+            <ul>
+              <li>Busca la tarea y ve sus riesgos críticos, con la cartilla de cada uno. Por ejemplo, RF27 Atropello.</li>
+              <li>Marca cada control crítico y complementario como aplica o N/A, y guarda.</li>
+              <li>Una pregunta de verificación antes de entrar a la frente, por ejemplo si hay loro metálico.</li>
+              <li>Agrega el foco de fin de semana por número de riesgo o con texto libre.</li>
+            </ul>
+            <div class="tags"><span class="tag">controles críticos</span><span class="tag">complementarios</span><span class="tag">offline</span></div>
+          </div>
+        </article>
+
+        <!-- Diseñador de Frentes -->
+        <article class="show" style="--app:#f0a31c">
+          <div class="stage">
+            <div class="halo" aria-hidden="true"></div>
+            <div class="phone"><div class="screen"><video muted loop playsinline preload="none" poster="media/disenador-frentes.jpg" aria-label="Grabación de Diseñador de Frentes: malla de tiros en vista frontal y 3D, parámetros y tipos de corte"><source src="media/disenador-frentes.mp4" type="video/mp4"></video></div></div>
+            <span class="fl fl1">Vista 3D de la malla</span>
+            <span class="fl fl2">Tiros por zona al instante</span>
+            <span class="fl fl3">Cortes paralelos y angulares</span>
+            <p class="speed">Grabación real · 4× de velocidad</p>
+          </div>
+          <div class="copy">
+            <p class="cat">Planificación</p>
+            <h3>Diseñador de Frentes.</h3>
+            <p class="desc">Diseña la malla de perforación y tronadura de una frente subterránea y mira cómo cambia a medida que ajustas.</p>
+            <ul>
+              <li>Define ancho, alto y forma de la bóveda. La malla de tiros se redibuja al instante.</li>
+              <li>Cambia entre vista frontal, planta, perfil y 3D.</li>
+              <li>Ajusta el eje y la gradiente, los diámetros y el largo de perforación, y la densidad de la roca.</li>
+              <li>Elige el tipo de corte, paralelo o angular, y la cantidad de tiros por zona, calculada o manual.</li>
+              <li>Revisa el área, el perímetro y los tiros cargados.</li>
+            </ul>
+            <div class="tags"><span class="tag">Frontal</span><span class="tag">Planta</span><span class="tag">Perfil</span><span class="tag">3D</span></div>
+          </div>
+        </article>
+
+        <!-- Reporte Equipo -->
+        <article class="show" style="--app:#2d6cdf">
+          <div class="stage">
+            <div class="halo" aria-hidden="true"></div>
+            <div class="phone"><div class="screen"><video muted loop playsinline preload="none" poster="media/reporte-equipo.jpg" aria-label="Grabación de Reporte Equipo: apertura de sesión, niveles, inspección por partes y entrega"><source src="media/reporte-equipo.mp4" type="video/mp4"></video></div></div>
+            <span class="fl fl1">Plano del equipo, parte por parte</span>
+            <span class="fl fl2">Bien · Observación · Falla</span>
+            <span class="fl fl3">Reporte de entrega</span>
+            <p class="speed">Grabación real · 3× de velocidad</p>
+          </div>
+          <div class="copy">
+            <p class="cat">Equipos</p>
+            <h3>Reporte Equipo.</h3>
+            <p class="desc">Recibe y entrega el equipo con una inspección ordenada, y deja el reporte listo al terminar el turno.</p>
+            <ul>
+              <li>Abre sesión con tu nombre, rol, tipo de equipo y número. Carga el equipo anterior con un toque.</li>
+              <li>Registra combustible y AdBlue con un deslizador, y el horómetro si el equipo lo tiene.</li>
+              <li>Recorre las 10 partes sobre el plano del equipo y marca Bien, Observación o Falla.</li>
+              <li>Indica la condición mecánica y la ubicación, y guarda la recepción.</li>
+              <li>Al final, entrega el equipo y genera el reporte. Queda el historial y el respaldo de datos.</li>
+            </ul>
+            <div class="tags"><span class="tag">10 partes</span><span class="tag">Combustible</span><span class="tag">AdBlue</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="apps" class="wrap" aria-labelledby="apps-t">
+    <div class="section-head">
+      <h2 id="apps-t">Nuestras aplicaciones.</h2>
+      <p>Cada una resuelve una tarea concreta de la operación. Ábrelas desde aquí, con su documentación y versión.</p>
+    </div>
+
+    <div class="chips" role="group" aria-label="Filtrar por área">
+      <button class="chip" data-f="all" aria-pressed="true">Todas</button>
+      <button class="chip" data-f="geologia" aria-pressed="false">Geología</button>
+      <button class="chip" data-f="planificacion" aria-pressed="false">Planificación</button>
+      <button class="chip" data-f="operacion" aria-pressed="false">Operación</button>
+      <button class="chip" data-f="seguridad" aria-pressed="false">Seguridad</button>
+    </div>
+
+    <div class="grid" id="grid">
+      <!-- 1. Modelo de bloques -->
+      <article class="tile dark wide" data-cat="geologia">
+        <span class="sample">ejemplo</span>
+        <p class="cat">Geología</p>
+        <h3>Modelo de bloques.</h3>
+        <p class="desc">Estima recursos y reservas por ley de corte, banco por banco.</p>
+        <div class="tags"><span class="tag">Au g/t</span><span class="tag">Cu %</span><span class="tag">bloque 10×10×15 m</span></div>
+        <div class="actions"><a class="link" href="#">Abrir app</a><a class="link" href="#">Más información</a></div>
+        <div class="viz"><svg id="blocks" viewBox="0 0 800 260" role="img" aria-label="Sección de bloques coloreada por ley"></svg></div>
+      </article>
+
+      <!-- 2. Perforación y voladura -->
+      <article class="tile" data-cat="planificacion">
+        <span class="sample">ejemplo</span>
+        <p class="cat">Planificación</p>
+        <h3>Perforación y voladura.</h3>
+        <p class="desc">Diseña mallas, calcula el factor de carga y exporta el plan de disparo.</p>
+        <div class="tags"><span class="tag">malla 5×6 m</span><span class="tag">0,38 kg/t</span></div>
+        <div class="actions"><a class="link" href="#">Abrir app</a><a class="link" href="#">Más información</a></div>
+        <div class="viz"><svg id="drill" viewBox="0 0 400 240" role="img" aria-label="Malla de pozos de perforación"></svg></div>
+      </article>
+
+      <!-- 3. Despacho de flota -->
+      <article class="tile" data-cat="operacion">
+        <span class="sample">ejemplo</span>
+        <p class="cat">Operación</p>
+        <h3>Despacho de flota.</h3>
+        <p class="desc">Asigna camiones a palas y vigila los ciclos de acarreo.</p>
+        <div class="tags"><span class="tag">24 camiones</span><span class="tag">3 palas</span></div>
+        <div class="actions"><a class="link" href="#">Abrir app</a><a class="link" href="#">Más información</a></div>
+        <div class="viz"><svg viewBox="0 0 400 240" role="img" aria-label="Ruta de acarreo entre pala y chancador">
+          <path d="M30 200 C 110 200, 120 110, 200 110 S 300 40, 370 40" fill="none" stroke="var(--line)" stroke-width="14" stroke-linecap="round"/>
+          <path id="route" d="M30 200 C 110 200, 120 110, 200 110 S 300 40, 370 40" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="2 8" stroke-linecap="round"/>
+          <circle cx="30" cy="200" r="9" fill="var(--amber)"/><circle cx="370" cy="40" r="9" fill="var(--accent)"/>
+          <g class="truck"><rect x="-10" y="-6" width="20" height="12" rx="3" fill="var(--fg)"/></g><g class="truck"><rect x="-10" y="-6" width="20" height="12" rx="3" fill="var(--fg)"/></g><g class="truck"><rect x="-10" y="-6" width="20" height="12" rx="3" fill="var(--fg)"/></g>
+          <text x="30" y="228" text-anchor="start">Pala 02</text><text x="370" y="24" text-anchor="end">Chancador</text>
+        </svg></div>
+      </article>
+
+      <!-- 4. Control de leyes -->
+      <article class="tile" data-cat="geologia">
+        <span class="sample">ejemplo</span>
+        <p class="cat">Geología</p>
+        <h3>Control de leyes.</h3>
+        <p class="desc">Compara la ley estimada con la real de cada turno.</p>
+        <div class="tags"><span class="tag">conciliación</span><span class="tag">g/t</span></div>
+        <div class="actions"><a class="link" href="#">Abrir app</a><a class="link" href="#">Más información</a></div>
+        <div class="viz"><svg id="bars" viewBox="0 0 400 240" role="img" aria-label="Ley estimada contra ley real por turno"></svg></div>
+      </article>
+
+      <!-- 5. Seguridad -->
+      <article class="tile dark" data-cat="seguridad">
+        <span class="sample">ejemplo</span>
+        <p class="cat">Seguridad</p>
+        <h3>Inspecciones y riesgos.</h3>
+        <p class="desc">Registra hallazgos en terreno y sigue cada acción hasta cerrarla.</p>
+        <div class="actions"><a class="link" href="#">Abrir app</a><a class="link" href="#">Más información</a></div>
+        <div class="viz"><p class="bigstat" style="color:var(--amber)">412<small>días sin incidentes con tiempo perdido</small></p></div>
+      </article>
+
+      <!-- 6. Balance metalúrgico -->
+      <article class="tile wide" data-cat="operacion planificacion">
+        <span class="sample">ejemplo</span>
+        <p class="cat">Operación</p>
+        <h3>Balance metalúrgico.</h3>
+        <p class="desc">Sigue el flujo de mineral desde el chancado hasta el concentrado final.</p>
+        <div class="tags"><span class="tag">recuperación 88,4 %</span><span class="tag">t/h</span></div>
+        <div class="actions"><a class="link" href="#">Abrir app</a><a class="link" href="#">Más información</a></div>
+        <div class="viz"><svg viewBox="0 0 800 220" role="img" aria-label="Flujo de mineral por etapas con pérdidas">
+          <g id="flow"></g>
+        </svg></div>
+      </article>
+    </div>
+    <p class="note">Estas seis tarjetas son de ejemplo. Cada app real llevará su nombre, descripción, versión y enlace.</p>
+  </section>
+
+  <section id="biblioteca" class="wrap lib" aria-labelledby="lib-t" style="margin-top:96px">
+    <div class="section-head" style="padding-top:0">
+      <h2 id="lib-t">Biblioteca técnica.</h2>
+      <p>Apuntes, esquemas y fotografías de terreno, ordenados por tema para consultarlos cuando los necesites.</p>
+    </div>
+
+    <div class="lib-tools"><input id="lib-q" class="search" type="search" placeholder="Buscar en la biblioteca" aria-label="Buscar en la biblioteca" autocomplete="off"></div>
+    <div class="chips" id="lib-chips" role="group" aria-label="Filtrar por tema"></div>
+    <div class="lib-grid" id="lib-grid" aria-live="polite"></div>
+    <p class="note" id="lib-count"></p>
+  </section>
+
+  <script>
+  (function () {
+    var PAGE = 24;
+    var $ = function (id) { return document.getElementById(id); };
+    var q = $('lib-q'), chips = $('lib-chips'), grid = $('lib-grid'), count = $('lib-count');
+    var S = { docs: [], topic: 'all', q: '', shown: PAGE, loaded: false, error: false };
+
+    function h(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+    function fmt(b) { if (b < 1024) return b + ' B'; if (b < 1048576) return Math.round(b / 1024) + ' KB'; return (b / 1048576).toFixed(1).replace('.', ',') + ' MB'; }
+    function fdate(s) { try { return new Date(s + 'T12:00:00').toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } }
+    function kind(ct) { ct = ct || ''; if (ct === 'application/pdf') return 'pdf'; if (ct.indexOf('image/') === 0) return 'img'; if (ct.indexOf('video/') === 0) return 'video'; return 'txt'; }
+    var tick = false;
+    function relayout() { if (tick) return; tick = true; requestAnimationFrame(function () { tick = false; window.dispatchEvent(new Event('resize')); }); }
+
+    function render() {
+      var counts = {};
+      S.docs.forEach(function (d) { counts[d.topic] = (counts[d.topic] || 0) + 1; });
+      var names = Object.keys(counts).sort(function (a, b) { return a.localeCompare(b, 'es'); });
+      if (S.topic !== 'all' && !counts[S.topic]) S.topic = 'all';
+      chips.textContent = '';
+      chips.hidden = names.length < 2;
+      [['all', 'Todos (' + S.docs.length + ')']].concat(names.map(function (n) { return [n, n + ' (' + counts[n] + ')']; })).forEach(function (p) {
+        var b = h('button', 'chip', p[1]);
+        b.type = 'button';
+        b.setAttribute('aria-pressed', S.topic === p[0] ? 'true' : 'false');
+        b.addEventListener('click', function () { S.topic = p[0]; S.shown = PAGE; render(); });
+        chips.appendChild(b);
+      });
+      var term = S.q.trim().toLowerCase();
+      var list = S.docs.filter(function (d) {
+        return (S.topic === 'all' || d.topic === S.topic) && (!term || ((d.title || '') + ' ' + (d.topic || '')).toLowerCase().indexOf(term) > -1);
+      });
+      grid.textContent = '';
+      count.textContent = '';
+      if (!list.length) {
+        var e = h('div', 'lib-empty'), t = h('strong'), s = document.createElement('span');
+        if (S.error) { t.textContent = 'No se pudo abrir la biblioteca.'; s.textContent = 'Abre el sitio desde su dirección web y recarga la página.'; }
+        else if (!S.loaded) { t.textContent = 'Cargando la biblioteca…'; }
+        else if (!S.docs.length) { t.textContent = 'Todavía no hay material.'; s.textContent = 'Cuando se cargue, aparecerá aquí ordenado por tema.'; }
+        else { t.textContent = 'Nada coincide con tu búsqueda.'; s.textContent = 'Prueba con otra palabra o elige Todos.'; }
+        e.appendChild(t); e.appendChild(s); grid.appendChild(e);
+      } else {
+        list.slice(0, S.shown).forEach(function (d) { grid.appendChild(card(d)); });
+        count.textContent = 'Mostrando ' + Math.min(S.shown, list.length) + ' de ' + list.length;
+        if (list.length > S.shown) {
+          var m = h('button', 'btn more', 'Ver más');
+          m.type = 'button'; m.style.border = '0'; m.style.cursor = 'pointer'; m.style.font = 'inherit';
+          m.addEventListener('click', function () { S.shown += PAGE; render(); });
+          count.appendChild(m);
+        }
+      }
+      relayout();
+    }
+
+    function card(d) {
+      var a = h('article', 'doc'), href = encodeURI(d.file), k = kind(d.type);
+      var th = h('a', 'thumb');
+      th.href = href; th.target = '_blank'; th.rel = 'noopener';
+      th.setAttribute('aria-label', 'Abrir ' + (d.title || 'archivo'));
+      if (k === 'img') { var im = h('img'); im.loading = 'lazy'; im.alt = ''; im.src = href; th.appendChild(im); }
+      else if (k === 'pdf' && d.cover) {
+        var cv = h('img'); cv.loading = 'lazy'; cv.alt = ''; cv.src = encodeURI(d.cover); th.appendChild(cv);
+        th.appendChild(h('span', 'badge', 'PDF' + (d.pages ? ' · ' + d.pages + (d.pages === 1 ? ' pág.' : ' págs.') : '')));
+      }
+      else th.appendChild(h('span', 'kind', k === 'pdf' ? 'PDF' : 'TXT'));
+      var body = h('div', 'body');
+      body.appendChild(h('p', 'topic', d.topic || 'Otros'));
+      body.appendChild(h('h3', '', d.title || 'Sin título'));
+      body.appendChild(h('p', 'meta', fmt(d.size || 0) + (d.date ? ' · ' + fdate(d.date) : '')));
+      var acts = h('div', 'acts');
+      var open = h('a', 'link', 'Abrir');
+      open.href = href; open.target = '_blank'; open.rel = 'noopener';
+      acts.appendChild(open); body.appendChild(acts);
+      a.appendChild(th); a.appendChild(body);
+      return a;
+    }
+
+    q.addEventListener('input', function () { S.q = q.value; S.shown = PAGE; render(); });
+    render();
+    fetch('library/library.json', { cache: 'no-cache' })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (list) {
+        S.docs = list.slice().sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
+        S.loaded = true; render();
+      })
+      .catch(function () { S.error = true; render(); });
+  })();
+  </script>
+
+  <section id="plataforma" class="platform">
+    <div class="wrap">
+      <div class="section-head" style="padding-top:0">
+        <h2>Una sola puerta de entrada.</h2>
+        <p>Las aplicaciones comparten acceso, datos y criterios, así que la mina trabaja con las mismas cifras.</p>
+      </div>
+      <div class="carousel">
+      <div class="cols" id="car" role="region" aria-roledescription="carrusel" aria-label="Qué ofrece la plataforma" tabindex="0">
+        <div class="slide"><div class="ico"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><h4>Acceso por perfil</h4><p>Geología, operación y seguridad ven lo que les corresponde. Define quién abre cada aplicación.</p></div>
+        <div class="slide"><div class="ico"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></div><h4>Datos compartidos</h4><p>Un modelo de bloques actualizado alimenta la planificación, el despacho y el control de leyes.</p></div>
+        <div class="slide"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg></div><h4>Disponible en terreno</h4><p>Funciona en el computador de la oficina y en la tablet del supervisor, incluso con señal limitada.</p></div>
+      </div>
+      <div class="car-ui">
+        <div class="dots">
+          <button class="dot" type="button" aria-label="Acceso por perfil" aria-current="true"></button>
+          <button class="dot" type="button" aria-label="Datos compartidos" aria-current="false"></button>
+          <button class="dot" type="button" aria-label="Disponible en terreno" aria-current="false"></button>
+        </div>
+        <div class="arrows">
+          <button class="car-btn" id="car-prev" type="button" aria-label="Anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <button class="car-btn" id="car-next" type="button" aria-label="Siguiente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" class="contact wrap">
+    <h2>¿Falta una herramienta?</h2>
+    <p class="lede" style="margin-top:14px">Cuéntanos qué necesita la operación y la sumamos al portal.</p>
+    <div class="cta"><a class="btn" href="#contacto">Solicitar una aplicación</a><a class="link" href="#contacto">Escribir a soporte</a></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div><h5>Aplicaciones</h5><ul><li><a href="#apps">Modelo de bloques</a></li><li><a href="#apps">Perforación y voladura</a></li><li><a href="#apps">Despacho de flota</a></li><li><a href="#apps">Control de leyes</a></li></ul></div>
+      <div><h5>Plataforma</h5><ul><li><a href="#plataforma">Acceso y perfiles</a></li><li><a href="#plataforma">Datos compartidos</a></li><li><a href="#plataforma">Versiones</a></li></ul></div>
+      <div><h5>Recursos</h5><ul><li><a href="#biblioteca">Biblioteca técnica</a></li><li><a href="#contacto">Guías de uso</a></li><li><a href="#contacto">Novedades</a></li></ul></div>
+      <div><h5>Contacto</h5><ul><li><a href="#contacto">Soporte técnico</a></li><li><a href="#contacto">Solicitar una app</a></li></ul></div>
+    </div>
+    <div class="legal"><span>© 2026 Portal Minero. Todos los derechos reservados.</span><span>Bosquejo v0.1</span></div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs, parent) {
+    var n = document.createElementNS(NS, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+
+  /* Tajo abierto: curvas de nivel, un banco cada 15 m */
+  var pit = document.getElementById('pit');
+  var cx = 500, cy = 250, rings = 17;
+  var ringGs = [], ringByIdx = {};
+  for (var i = rings; i >= 1; i--) {
+    var t = i / rings;
+    var rx = 40 + t * 520, ry = 14 + t * 190;
+    var ox = (1 - t) * 38, oy = (1 - t) * 22;
+    var hot = i === 3 || i === 9;
+    var rg = el('g', {}, pit);
+    ringGs.push({ g: rg, depth: 1 - t });
+    ringByIdx[i] = rg;
+    rg.style.transformOrigin = '500px 250px';
+    el('ellipse', {
+      cx: cx + ox, cy: cy + oy + (1 - t) * 6, rx: rx, ry: ry, fill: 'none',
+      stroke: hot ? 'var(--amber)' : 'var(--accent)',
+      'stroke-width': hot ? 1.8 : 1.1,
+      opacity: hot ? .95 : (0.18 + (1 - t) * 0.6).toFixed(2)
+    }, rg);
+  }
+  var labels = [[3, 'Banco 3 330 m'], [9, 'Banco 3 450 m']];
+  labels.forEach(function (l) {
+    var t = l[0] / rings, rx = 40 + t * 520, ry = 14 + t * 190;
+    var ox = (1 - t) * 38, oy = (1 - t) * 22 + (1 - t) * 6;
+    var x = cx + ox + rx * 0.72, y = cy + oy + ry * 0.69;
+    var tx = el('text', { x: x + 8, y: y + 4 }, ringByIdx[l[0]]);
+    tx.textContent = l[1];
+    el('circle', { cx: x, cy: y, r: 3, fill: 'var(--amber)' }, ringByIdx[l[0]]);
+  });
+  var fade = el('defs', {}, pit);
+  var g = el('linearGradient', { id: 'pf', x1: 0, y1: 0, x2: 0, y2: 1 }, fade);
+  el('stop', { offset: '60%', 'stop-color': 'var(--bg)', 'stop-opacity': 0 }, g);
+  el('stop', { offset: '100%', 'stop-color': 'var(--bg)', 'stop-opacity': 1 }, g);
+  el('rect', { x: 0, y: 0, width: 1000, height: 420, fill: 'url(#pf)' }, pit);
+
+  /* Modelo de bloques: sección con ley variable */
+  var blocks = document.getElementById('blocks');
+  var cols = 32, rows = 9, w = 800 / cols, h = 26;
+  var seed = 7;
+  function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+  var rowGs = [];
+  for (var r = 0; r < rows; r++) {
+    var rowG = el('g', {}, blocks);
+    rowGs.push(rowG);
+    for (var c = 0; c < cols; c++) {
+      var d = Math.hypot((c - 20) / 9, (r - 3.5) / 3.2);
+      var grade = Math.max(0, 1 - d) * 0.9 + rnd() * 0.18;
+      var inside = r >= Math.floor(Math.abs(c - 16) / 5.5);
+      if (!inside) continue;
+      var col = grade > 0.62 ? 'var(--amber)' : grade > 0.3 ? 'var(--accent)' : '#4a4640';
+      el('rect', { x: c * w + 1.5, y: 8 + r * (h + 2), width: w - 3, height: h, rx: 3, fill: col, opacity: grade > 0.3 ? (0.55 + grade * 0.45).toFixed(2) : 0.8 }, rowG);
+    }
+  }
+  var lt = el('text', { x: 4, y: 259 }, blocks); lt.textContent = 'Sección N-S · 10 × 10 × 15 m';
+  [['alta ley > 1,2 g/t', 'var(--amber)', 800 - 330], ['media', 'var(--accent)', 800 - 150], ['estéril', '#4a4640', 800 - 80]].forEach(function (l) {
+    el('rect', { x: l[2], y: 250, width: 9, height: 9, rx: 2, fill: l[1] }, blocks);
+    var t = el('text', { x: l[2] + 14, y: 259 }, blocks); t.textContent = l[0];
+  });
+
+  /* Malla de perforación */
+  var drill = document.getElementById('drill');
+  var drillRows = [], holes = [];
+  for (var y = 0; y < 6; y++) {
+    var dg = el('g', {}, drill);
+    drillRows.push(dg);
+    for (var x = 0; x < 9; x++) {
+      var px = 36 + x * 41 + (y % 2) * 20, py = 30 + y * 36;
+      if (px > 380) continue;
+      var on = (x + y * 2) % 7 === 0;
+      var hole = el('circle', { 'class': 'sv-hole', cx: px, cy: py, r: on ? 7 : 5, fill: on ? 'var(--amber)' : 'none', stroke: on ? 'var(--amber)' : 'var(--fg-muted)', 'stroke-width': 1.4 }, dg);
+      if (on) holes.push(hole);
+    }
+  }
+  var dt = el('text', { x: 36, y: 238 }, drill); dt.textContent = 'Espaciamiento 5 × 6 m · diámetro 229 mm';
+
+  /* Estimado vs real */
+  var bars = document.getElementById('bars');
+  var est = [1.1, 1.3, 0.9, 1.5, 1.2, 1.0, 1.4], real = [1.0, 1.4, 0.8, 1.3, 1.25, 1.1, 1.35];
+  var base = 200, k = 100, barRects = [];
+  el('line', { x1: 20, y1: base, x2: 380, y2: base, stroke: 'var(--line)' }, bars);
+  est.forEach(function (v, i) {
+    var x = 32 + i * 50;
+    barRects.push({ el: el('rect', { 'class': 'sv-bar', x: x, y: base - v * k, width: 16, height: v * k, rx: 4, fill: 'var(--line)' }, bars), i: i });
+    barRects.push({ el: el('rect', { 'class': 'sv-bar', x: x + 18, y: base - real[i] * k, width: 16, height: real[i] * k, rx: 4, fill: 'var(--accent)' }, bars), i: i + 0.5 });
+    var t = el('text', { x: x + 17, y: base + 18, 'text-anchor': 'middle' }, bars); t.textContent = 'T' + (i + 1);
+  });
+  var bt = el('text', { x: 20, y: 18 }, bars); bt.textContent = 'gris estimada · cobre real (g/t)';
+
+  /* Flujo metalúrgico */
+  var flow = document.getElementById('flow');
+  var stages = [['Chancado', 100], ['Molienda', 97], ['Flotación', 91], ['Concentrado', 88.4]];
+  var stageRects = [], links = [];
+  stages.forEach(function (s, i) {
+    var x = 20 + i * 195, hh = 24 + s[1] * 1.0;
+    stageRects.push(el('rect', { 'class': 'sv-stage', x: x, y: 110 - hh / 2, width: 150, height: hh, rx: 10, fill: i === 3 ? 'var(--accent)' : 'var(--line)' }, flow));
+    var a = el('text', { x: x, y: 190 }, flow); a.textContent = s[0];
+    var b = el('text', { x: x, y: 207, fill: 'var(--fg)' }, flow); b.textContent = s[1].toString().replace('.', ',') + ' %';
+    if (i < 3) links.push(el('path', { d: 'M' + (x + 156) + ' 110 L' + (x + 186) + ' 110', stroke: 'var(--fg-muted)', 'stroke-width': 1.5, 'stroke-dasharray': '3 4' }, flow));
+  });
+
+  /* Paralaje al desplazarse: cada capa avanza a su propio ritmo */
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var root = document.documentElement;
+  var vh = window.innerHeight, heroH = 1, pending = false;
+
+  /* [selector, desplazamiento en px por pantalla, giro en grados, encogimiento] */
+  var PAR = [
+    ['.tile .cat', 8], ['.tile h3', 14], ['.tile p.desc', 22], ['.tile .tags', 28], ['.tile .actions', 34],
+    ['.viz > svg, .viz > .bigstat', -28],
+    ['.section-head h2', 10], ['.section-head p', 20],
+    ['.platform .ico', 16, 14, 0.14], ['.slide h4', 0], ['.slide p', 0],
+    ['.contact h2', 10], ['.contact .lede', 18], ['.contact .cta', 28],
+    /* En uso: el teléfono avanza más lento que la página y se inclina; halo y etiquetas van a otra profundidad */
+    ['.show:nth-of-type(odd) .phone', -46, 3, 0.06], ['.show:nth-of-type(even) .phone', -46, -3, 0.06],
+    ['.show .halo', 70, 0, 0.3],
+    ['.show .fl1', 30], ['.show .fl2', -60], ['.show .fl3', 90],
+    ['.show .speed', 18],
+    ['.show .cat', 8], ['.show h3', 16], ['.show p.desc', 24],
+    ['.show li:nth-child(1)', 10], ['.show li:nth-child(2)', 18], ['.show li:nth-child(3)', 26], ['.show li:nth-child(4)', 34], ['.show li:nth-child(5)', 42],
+    ['.show .tags', 50]
+  ];
+  var KS = 2.2, KR = 1.8; /* intensidad: desplazamiento, y giro con encogimiento */
+  var items = [];
+  PAR.forEach(function (p) {
+    document.querySelectorAll(p[0]).forEach(function (n) {
+      n.setAttribute('data-par', '');
+      items.push({ n: n, speed: p[1], rk: p[2] || 0, sk: p[3] || 0, cy: 0, vis: true });
+    });
+  });
+  var heroEl = document.querySelector('.hero');
+  var heroEls = Array.prototype.slice.call(document.querySelectorAll('[data-sp]'));
+
+  /* Efectos dentro de cada gráfico. d: 0 cuando la tarjeta está al centro de la pantalla. r: 0 a 1, avance de entrada. */
+  var truckEls = Array.prototype.slice.call(document.querySelectorAll('.truck'));
+  var route = document.getElementById('route');
+  function pointAt(s, len) { return route.getPointAtLength(clamp(s, 0, len)); }
+  function placeTrucks(d) {
+    var len = route.getTotalLength();
+    truckEls.forEach(function (g, i) {
+      var u = (((0.16 + i * 0.33 - d * 0.6) % 1) + 1) % 1, s = u * len;
+      var a = pointAt(s < len - 3 ? s : s - 3, len), b = pointAt(s < len - 3 ? s + 3 : s, len), p = pointAt(s, len);
+      var ang = Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI;
+      g.setAttribute('transform', 'translate(' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ') rotate(' + ang.toFixed(1) + ')');
+    });
+    route.style.strokeDashoffset = (-d * 200).toFixed(1);
+  }
+  var tfx = [
+    { sel: '#blocks', fn: function (d) {
+      var dc = clamp(d, -1.2, 1.2);
+      rowGs.forEach(function (g, i) { g.style.transform = 'translate3d(' + (dc * (i - 4) * 16).toFixed(1) + 'px,0,0)'; });
+    } },
+    { sel: '#drill', fn: function (d) {
+      var dc = clamp(d, -1.2, 1.2), pulse = 1 + 0.5 * (1 - Math.min(Math.abs(d), 1));
+      drillRows.forEach(function (g, i) { g.style.transform = 'translate3d(' + (dc * (i % 2 ? 1 : -1) * (14 + i * 3.2)).toFixed(1) + 'px,0,0)'; });
+      holes.forEach(function (h) { h.style.transform = 'scale(' + pulse.toFixed(3) + ')'; });
+    } },
+    { sel: '#route', fn: function (d) { placeTrucks(d); } },
+    { sel: '#bars', fn: function (d, r) {
+      barRects.forEach(function (b) { b.el.style.transform = 'scaleY(' + (0.45 + 0.55 * clamp(r * 1.5 - b.i * 0.12, 0, 1)).toFixed(3) + ')'; });
+    } },
+    { sel: '#flow', fn: function (d, r) {
+      stageRects.forEach(function (rc, i) { rc.style.transform = 'scaleX(' + (0.55 + 0.45 * clamp(r * 1.6 - i * 0.2, 0, 1)).toFixed(3) + ')'; });
+      links.forEach(function (l) { l.style.strokeDashoffset = (-d * 160).toFixed(1); });
+    } },
+    { sel: '.bigstat', fn: function (d) {
+      document.querySelector('.bigstat').style.setProperty('--sc', (1 - Math.min(Math.abs(d), 1) * 0.08).toFixed(3));
+    } }
+  ];
+  tfx.forEach(function (t) { t.tile = document.querySelector(t.sel).closest('.tile'); t.cy = 0; t.vis = true; });
+
+  function update() {
+    pending = false;
+    var sy = window.scrollY || window.pageYOffset || 0;
+    var maxS = Math.max(1, root.scrollHeight - vh);
+    root.style.setProperty('--prog', clamp(sy / maxS, 0, 1).toFixed(4));
+    root.style.setProperty('--logo-rot', (sy * 0.3).toFixed(1) + 'deg');
+
+    /* Héroe: el texto se queda atrás y se desvanece, el tajo se abre hacia el fondo */
+    var hp = clamp(sy / Math.max(1, heroH), 0, 1);
+    heroEls.forEach(function (n) {
+      n.style.setProperty('--py', (clamp(sy, 0, heroH * 1.2) * parseFloat(n.getAttribute('data-sp'))).toFixed(1) + 'px');
+      n.style.setProperty('--op', clamp(1 - hp * 1.3, 0, 1).toFixed(3));
+    });
+    ringGs.forEach(function (o) {
+      o.g.style.transform = 'translate3d(' + (-hp * o.depth * 80).toFixed(1) + 'px,' + (hp * (20 + o.depth * 300)).toFixed(1) + 'px,0) scale(' + (1 + hp * o.depth * 0.7).toFixed(3) + ')';
+    });
+
+    items.forEach(function (it) {
+      if (!it.vis) return;
+      var d = clamp((it.cy - sy - vh / 2) / vh, -1.5, 1.5);
+      it.n.style.setProperty('--py', (d * it.speed * KS).toFixed(1) + 'px');
+      if (it.rk) it.n.style.setProperty('--rot', (d * it.rk * KR).toFixed(1) + 'deg');
+      if (it.sk) it.n.style.setProperty('--sc', (1 - Math.min(Math.abs(d), 1) * it.sk * KR).toFixed(3));
+    });
+    tfx.forEach(function (t) {
+      if (!t.vis) return;
+      var d = (t.cy - sy - vh / 2) / vh;
+      if (Math.abs(d) > 2) return;
+      t.fn(d, clamp((0.9 - d) / 0.7, 0, 1));
+    });
+  }
+
+  /* Mide la posición de cada elemento sin ninguna transformación aplicada */
+  function measure() {
+    vh = window.innerHeight;
+    items.forEach(function (it) {
+      it.n.style.removeProperty('--py'); it.n.style.removeProperty('--rot'); it.n.style.removeProperty('--sc');
+    });
+    var sy = window.scrollY || window.pageYOffset || 0;
+    items.forEach(function (it) {
+      var r = it.n.getBoundingClientRect();
+      it.vis = r.height > 0;
+      it.cy = r.top + sy + r.height / 2;
+    });
+    tfx.forEach(function (t) {
+      var r = t.tile.getBoundingClientRect();
+      t.vis = r.height > 0;
+      t.cy = r.top + sy + r.height / 2;
+    });
+    heroH = heroEl.offsetHeight;
+    update();
+  }
+  function schedule() { if (!pending) { pending = true; requestAnimationFrame(update); } }
+  var measureQueued = false;
+  function measureSoon() {
+    if (measureQueued) return;
+    measureQueued = true;
+    requestAnimationFrame(function () { measureQueued = false; measure(); });
+  }
+
+  if (reduce) {
+    tfx.forEach(function (t) { t.fn(0, 1); });
+  } else {
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', measureSoon);
+    window.addEventListener('load', measure);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureSoon);
+    measure();
+  }
+
+  /* Carrusel de la plataforma: se desliza con el dedo, el mouse, las flechas o los puntos */
+  var car = document.getElementById('car');
+  var slides = Array.prototype.slice.call(car.querySelectorAll('.slide'));
+  var dots = Array.prototype.slice.call(document.querySelectorAll('.dot'));
+  var prevB = document.getElementById('car-prev'), nextB = document.getElementById('car-next');
+  var slideFx = slides.map(function (s) { return { ico: s.querySelector('.ico'), h4: s.querySelector('h4'), p: s.querySelector('p') }; });
+  function carIndex() {
+    if (car.scrollLeft >= car.scrollWidth - car.clientWidth - 2) return slides.length - 1;
+    var best = 0, bd = 1e9;
+    slides.forEach(function (s, i) { var dd = Math.abs(s.offsetLeft - car.scrollLeft); if (dd < bd) { bd = dd; best = i; } });
+    return best;
+  }
+  function carUpdate() {
+    var i = carIndex(), cw = car.clientWidth || 1;
+    dots.forEach(function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    prevB.disabled = car.scrollLeft <= 2;
+    nextB.disabled = car.scrollLeft >= car.scrollWidth - car.clientWidth - 2;
+    if (reduce) return;
+    slides.forEach(function (s, k) {
+      var rel = clamp((s.offsetLeft - car.scrollLeft) / cw, -1, 1), f = slideFx[k];
+      f.ico.style.setProperty('--px', (rel * 90).toFixed(1) + 'px');
+      f.h4.style.setProperty('--px', (rel * 50).toFixed(1) + 'px');
+      f.p.style.setProperty('--px', (rel * 28).toFixed(1) + 'px');
+    });
+  }
+  function carGo(i) {
+    i = clamp(i, 0, slides.length - 1);
+    car.scrollTo({ left: slides[i].offsetLeft, behavior: reduce ? 'auto' : 'smooth' });
+  }
+  prevB.addEventListener('click', function () { carGo(carIndex() - 1); });
+  nextB.addEventListener('click', function () { carGo(carIndex() + 1); });
+  dots.forEach(function (d, k) { d.addEventListener('click', function () { carGo(k); }); });
+  car.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); carGo(carIndex() + 1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); carGo(carIndex() - 1); }
+  });
+  var carTick = false;
+  car.addEventListener('scroll', function () {
+    if (carTick) return;
+    carTick = true;
+    requestAnimationFrame(function () { carTick = false; carUpdate(); });
+  }, { passive: true });
+  window.addEventListener('resize', carUpdate);
+  window.addEventListener('load', carUpdate);
+
+  /* Arrastre con mouse: el dedo en pantallas táctiles ya desliza solo */
+  var drag = null;
+  car.addEventListener('pointerdown', function (e) {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    drag = { x: e.clientX, left: car.scrollLeft };
+  });
+  car.addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    var dx = e.clientX - drag.x;
+    if (!car.classList.contains('dragging')) {
+      if (Math.abs(dx) < 5) return;
+      car.classList.add('dragging');
+      car.setPointerCapture(e.pointerId);
+    }
+    car.scrollLeft = drag.left - dx;
+  });
+  function dragEnd() {
+    if (!drag) return;
+    var moved = car.classList.contains('dragging');
+    drag = null;
+    if (moved) { car.classList.remove('dragging'); carGo(carIndex()); }
+  }
+  car.addEventListener('pointerup', dragEnd);
+  car.addEventListener('pointercancel', dragEnd);
+  carUpdate();
+
+  /* Videos: se reproducen solo mientras están en pantalla. Con movimiento reducido, quedan quietos y con controles. */
+  var vids = document.querySelectorAll('.screen video');
+  if (reduce || !('IntersectionObserver' in window)) {
+    vids.forEach(function (v) { v.controls = true; });
+  } else {
+    var vio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var v = e.target;
+        if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+        else v.pause();
+      });
+    }, { threshold: 0.35 });
+    vids.forEach(function (v) { vio.observe(v); });
+  }
+
+  /* Filtros */
+  var chips = document.querySelectorAll('.chip');
+  var tiles = document.querySelectorAll('.tile');
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var f = chip.getAttribute('data-f');
+      chips.forEach(function (c) { c.setAttribute('aria-pressed', c === chip ? 'true' : 'false'); });
+      tiles.forEach(function (t) {
+        t.hidden = !(f === 'all' || t.getAttribute('data-cat').split(' ').indexOf(f) > -1);
+      });
+      if (!reduce) measure();
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

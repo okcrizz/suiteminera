@@ -1,0 +1,28 @@
+[
+  {
+    "title": "Accidente andesita",
+    "topic": "Accidente Andesita El teniente 2025",
+    "file": "library/accidente-andesita.pdf",
+    "type": "application/pdf",
+    "size": 2136573,
+    "date": "2026-10-21"
+  },
+  {
+    "title": "formulario ART tipo Codelco",
+    "topic": "Documentacion Seguridad",
+    "file": "library/formulario-art-codelco.pdf",
+    "type": "application/pdf",
+    "size": 284489,
+    "date": "2026-10-21"
+  },
+  {
+    "title": "BIOLIXIVIACION",
+    "topic": "BIOLIXIVIACION",
+    "file": "library/biolixiviacion.pdf",
+    "type": "application/pdf",
+    "size": 937311,
+    "date": "2026-10-21",
+    "cover": "library/biolixiviacion.jpg",
+    "pages": 7
+  }
+]
