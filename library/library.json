@@ -1,19 +1,12 @@
 [
   {
-    "title": "Accidente andesita",
-    "topic": "Accidente Andesita El teniente 2025",
-    "file": "library/accidente-andesita.pdf",
-    "type": "application/pdf",
-    "size": 2136573,
-    "date": "2026-10-21"
-  },
-  {
     "title": "formulario ART tipo Codelco",
     "topic": "Documentacion Seguridad",
-    "file": "library/formulario-art-codelco.pdf",
+    "file": "library/formulario-art-tipo-codelco.pdf",
     "type": "application/pdf",
     "size": 284489,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "cover": "library/formulario-art-tipo-codelco.cover.jpg"
   },
   {
     "title": "BIOLIXIVIACION",
@@ -22,7 +15,1504 @@
     "type": "application/pdf",
     "size": 937311,
     "date": "2026-10-21",
-    "cover": "library/biolixiviacion.jpg",
+    "cover": "library/biolixiviacion.cover.jpg",
     "pages": 7
+  },
+  {
+    "title": "Accidente andesita",
+    "topic": "Accidente Andesita El teniente 2025",
+    "file": "library/accidente-andesita.pdf",
+    "type": "application/pdf",
+    "size": 2136573,
+    "date": "2026-10-21",
+    "cover": "library/accidente-andesita.cover.jpg"
+  },
+  {
+    "title": "Velocidad critica de los Molinos",
+    "topic": "Velocidad  critica de los Molinos",
+    "file": "library/velocidad-critica-de-los-molinos.pdf",
+    "type": "application/pdf",
+    "size": 468482,
+    "date": "2026-10-21",
+    "cover": "library/velocidad-critica-de-los-molinos.cover.jpg",
+    "pages": 4
+  },
+  {
+    "title": "preacondicionamiento hidraulico en mineria",
+    "topic": "preacondicionamiento hidraulico en mineria",
+    "file": "library/preacondicionamiento-hidraulico-en-mineria.pdf",
+    "type": "application/pdf",
+    "size": 782890,
+    "date": "2026-10-21",
+    "cover": "library/preacondicionamiento-hidraulico-en-mineria.cover.jpg",
+    "pages": 2
+  },
+  {
+    "title": "valorizacion de los minerales",
+    "topic": "valorizacion de los minerales",
+    "file": "library/valorizacion-de-los-minerales.pdf",
+    "type": "application/pdf",
+    "size": 1413806,
+    "date": "2026-10-21",
+    "cover": "library/valorizacion-de-los-minerales.cover.jpg",
+    "pages": 4
+  },
+  {
+    "title": "tipos de minerales",
+    "topic": "tipos de minerales",
+    "file": "library/tipos-de-minerales.pdf",
+    "type": "application/pdf",
+    "size": 1069313,
+    "date": "2026-10-21",
+    "cover": "library/tipos-de-minerales.cover.jpg",
+    "pages": 3
+  },
+  {
+    "title": "TIPO DE SUELO Y SU IMPACTO EN PATOLOG AS 1755234448",
+    "topic": "Otros",
+    "file": "library/tipo-de-suelo-y-su-impacto-en-patolog-as-1755234448.pdf",
+    "type": "application/pdf",
+    "size": 883251,
+    "date": "2026-10-21",
+    "cover": "library/tipo-de-suelo-y-su-impacto-en-patolog-as-1755234448.cover.jpg"
+  },
+  {
+    "title": "tipos de minerales",
+    "topic": "Otros",
+    "file": "library/tipos-de-minerales-2.pdf",
+    "type": "application/pdf",
+    "size": 1118275,
+    "date": "2026-10-21",
+    "cover": "library/tipos-de-minerales-2.cover.jpg",
+    "pages": 2
+  },
+  {
+    "title": "Balance metalurgico",
+    "topic": "Balance metalurgico",
+    "file": "library/balance-metalurgico.pdf",
+    "type": "application/pdf",
+    "size": 1432923,
+    "date": "2026-10-21",
+    "cover": "library/balance-metalurgico.cover.jpg",
+    "pages": 9
+  },
+  {
+    "title": "Blending",
+    "topic": "Blending",
+    "file": "library/blending.pdf",
+    "type": "application/pdf",
+    "size": 305417,
+    "date": "2026-10-21",
+    "cover": "library/blending.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "Bomba de Pulpas",
+    "topic": "Bomba de Pulpas",
+    "file": "library/bomba-de-pulpas.pdf",
+    "type": "application/pdf",
+    "size": 9148738,
+    "date": "2026-10-21",
+    "cover": "library/bomba-de-pulpas.cover.jpg",
+    "pages": 29
+  },
+  {
+    "title": "Calculo Bomba centrifuga",
+    "topic": "Calculo Bomba centrifuga",
+    "file": "library/calculo-bomba-centrifuga.pdf",
+    "type": "application/pdf",
+    "size": 2461019,
+    "date": "2026-10-21",
+    "cover": "library/calculo-bomba-centrifuga.cover.jpg",
+    "pages": 7
+  },
+  {
+    "title": "Calculo  Hidrociclon",
+    "topic": "Calculo  Hidrociclon",
+    "file": "library/calculo-hidrociclon.pdf",
+    "type": "application/pdf",
+    "size": 1879452,
+    "date": "2026-10-21",
+    "cover": "library/calculo-hidrociclon.cover.jpg",
+    "pages": 14
+  },
+  {
+    "title": "file ED475F9E-D702-4C02-A25B-804CD1EB7E5F",
+    "topic": "Marco general de la ruta hidrametalurgica",
+    "file": "library/file-ed475f9e-d702-4c02-a25b-804cd1eb7e5f.pdf",
+    "type": "application/pdf",
+    "size": 160385,
+    "date": "2026-10-21",
+    "cover": "library/file-ed475f9e-d702-4c02-a25b-804cd1eb7e5f.cover.jpg"
+  },
+  {
+    "title": "Geotecnia Minera 1779553184",
+    "topic": "Geotecnica minera",
+    "file": "library/geotecnia-minera-1779553184.pdf",
+    "type": "application/pdf",
+    "size": 1071290,
+    "date": "2026-10-21",
+    "cover": "library/geotecnia-minera-1779553184.cover.jpg"
+  },
+  {
+    "title": "COBRE CHILE 1779552833",
+    "topic": "Nuevo mapa del cobre",
+    "file": "library/cobre-chile-1779552833.pdf",
+    "type": "application/pdf",
+    "size": 3192197,
+    "date": "2026-10-21",
+    "cover": "library/cobre-chile-1779552833.cover.jpg"
+  },
+  {
+    "title": "6846feb93ad7e",
+    "topic": "Politica minera mineclassII",
+    "file": "library/6846feb93ad7e.pdf",
+    "type": "application/pdf",
+    "size": 766803,
+    "date": "2026-10-21",
+    "cover": "library/6846feb93ad7e.cover.jpg"
+  },
+  {
+    "title": "Recursos minerales mineclass II",
+    "topic": "Otros",
+    "file": "library/recursos-minerales-mineclass-ii.pdf",
+    "type": "application/pdf",
+    "size": 310075,
+    "date": "2026-10-21",
+    "cover": "library/recursos-minerales-mineclass-ii.cover.jpg"
+  },
+  {
+    "title": "Mineria y desarrollo economico",
+    "topic": "Mineria y desarrollo economico",
+    "file": "library/mineria-y-desarrollo-economico.pdf",
+    "type": "application/pdf",
+    "size": 348764,
+    "date": "2026-10-21",
+    "cover": "library/mineria-y-desarrollo-economico.cover.jpg"
+  },
+  {
+    "title": "Economia de minerales",
+    "topic": "Economia de minerales",
+    "file": "library/economia-de-minerales.pdf",
+    "type": "application/pdf",
+    "size": 2405434,
+    "date": "2026-10-21",
+    "cover": "library/economia-de-minerales.cover.jpg"
+  },
+  {
+    "title": "manejo de materiales y otros",
+    "topic": "manejo de materiales y otros",
+    "file": "library/manejo-de-materiales-y-otros.pdf",
+    "type": "application/pdf",
+    "size": 4365468,
+    "date": "2026-10-21",
+    "cover": "library/manejo-de-materiales-y-otros.cover.jpg"
+  },
+  {
+    "title": "Mineria subterranea",
+    "topic": "Mineria subterranea",
+    "file": "library/mineria-subterranea.pdf",
+    "type": "application/pdf",
+    "size": 4916862,
+    "date": "2026-10-21",
+    "cover": "library/mineria-subterranea.cover.jpg"
+  },
+  {
+    "title": "Mineria rajo abierto",
+    "topic": "Mineria rajo abierto",
+    "file": "library/mineria-rajo-abierto.pdf",
+    "type": "application/pdf",
+    "size": 6421695,
+    "date": "2026-10-21",
+    "cover": "library/mineria-rajo-abierto.cover.jpg"
+  },
+  {
+    "title": "Mineria para no especialistas",
+    "topic": "Mineria para no especialistas",
+    "file": "library/mineria-para-no-especialistas.pdf",
+    "type": "application/pdf",
+    "size": 5604280,
+    "date": "2026-10-21",
+    "cover": "library/mineria-para-no-especialistas.cover.jpg"
+  },
+  {
+    "title": "Procesos y rocas metamórficas",
+    "topic": "Procesos y rocas metamórficas",
+    "file": "library/procesos-y-rocas-metamorficas.pdf",
+    "type": "application/pdf",
+    "size": 754626,
+    "date": "2026-10-21",
+    "cover": "library/procesos-y-rocas-metamorficas.cover.jpg"
+  },
+  {
+    "title": "Procesos y rocas sedimentarias",
+    "topic": "Procesos y rocas sedimentarias",
+    "file": "library/procesos-y-rocas-sedimentarias.pdf",
+    "type": "application/pdf",
+    "size": 254232,
+    "date": "2026-10-21",
+    "cover": "library/procesos-y-rocas-sedimentarias.cover.jpg"
+  },
+  {
+    "title": "Procesos y rocas igneas",
+    "topic": "Procesos y rocas igneas",
+    "file": "library/procesos-y-rocas-igneas.pdf",
+    "type": "application/pdf",
+    "size": 332760,
+    "date": "2026-10-21",
+    "cover": "library/procesos-y-rocas-igneas.cover.jpg"
+  },
+  {
+    "title": "Apuntes sobre minerales",
+    "topic": "Apuntes sobre minerales",
+    "file": "library/apuntes-sobre-minerales.pdf",
+    "type": "application/pdf",
+    "size": 492582,
+    "date": "2026-10-21",
+    "cover": "library/apuntes-sobre-minerales.cover.jpg"
+  },
+  {
+    "title": "Glosario geologico",
+    "topic": "Glosario geologico",
+    "file": "library/glosario-geologico.pdf",
+    "type": "application/pdf",
+    "size": 291116,
+    "date": "2026-10-21",
+    "cover": "library/glosario-geologico.cover.jpg"
+  },
+  {
+    "title": "FUNDAMENTOS FISICOQUIMICOS DE LA FLOTACI N 1775497219",
+    "topic": "Otros",
+    "file": "library/fundamentos-fisicoquimicos-de-la-flotaci-n-1775497219.pdf",
+    "type": "application/pdf",
+    "size": 4119328,
+    "date": "2026-10-21",
+    "cover": "library/fundamentos-fisicoquimicos-de-la-flotaci-n-1775497219.cover.jpg"
+  },
+  {
+    "title": "INGENIERO OPERACI N MINA 1774302081",
+    "topic": "Entrevista de trabajo",
+    "file": "library/ingeniero-operaci-n-mina-1774302081.pdf",
+    "type": "application/pdf",
+    "size": 6052165,
+    "date": "2026-10-21",
+    "cover": "library/ingeniero-operaci-n-mina-1774302081.cover.jpg"
+  },
+  {
+    "title": "Factor de llenado del balde",
+    "topic": "Factor de llenado del balde",
+    "file": "library/factor-de-llenado-del-balde.pdf",
+    "type": "application/pdf",
+    "size": 796890,
+    "date": "2026-10-21",
+    "cover": "library/factor-de-llenado-del-balde.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "Metodo cut and fill",
+    "topic": "Metodo cut and fill",
+    "file": "library/metodo-cut-and-fill.pdf",
+    "type": "application/pdf",
+    "size": 1220164,
+    "date": "2026-10-21",
+    "cover": "library/metodo-cut-and-fill.cover.jpg",
+    "pages": 2
+  },
+  {
+    "title": "Instrumentacion geotermica para mineral superficial",
+    "topic": "Instrumentacion geotermica para mineral superficial",
+    "file": "library/instrumentacion-geotermica-para-mineral-superficial.pdf",
+    "type": "application/pdf",
+    "size": 886435,
+    "date": "2026-10-21",
+    "cover": "library/instrumentacion-geotermica-para-mineral-superficial.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "Factor de esponjamiento",
+    "topic": "Factor de esponjamiento",
+    "file": "library/factor-de-esponjamiento.pdf",
+    "type": "application/pdf",
+    "size": 857476,
+    "date": "2026-10-21",
+    "cover": "library/factor-de-esponjamiento.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "Metodo sublevel stopping",
+    "topic": "Metodo sublevel stopping",
+    "file": "library/metodo-sublevel-stopping.pdf",
+    "type": "application/pdf",
+    "size": 770247,
+    "date": "2026-10-21",
+    "cover": "library/metodo-sublevel-stopping.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "Datos de mineria subterranea",
+    "topic": "Datos de mineria subterranea",
+    "file": "library/datos-de-mineria-subterranea.pdf",
+    "type": "application/pdf",
+    "size": 770662,
+    "date": "2026-10-21",
+    "cover": "library/datos-de-mineria-subterranea.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "Metodo de blockcaving",
+    "topic": "Metodo de blockcaving",
+    "file": "library/metodo-de-blockcaving.pdf",
+    "type": "application/pdf",
+    "size": 805541,
+    "date": "2026-10-21",
+    "cover": "library/metodo-de-blockcaving.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "INFORME DE LABORATORIO 1773776899",
+    "topic": "Informe de metalurgia UCEN",
+    "file": "library/informe-de-laboratorio-1773776899.pdf",
+    "type": "application/pdf",
+    "size": 13243477,
+    "date": "2026-10-21",
+    "cover": "library/informe-de-laboratorio-1773776899.cover.jpg"
+  },
+  {
+    "title": "Cordon detonante",
+    "topic": "Cordon detonante",
+    "file": "library/cordon-detonante.pdf",
+    "type": "application/pdf",
+    "size": 2267897,
+    "date": "2026-10-21",
+    "cover": "library/cordon-detonante.cover.jpg",
+    "pages": 6
+  },
+  {
+    "title": "Equipos de perforacion",
+    "topic": "Equipos de perforacion",
+    "file": "library/equipos-de-perforacion.pdf",
+    "type": "application/pdf",
+    "size": 1468785,
+    "date": "2026-10-21",
+    "cover": "library/equipos-de-perforacion.cover.jpg",
+    "pages": 2
+  },
+  {
+    "title": "Proctor",
+    "topic": "Proctor",
+    "file": "library/proctor.pdf",
+    "type": "application/pdf",
+    "size": 486658,
+    "date": "2026-10-21",
+    "cover": "library/proctor.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "Curado de concreto",
+    "topic": "Curado de concreto",
+    "file": "library/curado-de-concreto.pdf",
+    "type": "application/pdf",
+    "size": 1776456,
+    "date": "2026-10-21",
+    "cover": "library/curado-de-concreto.cover.jpg",
+    "pages": 3
+  },
+  {
+    "title": "Tiempos de ciclo de carga y descarga",
+    "topic": "Tiempos de ciclo de carga y descarga",
+    "file": "library/tiempos-de-ciclo-de-carga-y-descarga.pdf",
+    "type": "application/pdf",
+    "size": 721728,
+    "date": "2026-10-21",
+    "cover": "library/tiempos-de-ciclo-de-carga-y-descarga.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "Esclerometria en concreto",
+    "topic": "Esclerometria en concreto",
+    "file": "library/esclerometria-en-concreto.pdf",
+    "type": "application/pdf",
+    "size": 428863,
+    "date": "2026-10-21",
+    "cover": "library/esclerometria-en-concreto.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "Control de transito en mina",
+    "topic": "Control de transito en mina",
+    "file": "library/control-de-transito-en-mina.pdf",
+    "type": "application/pdf",
+    "size": 709532,
+    "date": "2026-10-21",
+    "cover": "library/control-de-transito-en-mina.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "Malla geotextil",
+    "topic": "Malla geotextil",
+    "file": "library/malla-geotextil.pdf",
+    "type": "application/pdf",
+    "size": 624523,
+    "date": "2026-10-21",
+    "cover": "library/malla-geotextil.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "Tipos de malla mineria superficial",
+    "topic": "Tipos de malla mineria superficial",
+    "file": "library/tipos-de-malla-mineria-superficial.pdf",
+    "type": "application/pdf",
+    "size": 1762336,
+    "date": "2026-10-21",
+    "cover": "library/tipos-de-malla-mineria-superficial.cover.jpg",
+    "pages": 2
+  },
+  {
+    "title": "Plan de cierre de minas",
+    "topic": "Plan de cierre de minas",
+    "file": "library/plan-de-cierre-de-minas.pdf",
+    "type": "application/pdf",
+    "size": 428873,
+    "date": "2026-10-21",
+    "cover": "library/plan-de-cierre-de-minas.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "Comportamiento mecanico del macizo rocoso",
+    "topic": "Comportamiento mecanico del macizo rocoso",
+    "file": "library/comportamiento-mecanico-del-macizo-rocoso.pdf",
+    "type": "application/pdf",
+    "size": 599018,
+    "date": "2026-10-21",
+    "cover": "library/comportamiento-mecanico-del-macizo-rocoso.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "Comportamiento del macizo rocoso 1772110504",
+    "topic": "Comportamiento mecanico del macizo rocoso",
+    "file": "library/comportamiento-del-macizo-rocoso-1772110504.pdf",
+    "type": "application/pdf",
+    "size": 1754255,
+    "date": "2026-10-21",
+    "cover": "library/comportamiento-del-macizo-rocoso-1772110504.cover.jpg"
+  },
+  {
+    "title": "Rock Mass Geomechanics",
+    "topic": "Comportamiento mecanico del macizo rocoso",
+    "file": "library/rock-mass-geomechanics.pdf",
+    "type": "application/pdf",
+    "size": 18871127,
+    "date": "2026-10-21",
+    "cover": "library/rock-mass-geomechanics.cover.jpg"
+  },
+  {
+    "title": "Elementos estructurales del macizo rocoso",
+    "topic": "Elementos estructurales del macizo rocoso",
+    "file": "library/elementos-estructurales-del-macizo-rocoso.pdf",
+    "type": "application/pdf",
+    "size": 676431,
+    "date": "2026-10-21",
+    "cover": "library/elementos-estructurales-del-macizo-rocoso.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "MACIZO ROCOSO 1772110475",
+    "topic": "Elementos estructurales del macizo rocoso",
+    "file": "library/macizo-rocoso-1772110475.pdf",
+    "type": "application/pdf",
+    "size": 4553256,
+    "date": "2026-10-21",
+    "cover": "library/macizo-rocoso-1772110475.cover.jpg"
+  },
+  {
+    "title": "APUNTE TECNICO 1772110432",
+    "topic": "Hormigonado en condiciones de alta temperatura en obra",
+    "file": "library/apunte-tecnico-1772110432.pdf",
+    "type": "application/pdf",
+    "size": 1365120,
+    "date": "2026-10-21",
+    "cover": "library/apunte-tecnico-1772110432.cover.jpg"
+  },
+  {
+    "title": "MANUAL EDIFICACIONES EN SUELOS SALINOS by MINVU 1772110398",
+    "topic": "Otros",
+    "file": "library/manual-edificaciones-en-suelos-salinos-by-minvu-1772110398.pdf",
+    "type": "application/pdf",
+    "size": 11513319,
+    "date": "2026-10-21",
+    "cover": "library/manual-edificaciones-en-suelos-salinos-by-minvu-1772110398.cover.jpg"
+  },
+  {
+    "title": "APUNTE TECNICO METALURGIA Vol 1 1772110366",
+    "topic": "Otros",
+    "file": "library/apunte-tecnico-metalurgia-vol-1-1772110366.pdf",
+    "type": "application/pdf",
+    "size": 1130305,
+    "date": "2026-10-21",
+    "cover": "library/apunte-tecnico-metalurgia-vol-1-1772110366.cover.jpg"
+  },
+  {
+    "title": "Vol 2 PROCESAMIENTO DE MINERALES by Luis A Leiva Olea 1772110327",
+    "topic": "Otros",
+    "file": "library/vol-2-procesamiento-de-minerales-by-luis-a-leiva-olea-177211.pdf",
+    "type": "application/pdf",
+    "size": 2152918,
+    "date": "2026-10-21",
+    "cover": "library/vol-2-procesamiento-de-minerales-by-luis-a-leiva-olea-177211.cover.jpg"
+  },
+  {
+    "title": "68421a61f3581",
+    "topic": "Planificacion estrategica del negocio minero",
+    "file": "library/68421a61f3581.pdf",
+    "type": "application/pdf",
+    "size": 16563873,
+    "date": "2026-10-21",
+    "cover": "library/68421a61f3581.cover.jpg"
+  },
+  {
+    "title": "68421a338661a",
+    "topic": "Planificacion estrategica del negocio minero",
+    "file": "library/68421a338661a.pdf",
+    "type": "application/pdf",
+    "size": 16295237,
+    "date": "2026-10-21",
+    "cover": "library/68421a338661a.cover.jpg"
+  },
+  {
+    "title": "68421a490066d",
+    "topic": "Planificacion estrategica del negocio minero",
+    "file": "library/68421a490066d.pdf",
+    "type": "application/pdf",
+    "size": 8862733,
+    "date": "2026-10-21",
+    "cover": "library/68421a490066d.cover.jpg"
+  },
+  {
+    "title": "68421ab497e4b",
+    "topic": "Planificacion estrategica del negocio minero",
+    "file": "library/68421ab497e4b.pdf",
+    "type": "application/pdf",
+    "size": 3398452,
+    "date": "2026-10-21",
+    "cover": "library/68421ab497e4b.cover.jpg"
+  },
+  {
+    "title": "684219f3f35fb",
+    "topic": "Planificacion estrategica del negocio minero",
+    "file": "library/684219f3f35fb.pdf",
+    "type": "application/pdf",
+    "size": 5366217,
+    "date": "2026-10-21",
+    "cover": "library/684219f3f35fb.cover.jpg"
+  },
+  {
+    "title": "68421db3608c2",
+    "topic": "mineria cielo abierto",
+    "file": "library/68421db3608c2.pdf",
+    "type": "application/pdf",
+    "size": 5475970,
+    "date": "2026-10-21",
+    "cover": "library/68421db3608c2.cover.jpg"
+  },
+  {
+    "title": "68421e7a37710",
+    "topic": "mineria cielo abierto",
+    "file": "library/68421e7a37710.pdf",
+    "type": "application/pdf",
+    "size": 5449949,
+    "date": "2026-10-21",
+    "cover": "library/68421e7a37710.cover.jpg"
+  },
+  {
+    "title": "68421e9b888ca",
+    "topic": "mineria cielo abierto",
+    "file": "library/68421e9b888ca.pdf",
+    "type": "application/pdf",
+    "size": 4790062,
+    "date": "2026-10-21",
+    "cover": "library/68421e9b888ca.cover.jpg"
+  },
+  {
+    "title": "68421e58f1d16",
+    "topic": "mineria cielo abierto",
+    "file": "library/68421e58f1d16.pdf",
+    "type": "application/pdf",
+    "size": 6172580,
+    "date": "2026-10-21",
+    "cover": "library/68421e58f1d16.cover.jpg"
+  },
+  {
+    "title": "68421ecece35b",
+    "topic": "mineria cielo abierto",
+    "file": "library/68421ecece35b.pdf",
+    "type": "application/pdf",
+    "size": 7201150,
+    "date": "2026-10-21",
+    "cover": "library/68421ecece35b.cover.jpg"
+  },
+  {
+    "title": "68421ef351d06",
+    "topic": "mineria cielo abierto",
+    "file": "library/68421ef351d06.pdf",
+    "type": "application/pdf",
+    "size": 8298475,
+    "date": "2026-10-21",
+    "cover": "library/68421ef351d06.cover.jpg"
+  },
+  {
+    "title": "68421f0fa2311",
+    "topic": "mineria cielo abierto",
+    "file": "library/68421f0fa2311.pdf",
+    "type": "application/pdf",
+    "size": 3849624,
+    "date": "2026-10-21",
+    "cover": "library/68421f0fa2311.cover.jpg"
+  },
+  {
+    "title": "68421f6f84058",
+    "topic": "mineria cielo abierto",
+    "file": "library/68421f6f84058.pdf",
+    "type": "application/pdf",
+    "size": 1408740,
+    "date": "2026-10-21",
+    "cover": "library/68421f6f84058.cover.jpg"
+  },
+  {
+    "title": "68421f41c6ee8",
+    "topic": "mineria cielo abierto",
+    "file": "library/68421f41c6ee8.pdf",
+    "type": "application/pdf",
+    "size": 15022478,
+    "date": "2026-10-21",
+    "cover": "library/68421f41c6ee8.cover.jpg"
+  },
+  {
+    "title": "68421f58b8cdd",
+    "topic": "mineria cielo abierto",
+    "file": "library/68421f58b8cdd.pdf",
+    "type": "application/pdf",
+    "size": 2890047,
+    "date": "2026-10-21",
+    "cover": "library/68421f58b8cdd.cover.jpg"
+  },
+  {
+    "title": "68421f282739c",
+    "topic": "mineria cielo abierto",
+    "file": "library/68421f282739c.pdf",
+    "type": "application/pdf",
+    "size": 4944563,
+    "date": "2026-10-21",
+    "cover": "library/68421f282739c.cover.jpg"
+  },
+  {
+    "title": "Captaci n de la mol cula de cobre 1770501099",
+    "topic": "Otros",
+    "file": "library/captaci-n-de-la-mol-cula-de-cobre-1770501099.pdf",
+    "type": "application/pdf",
+    "size": 3261202,
+    "date": "2026-10-21",
+    "cover": "library/captaci-n-de-la-mol-cula-de-cobre-1770501099.cover.jpg"
+  },
+  {
+    "title": "SEGREGACI N DEL HORMIGON 1770501040",
+    "topic": "Otros",
+    "file": "library/segregaci-n-del-hormigon-1770501040.pdf",
+    "type": "application/pdf",
+    "size": 8496772,
+    "date": "2026-10-21",
+    "cover": "library/segregaci-n-del-hormigon-1770501040.cover.jpg"
+  },
+  {
+    "title": "SUELOS EXPANSIVOS 1770343576",
+    "topic": "Otros",
+    "file": "library/suelos-expansivos-1770343576.pdf",
+    "type": "application/pdf",
+    "size": 6920972,
+    "date": "2026-10-21",
+    "cover": "library/suelos-expansivos-1770343576.cover.jpg"
+  },
+  {
+    "title": "ANALISIS TECNICO 1769182664",
+    "topic": "Analisis tecnico cementos en chile",
+    "file": "library/analisis-tecnico-1769182664.pdf",
+    "type": "application/pdf",
+    "size": 1887899,
+    "date": "2026-10-21",
+    "cover": "library/analisis-tecnico-1769182664.cover.jpg"
+  },
+  {
+    "title": "GUIAS EUROCODIGOS 1769182631",
+    "topic": "Otros",
+    "file": "library/guias-eurocodigos-1769182631.pdf",
+    "type": "application/pdf",
+    "size": 4142182,
+    "date": "2026-10-21",
+    "cover": "library/guias-eurocodigos-1769182631.cover.jpg"
+  },
+  {
+    "title": "APUNTE TECNICO NCh170 of2016 1769182532",
+    "topic": "Otros",
+    "file": "library/apunte-tecnico-nch170-of2016-1769182532.pdf",
+    "type": "application/pdf",
+    "size": 10641234,
+    "date": "2026-10-21",
+    "cover": "library/apunte-tecnico-nch170-of2016-1769182532.cover.jpg"
+  },
+  {
+    "title": "Vygugubjbj",
+    "topic": "Guia controles criticos codelco 2026",
+    "file": "library/vygugubjbj.pdf",
+    "type": "application/pdf",
+    "size": 1532188,
+    "date": "2026-10-21",
+    "cover": "library/vygugubjbj.cover.jpg"
+  },
+  {
+    "title": "APUNTE T CNICO ESTALLIDO DE ROCA 1767061351",
+    "topic": "Otros",
+    "file": "library/apunte-t-cnico-estallido-de-roca-1767061351.pdf",
+    "type": "application/pdf",
+    "size": 1659044,
+    "date": "2026-10-21",
+    "cover": "library/apunte-t-cnico-estallido-de-roca-1767061351.cover.jpg"
+  },
+  {
+    "title": "APUNTE T CNICO PROFUNDIZAR EN MINERIA 1767061265",
+    "topic": "Otros",
+    "file": "library/apunte-t-cnico-profundizar-en-mineria-1767061265.pdf",
+    "type": "application/pdf",
+    "size": 7392721,
+    "date": "2026-10-21",
+    "cover": "library/apunte-t-cnico-profundizar-en-mineria-1767061265.cover.jpg"
+  },
+  {
+    "title": "Apunte tecnico ingeneria de los explosivos",
+    "topic": "Apunte tecnico ingeneria de los explosivos",
+    "file": "library/apunte-tecnico-ingeneria-de-los-explosivos.pdf",
+    "type": "application/pdf",
+    "size": 884330,
+    "date": "2026-10-21",
+    "cover": "library/apunte-tecnico-ingeneria-de-los-explosivos.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "APUNTE TECNICO INGENIER A DE EXPLOSIVOS 1767061230",
+    "topic": "Apunte tecnico ingeneria de los explosivos",
+    "file": "library/apunte-tecnico-ingenier-a-de-explosivos-1767061230.pdf",
+    "type": "application/pdf",
+    "size": 1410874,
+    "date": "2026-10-21",
+    "cover": "library/apunte-tecnico-ingenier-a-de-explosivos-1767061230.cover.jpg"
+  },
+  {
+    "title": "APUNTE TECNICO INGENIER A DE T NELES Y ESPACIOS 1767061178",
+    "topic": "Apunte técnico de ingeneria de tuneles",
+    "file": "library/apunte-tecnico-ingenier-a-de-t-neles-y-espacios-1767061178.pdf",
+    "type": "application/pdf",
+    "size": 3454160,
+    "date": "2026-10-21",
+    "cover": "library/apunte-tecnico-ingenier-a-de-t-neles-y-espacios-1767061178.cover.jpg"
+  },
+  {
+    "title": "APUNTE MEC NICA DE ROCAS 1767060727",
+    "topic": "Apunte de mecanica de rocas",
+    "file": "library/apunte-mec-nica-de-rocas-1767060727.pdf",
+    "type": "application/pdf",
+    "size": 5687258,
+    "date": "2026-10-21",
+    "cover": "library/apunte-mec-nica-de-rocas-1767060727.cover.jpg"
+  },
+  {
+    "title": "APUNTE T CNICO ESPECIALIZADO 1767060682",
+    "topic": "Paragua de micropilotes",
+    "file": "library/apunte-t-cnico-especializado-1767060682.pdf",
+    "type": "application/pdf",
+    "size": 5644569,
+    "date": "2026-10-21",
+    "cover": "library/apunte-t-cnico-especializado-1767060682.cover.jpg"
+  },
+  {
+    "title": "APUNTE T CNICO componentes de los equipos de perforacion 1767060595",
+    "topic": "Componente de los equipos de perforación",
+    "file": "library/apunte-t-cnico-componentes-de-los-equipos-de-perforacion-176.pdf",
+    "type": "application/pdf",
+    "size": 1574430,
+    "date": "2026-10-21",
+    "cover": "library/apunte-t-cnico-componentes-de-los-equipos-de-perforacion-176.cover.jpg"
+  },
+  {
+    "title": "Inducción al masiso rocoso",
+    "topic": "Induccion al macizo rocoso",
+    "file": "library/induccion-al-masiso-rocoso.pdf",
+    "type": "application/pdf",
+    "size": 335521,
+    "date": "2026-10-21",
+    "cover": "library/induccion-al-masiso-rocoso.cover.jpg"
+  },
+  {
+    "title": "APUNTE GESTI N EN LA CONSTRUCCI N 1763251842",
+    "topic": "Otros",
+    "file": "library/apunte-gesti-n-en-la-construcci-n-1763251842.pdf",
+    "type": "application/pdf",
+    "size": 5660149,
+    "date": "2026-10-21",
+    "cover": "library/apunte-gesti-n-en-la-construcci-n-1763251842.cover.jpg"
+  },
+  {
+    "title": "APUNTE MEC NICA DE ROCAS para principiantes 1763250868",
+    "topic": "Mecanica de rocas para principiantes",
+    "file": "library/apunte-mec-nica-de-rocas-para-principiantes-1763250868.pdf",
+    "type": "application/pdf",
+    "size": 5687258,
+    "date": "2026-10-21",
+    "cover": "library/apunte-mec-nica-de-rocas-para-principiantes-1763250868.cover.jpg"
+  },
+  {
+    "title": "APUNTE T CNICO TBM 1763250837",
+    "topic": "Apuntecnico TBM",
+    "file": "library/apunte-t-cnico-tbm-1763250837.pdf",
+    "type": "application/pdf",
+    "size": 6808418,
+    "date": "2026-10-21",
+    "cover": "library/apunte-t-cnico-tbm-1763250837.cover.jpg"
+  },
+  {
+    "title": "APUNTE T CNICO sismos 1763250688",
+    "topic": "Apuntecnico SISMOS",
+    "file": "library/apunte-t-cnico-sismos-1763250688.pdf",
+    "type": "application/pdf",
+    "size": 1974124,
+    "date": "2026-10-21",
+    "cover": "library/apunte-t-cnico-sismos-1763250688.cover.jpg"
+  },
+  {
+    "title": "APUNTE T CNICO Micro Pilotes 1763250603",
+    "topic": "Apuntecnico MICROPILOTES",
+    "file": "library/apunte-t-cnico-micro-pilotes-1763250603.pdf",
+    "type": "application/pdf",
+    "size": 5644569,
+    "date": "2026-10-21",
+    "cover": "library/apunte-t-cnico-micro-pilotes-1763250603.cover.jpg"
+  },
+  {
+    "title": "PERFORACI N OTH OVER THE HOLE 1762295405",
+    "topic": "Perforacion over the hole",
+    "file": "library/perforaci-n-oth-over-the-hole-1762295405.pdf",
+    "type": "application/pdf",
+    "size": 2502237,
+    "date": "2026-10-21",
+    "cover": "library/perforaci-n-oth-over-the-hole-1762295405.cover.jpg"
+  },
+  {
+    "title": "APUNTE N 1 CONCEPTOS GENERALES DEL PM 1762295377",
+    "topic": "Apuntes conceptos generales del pm",
+    "file": "library/apunte-n-1-conceptos-generales-del-pm-1762295377.pdf",
+    "type": "application/pdf",
+    "size": 3950854,
+    "date": "2026-10-21",
+    "cover": "library/apunte-n-1-conceptos-generales-del-pm-1762295377.cover.jpg"
+  },
+  {
+    "title": "Mecanica de Suelos T William Lambe Rober 1762294884",
+    "topic": "Mecanica de suelos",
+    "file": "library/mecanica-de-suelos-t-william-lambe-rober-1762294884.pdf",
+    "type": "application/pdf",
+    "size": 236406,
+    "date": "2026-10-21",
+    "cover": "library/mecanica-de-suelos-t-william-lambe-rober-1762294884.cover.jpg"
+  },
+  {
+    "title": "FUNDACIONES SUPERFICIALES 1762294844",
+    "topic": "Fundaciones superficiales",
+    "file": "library/fundaciones-superficiales-1762294844.pdf",
+    "type": "application/pdf",
+    "size": 7736199,
+    "date": "2026-10-21",
+    "cover": "library/fundaciones-superficiales-1762294844.cover.jpg"
+  },
+  {
+    "title": "Manual ensayo de hormig n 1762294780",
+    "topic": "Manual de ensayo del hormigon",
+    "file": "library/manual-ensayo-de-hormig-n-1762294780.pdf",
+    "type": "application/pdf",
+    "size": 17613840,
+    "date": "2026-10-21",
+    "cover": "library/manual-ensayo-de-hormig-n-1762294780.cover.jpg"
+  },
+  {
+    "title": "APUNTE N 5 COMPONENTES DE LOS EQUIPOS DE PERFORACI N 1762294714",
+    "topic": "Apunte 5 componentes de los equipos de perforacion",
+    "file": "library/apunte-n-5-componentes-de-los-equipos-de-perforaci-n-1762294.pdf",
+    "type": "application/pdf",
+    "size": 1574430,
+    "date": "2026-10-21",
+    "cover": "library/apunte-n-5-componentes-de-los-equipos-de-perforaci-n-1762294.cover.jpg"
+  },
+  {
+    "title": "APUNTE T CNICO ESPECIALIZADO Shotcrete 1761562269",
+    "topic": "Apunte tecnico especializado del shotcrete",
+    "file": "library/apunte-t-cnico-especializado-shotcrete-1761562269.pdf",
+    "type": "application/pdf",
+    "size": 14320283,
+    "date": "2026-10-21",
+    "cover": "library/apunte-t-cnico-especializado-shotcrete-1761562269.cover.jpg"
+  },
+  {
+    "title": "APUNTE T CNICO ESPECIALIZADO PROFUNDIZACI N DE LA MINER A 1761562175",
+    "topic": "Otros",
+    "file": "library/apunte-t-cnico-especializado-profundizaci-n-de-la-miner-a-17.pdf",
+    "type": "application/pdf",
+    "size": 16082408,
+    "date": "2026-10-21",
+    "cover": "library/apunte-t-cnico-especializado-profundizaci-n-de-la-miner-a-17.cover.jpg"
+  },
+  {
+    "title": "APUNTE N 1 1761562041",
+    "topic": "Introduccion al proceso",
+    "file": "library/apunte-n-1-1761562041.pdf",
+    "type": "application/pdf",
+    "size": 2115434,
+    "date": "2026-10-21",
+    "cover": "library/apunte-n-1-1761562041.cover.jpg"
+  },
+  {
+    "title": "APUNTE AMORTIGUADORES S SMICOS 1761561982",
+    "topic": "Otros",
+    "file": "library/apunte-amortiguadores-s-smicos-1761561982.pdf",
+    "type": "application/pdf",
+    "size": 6471203,
+    "date": "2026-10-21",
+    "cover": "library/apunte-amortiguadores-s-smicos-1761561982.cover.jpg"
+  },
+  {
+    "title": "Ejercicio de Chancado de Minerales Misira 1761560732",
+    "topic": "Otros",
+    "file": "library/ejercicio-de-chancado-de-minerales-misira-1761560732.pdf",
+    "type": "application/pdf",
+    "size": 4361562,
+    "date": "2026-10-21",
+    "cover": "library/ejercicio-de-chancado-de-minerales-misira-1761560732.cover.jpg"
+  },
+  {
+    "title": "SE ALIZACI N DE EDIFICIOS USO P BLICOS by ACHS 1760487224",
+    "topic": "Otros",
+    "file": "library/se-alizaci-n-de-edificios-uso-p-blicos-by-achs-1760487224.pdf",
+    "type": "application/pdf",
+    "size": 637052,
+    "date": "2026-10-21",
+    "cover": "library/se-alizaci-n-de-edificios-uso-p-blicos-by-achs-1760487224.cover.jpg"
+  },
+  {
+    "title": "MANUAL GRD MIPYME 1760486781",
+    "topic": "Otros",
+    "file": "library/manual-grd-mipyme-1760486781.pdf",
+    "type": "application/pdf",
+    "size": 5806026,
+    "date": "2026-10-21",
+    "cover": "library/manual-grd-mipyme-1760486781.cover.jpg"
+  },
+  {
+    "title": "APUNTE T CNICO ESPECIALIZADO PARAGUA DE MICROPILOTES 1760486725",
+    "topic": "Otros",
+    "file": "library/apunte-t-cnico-especializado-paragua-de-micropilotes-1760486.pdf",
+    "type": "application/pdf",
+    "size": 5645099,
+    "date": "2026-10-21",
+    "cover": "library/apunte-t-cnico-especializado-paragua-de-micropilotes-1760486.cover.jpg"
+  },
+  {
+    "title": "BBM BOX HOLE BORING MACHINE 1760486619",
+    "topic": "Otros",
+    "file": "library/bbm-box-hole-boring-machine-1760486619.pdf",
+    "type": "application/pdf",
+    "size": 7183749,
+    "date": "2026-10-21",
+    "cover": "library/bbm-box-hole-boring-machine-1760486619.cover.jpg"
+  },
+  {
+    "title": "APUNTE T CNICO ESPECIALIZADO FISURACI N TEMPRANA 1760486576",
+    "topic": "Otros",
+    "file": "library/apunte-t-cnico-especializado-fisuraci-n-temprana-1760486576.pdf",
+    "type": "application/pdf",
+    "size": 2917469,
+    "date": "2026-10-21",
+    "cover": "library/apunte-t-cnico-especializado-fisuraci-n-temprana-1760486576.cover.jpg"
+  },
+  {
+    "title": "Manual de SST y Medio Ambiente Miner a 1760486084",
+    "topic": "Otros",
+    "file": "library/manual-de-sst-y-medio-ambiente-miner-a-1760486084.pdf",
+    "type": "application/pdf",
+    "size": 450659,
+    "date": "2026-10-21",
+    "cover": "library/manual-de-sst-y-medio-ambiente-miner-a-1760486084.cover.jpg"
+  },
+  {
+    "title": "APUNTE T CNICO ESPECIALIZADO ESTALLIDO DE ROCA 1760485705",
+    "topic": "Otros",
+    "file": "library/apunte-t-cnico-especializado-estallido-de-roca-1760485705.pdf",
+    "type": "application/pdf",
+    "size": 1636754,
+    "date": "2026-10-21",
+    "cover": "library/apunte-t-cnico-especializado-estallido-de-roca-1760485705.cover.jpg"
+  },
+  {
+    "title": "APUNTE T CNICO CONCEPTOS CARACTER STICAS Y DEFINICIONES 1759781601",
+    "topic": "Otros",
+    "file": "library/apunte-t-cnico-conceptos-caracter-sticas-y-definiciones-1759.pdf",
+    "type": "application/pdf",
+    "size": 3950854,
+    "date": "2026-10-21",
+    "cover": "library/apunte-t-cnico-conceptos-caracter-sticas-y-definiciones-1759.cover.jpg"
+  },
+  {
+    "title": "APUNTE N2 CARACTERIZACI N DE MINERALES Y YACIMIENTOS 1759781563",
+    "topic": "Otros",
+    "file": "library/apunte-n2-caracterizaci-n-de-minerales-y-yacimientos-1759781.pdf",
+    "type": "application/pdf",
+    "size": 2175712,
+    "date": "2026-10-21",
+    "cover": "library/apunte-n2-caracterizaci-n-de-minerales-y-yacimientos-1759781.cover.jpg"
+  },
+  {
+    "title": "CIMENTACIONES EN SUELOS EXPLOSIVOS 1759781482",
+    "topic": "Otros",
+    "file": "library/cimentaciones-en-suelos-explosivos-1759781482.pdf",
+    "type": "application/pdf",
+    "size": 791103,
+    "date": "2026-10-21",
+    "cover": "library/cimentaciones-en-suelos-explosivos-1759781482.cover.jpg"
+  },
+  {
+    "title": "APUNTE N 4 PROCESAMIENTO DE MINERALES 1759781437",
+    "topic": "Otros",
+    "file": "library/apunte-n-4-procesamiento-de-minerales-1759781437.pdf",
+    "type": "application/pdf",
+    "size": 3338948,
+    "date": "2026-10-21",
+    "cover": "library/apunte-n-4-procesamiento-de-minerales-1759781437.cover.jpg"
+  },
+  {
+    "title": "AISLAMIENTO S SMICO 1759781387",
+    "topic": "Otros",
+    "file": "library/aislamiento-s-smico-1759781387.pdf",
+    "type": "application/pdf",
+    "size": 2202800,
+    "date": "2026-10-21",
+    "cover": "library/aislamiento-s-smico-1759781387.cover.jpg"
+  },
+  {
+    "title": "EstandaresdeSaludenelTrabajo-1",
+    "topic": "Otros",
+    "file": "library/estandaresdesaludeneltrabajo-1.pdf",
+    "type": "application/pdf",
+    "size": 2777571,
+    "date": "2026-10-21"
+  },
+  {
+    "title": "RESSO-1",
+    "topic": "Otros",
+    "file": "library/resso-1.pdf",
+    "type": "application/pdf",
+    "size": 6141817,
+    "date": "2026-10-21",
+    "cover": "library/resso-1.cover.jpg"
+  },
+  {
+    "title": "DS594-1",
+    "topic": "Otros",
+    "file": "library/ds594-1.pdf",
+    "type": "application/pdf",
+    "size": 3877221,
+    "date": "2026-10-21",
+    "cover": "library/ds594-1.cover.jpg"
+  },
+  {
+    "title": "DS76-1",
+    "topic": "Otros",
+    "file": "library/ds76-1.pdf",
+    "type": "application/pdf",
+    "size": 183439,
+    "date": "2026-10-21",
+    "cover": "library/ds76-1.cover.jpg"
+  },
+  {
+    "title": "DS54-1",
+    "topic": "Otros",
+    "file": "library/ds54-1.pdf",
+    "type": "application/pdf",
+    "size": 59459,
+    "date": "2026-10-21",
+    "cover": "library/ds54-1.cover.jpg"
+  },
+  {
+    "title": "DS40-1",
+    "topic": "Otros",
+    "file": "library/ds40-1.pdf",
+    "type": "application/pdf",
+    "size": 58212,
+    "date": "2026-10-21",
+    "cover": "library/ds40-1.cover.jpg"
+  },
+  {
+    "title": "CodigodelTrabajo",
+    "topic": "Otros",
+    "file": "library/codigodeltrabajo.pdf",
+    "type": "application/pdf",
+    "size": 3279450,
+    "date": "2026-10-21",
+    "cover": "library/codigodeltrabajo.cover.jpg"
+  },
+  {
+    "title": "Proceso del chancadocodelco educa",
+    "topic": "Proceso del chancadocodelco educa",
+    "file": "library/proceso-del-chancadocodelco-educa.pdf",
+    "type": "application/pdf",
+    "size": 433076,
+    "date": "2026-10-21",
+    "cover": "library/proceso-del-chancadocodelco-educa.cover.jpg",
+    "pages": 1
+  },
+  {
+    "title": "chancado media t cnico 060119",
+    "topic": "Proceso del chancadocodelco educa",
+    "file": "library/chancado-media-t-cnico-060119.pdf",
+    "type": "application/pdf",
+    "size": 5912706,
+    "date": "2026-10-21",
+    "cover": "library/chancado-media-t-cnico-060119.cover.jpg"
+  },
+  {
+    "title": "CONCEPTOS BÁSICOS DE PREPARACIÓN MECÁNICA DE MINERALES",
+    "topic": "Otros",
+    "file": "library/conceptos-basicos-de-preparacion-mecanica-de-minerales.pdf",
+    "type": "application/pdf",
+    "size": 1314225,
+    "date": "2026-10-21",
+    "cover": "library/conceptos-basicos-de-preparacion-mecanica-de-minerales.cover.jpg"
+  },
+  {
+    "title": "MC0047730",
+    "topic": "Otros",
+    "file": "library/mc0047730.pdf",
+    "type": "application/pdf",
+    "size": 18641196,
+    "date": "2026-10-21",
+    "cover": "library/mc0047730.cover.jpg"
+  },
+  {
+    "title": "MC0047730",
+    "topic": "Glosario minero",
+    "file": "library/mc0047730-2.pdf",
+    "type": "application/pdf",
+    "size": 18641196,
+    "date": "2026-10-21",
+    "cover": "library/mc0047730-2.cover.jpg"
+  },
+  {
+    "title": "ReglamentoSeguridadMinera",
+    "topic": "Decreto supremo 132",
+    "file": "library/reglamentoseguridadminera.pdf",
+    "type": "application/pdf",
+    "size": 420769,
+    "date": "2026-10-21",
+    "cover": "library/reglamentoseguridadminera.cover.jpg"
+  },
+  {
+    "title": "MARCO LEGAL EN CONTRATOS MINEROS EN CHILE 1756497339",
+    "topic": "Otros",
+    "file": "library/marco-legal-en-contratos-mineros-en-chile-1756497339.pdf",
+    "type": "application/pdf",
+    "size": 3056655,
+    "date": "2026-10-21",
+    "cover": "library/marco-legal-en-contratos-mineros-en-chile-1756497339.cover.jpg"
+  },
+  {
+    "title": "METODO H V NAKAMURA by Luis Antonio Leiva Olea 1756496875",
+    "topic": "Otros",
+    "file": "library/metodo-h-v-nakamura-by-luis-antonio-leiva-olea-1756496875.pdf",
+    "type": "application/pdf",
+    "size": 1632797,
+    "date": "2026-10-21",
+    "cover": "library/metodo-h-v-nakamura-by-luis-antonio-leiva-olea-1756496875.cover.jpg"
+  },
+  {
+    "title": "METODOLOG A NATM by Luis Antonio Leiva Olea 1756496783",
+    "topic": "Otros",
+    "file": "library/metodolog-a-natm-by-luis-antonio-leiva-olea-1756496783.pdf",
+    "type": "application/pdf",
+    "size": 5865263,
+    "date": "2026-10-21",
+    "cover": "library/metodolog-a-natm-by-luis-antonio-leiva-olea-1756496783.cover.jpg"
+  },
+  {
+    "title": "APUNTE GUIA NCh433 Dise o S smico de edificios 1756496718",
+    "topic": "Otros",
+    "file": "library/apunte-guia-nch433-dise-o-s-smico-de-edificios-1756496718.pdf",
+    "type": "application/pdf",
+    "size": 739514,
+    "date": "2026-10-21",
+    "cover": "library/apunte-guia-nch433-dise-o-s-smico-de-edificios-1756496718.cover.jpg"
+  },
+  {
+    "title": "ANALISIS DEL CONCEPTO SISMO by Luis Antonio Leiva Olea 1756496636",
+    "topic": "Otros",
+    "file": "library/analisis-del-concepto-sismo-by-luis-antonio-leiva-olea-17564.pdf",
+    "type": "application/pdf",
+    "size": 1974086,
+    "date": "2026-10-21",
+    "cover": "library/analisis-del-concepto-sismo-by-luis-antonio-leiva-olea-17564.cover.jpg"
+  },
+  {
+    "title": "Dise o de Circuitos de Remolienda de Concentrados 1756255087",
+    "topic": "Otros",
+    "file": "library/dise-o-de-circuitos-de-remolienda-de-concentrados-1756255087.pdf",
+    "type": "application/pdf",
+    "size": 4128084,
+    "date": "2026-10-21",
+    "cover": "library/dise-o-de-circuitos-de-remolienda-de-concentrados-1756255087.cover.jpg"
+  },
+  {
+    "title": "NORMATIVA TRIBUTARIA APLICADA A CONTRATOS MINEROS EN CHILE 1755234528",
+    "topic": "Otros",
+    "file": "library/normativa-tributaria-aplicada-a-contratos-mineros-en-chile-1.pdf",
+    "type": "application/pdf",
+    "size": 2839931,
+    "date": "2026-10-21",
+    "cover": "library/normativa-tributaria-aplicada-a-contratos-mineros-en-chile-1.cover.jpg"
+  },
+  {
+    "title": "TIPO DE SUELO Y SU IMPACTO EN PATOLOG AS 1755234448",
+    "topic": "Otros",
+    "file": "library/tipo-de-suelo-y-su-impacto-en-patolog-as-1755234448-2.pdf",
+    "type": "application/pdf",
+    "size": 883251,
+    "date": "2026-10-21",
+    "cover": "library/tipo-de-suelo-y-su-impacto-en-patolog-as-1755234448-2.cover.jpg"
+  },
+  {
+    "title": "CONSOLIDACION DE SUELOS EN ESTRUCTURAS EXISTENTES 1755234341",
+    "topic": "Otros",
+    "file": "library/consolidacion-de-suelos-en-estructuras-existentes-1755234341.pdf",
+    "type": "application/pdf",
+    "size": 453355,
+    "date": "2026-10-21",
+    "cover": "library/consolidacion-de-suelos-en-estructuras-existentes-1755234341.cover.jpg"
+  },
+  {
+    "title": "NIVEL FRE TICO EN SUELOS ARENOSOS 1755234410",
+    "topic": "Otros",
+    "file": "library/nivel-fre-tico-en-suelos-arenosos-1755234410.pdf",
+    "type": "application/pdf",
+    "size": 1489192,
+    "date": "2026-10-21",
+    "cover": "library/nivel-fre-tico-en-suelos-arenosos-1755234410.cover.jpg"
+  },
+  {
+    "title": "NIVEL FRE TICO SUELOS ARCILLOSOS 1755234286",
+    "topic": "Otros",
+    "file": "library/nivel-fre-tico-suelos-arcillosos-1755234286.pdf",
+    "type": "application/pdf",
+    "size": 1854207,
+    "date": "2026-10-21",
+    "cover": "library/nivel-fre-tico-suelos-arcillosos-1755234286.cover.jpg"
+  },
+  {
+    "title": "6 CAUSAS QUE PROVOCAN ASENTAMIENTOS DIFERENCIALES 1755234172",
+    "topic": "Asentamiento diferenciales",
+    "file": "library/6-causas-que-provocan-asentamientos-diferenciales-1755234172.pdf",
+    "type": "application/pdf",
+    "size": 1121619,
+    "date": "2026-10-21",
+    "cover": "library/6-causas-que-provocan-asentamientos-diferenciales-1755234172.cover.jpg"
+  },
+  {
+    "title": "IMG 1009",
+    "topic": "Calculo kuz ram",
+    "file": "library/img-1009.png",
+    "type": "image/png",
+    "size": 5507063,
+    "date": "2026-10-21",
+    "cover": "library/img-1009.cover.jpg"
+  },
+  {
+    "title": "IMG 1010",
+    "topic": "Calculo kuz ram",
+    "file": "library/img-1010.png",
+    "type": "image/png",
+    "size": 5828289,
+    "date": "2026-10-21",
+    "cover": "library/img-1010.cover.jpg"
+  },
+  {
+    "title": "IMG 1011",
+    "topic": "Calculo kuz ram",
+    "file": "library/img-1011.png",
+    "type": "image/png",
+    "size": 5145351,
+    "date": "2026-10-21",
+    "cover": "library/img-1011.cover.jpg"
+  },
+  {
+    "title": "IMG 1012",
+    "topic": "Calculo kuz ram",
+    "file": "library/img-1012.png",
+    "type": "image/png",
+    "size": 5046428,
+    "date": "2026-10-21",
+    "cover": "library/img-1012.cover.jpg"
+  },
+  {
+    "title": "IMG 1013",
+    "topic": "Calculo kuz ram",
+    "file": "library/img-1013.png",
+    "type": "image/png",
+    "size": 5112083,
+    "date": "2026-10-21",
+    "cover": "library/img-1013.cover.jpg"
+  },
+  {
+    "title": "IMG 1014",
+    "topic": "Calculo kuz ram",
+    "file": "library/img-1014.png",
+    "type": "image/png",
+    "size": 4677289,
+    "date": "2026-10-21",
+    "cover": "library/img-1014.cover.jpg"
+  },
+  {
+    "title": "IMG 1015",
+    "topic": "Calculo kuz ram",
+    "file": "library/img-1015.png",
+    "type": "image/png",
+    "size": 4198188,
+    "date": "2026-10-21",
+    "cover": "library/img-1015.cover.jpg"
+  },
+  {
+    "title": "M todo Raise Boring 1744945194",
+    "topic": "Otros",
+    "file": "library/m-todo-raise-boring-1744945194.pdf",
+    "type": "application/pdf",
+    "size": 3866135,
+    "date": "2026-10-21",
+    "cover": "library/m-todo-raise-boring-1744945194.cover.jpg"
+  },
+  {
+    "title": "IMG 0567",
+    "topic": "Chancadora de quijada",
+    "file": "library/img-0567.jpg",
+    "type": "image/jpeg",
+    "size": 261391,
+    "date": "2026-10-21",
+    "cover": "library/img-0567.cover.jpg"
+  },
+  {
+    "title": "IMG 0568",
+    "topic": "Chancadora de quijada",
+    "file": "library/img-0568.jpg",
+    "type": "image/jpeg",
+    "size": 125890,
+    "date": "2026-10-21",
+    "cover": "library/img-0568.cover.jpg"
+  },
+  {
+    "title": "IMG 0569",
+    "topic": "Chancadora de quijada",
+    "file": "library/img-0569.jpg",
+    "type": "image/jpeg",
+    "size": 215208,
+    "date": "2026-10-21",
+    "cover": "library/img-0569.cover.jpg"
+  },
+  {
+    "title": "IMG 0570",
+    "topic": "Chancadora de quijada",
+    "file": "library/img-0570.jpg",
+    "type": "image/jpeg",
+    "size": 203085,
+    "date": "2026-10-21",
+    "cover": "library/img-0570.cover.jpg"
+  },
+  {
+    "title": "IMG 0571",
+    "topic": "Chancadora de quijada",
+    "file": "library/img-0571.jpg",
+    "type": "image/jpeg",
+    "size": 173576,
+    "date": "2026-10-21",
+    "cover": "library/img-0571.cover.jpg"
+  },
+  {
+    "title": "IMG 0572",
+    "topic": "Chancadora de quijada",
+    "file": "library/img-0572.jpg",
+    "type": "image/jpeg",
+    "size": 232649,
+    "date": "2026-10-21",
+    "cover": "library/img-0572.cover.jpg"
+  },
+  {
+    "title": "IMG 0573",
+    "topic": "Chancadora de quijada",
+    "file": "library/img-0573.jpg",
+    "type": "image/jpeg",
+    "size": 130186,
+    "date": "2026-10-21",
+    "cover": "library/img-0573.cover.jpg"
+  },
+  {
+    "title": "IMG 0559",
+    "topic": "Cianurizcion en pilas",
+    "file": "library/img-0559.jpg",
+    "type": "image/jpeg",
+    "size": 581839,
+    "date": "2026-10-21",
+    "cover": "library/img-0559.cover.jpg"
+  },
+  {
+    "title": "IMG 0560",
+    "topic": "Cianurizcion en pilas",
+    "file": "library/img-0560.jpg",
+    "type": "image/jpeg",
+    "size": 593353,
+    "date": "2026-10-21",
+    "cover": "library/img-0560.cover.jpg"
+  },
+  {
+    "title": "IMG 0561",
+    "topic": "Cianurizcion en pilas",
+    "file": "library/img-0561.jpg",
+    "type": "image/jpeg",
+    "size": 677674,
+    "date": "2026-10-21",
+    "cover": "library/img-0561.cover.jpg"
+  },
+  {
+    "title": "IMG 0552",
+    "topic": "Circuito de molienda humedo",
+    "file": "library/img-0552.jpg",
+    "type": "image/jpeg",
+    "size": 580757,
+    "date": "2026-10-21",
+    "cover": "library/img-0552.cover.jpg"
+  },
+  {
+    "title": "IMG 0553",
+    "topic": "Circuito de molienda humedo",
+    "file": "library/img-0553.jpg",
+    "type": "image/jpeg",
+    "size": 441046,
+    "date": "2026-10-21",
+    "cover": "library/img-0553.cover.jpg"
+  },
+  {
+    "title": "IMG 0554",
+    "topic": "Circuito de molienda humedo",
+    "file": "library/img-0554.jpg",
+    "type": "image/jpeg",
+    "size": 498885,
+    "date": "2026-10-21",
+    "cover": "library/img-0554.cover.jpg"
   }
 ]

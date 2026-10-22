@@ -22,6 +22,8 @@
   --accent-strong: #9a4210;
   --amber: #f0a31c;       /* ámbar de seguridad */
   --nav-bg: rgba(246,244,241,.78);
+  --wood: #b99b78;
+  --wood-2: #9b7f5e;
 
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
@@ -29,13 +31,13 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0e0e0d; --bg-alt: #171614; --fg: #f3f1ed; --fg-muted: #9b968d; --line: #2c2a27;
-    --tile: #1a1917; --tile-dark: #232120; --accent: #e07a3a; --accent-strong: #f09256; --nav-bg: rgba(14,14,13,.78);
+    --tile: #1a1917; --tile-dark: #232120; --accent: #e07a3a; --accent-strong: #f09256; --nav-bg: rgba(14,14,13,.78); --wood: #6a5440; --wood-2: #4d3b2b;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0e0e0d; --bg-alt: #171614; --fg: #f3f1ed; --fg-muted: #9b968d; --line: #2c2a27;
-  --tile: #1a1917; --tile-dark: #232120; --accent: #e07a3a; --accent-strong: #f09256; --nav-bg: rgba(14,14,13,.78);
+  --tile: #1a1917; --tile-dark: #232120; --accent: #e07a3a; --accent-strong: #f09256; --nav-bg: rgba(14,14,13,.78); --wood: #6a5440; --wood-2: #4d3b2b;
   color-scheme: dark;
 }
 
@@ -60,10 +62,10 @@ a { color: inherit; text-decoration: none; }
 .nav .wrap { height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .brand { display: flex; align-items: center; gap: 9px; font-weight: 600; font-size: 15px; letter-spacing: -.01em; }
 .brand svg { width: 20px; height: 20px; }
-.nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; font-size: 12.5px; }
-.nav ul a { color: var(--fg-muted); transition: color .2s; }
-.nav ul a:hover { color: var(--fg); }
-@media (max-width: 640px) { .nav ul { gap: 16px; } .nav ul li:not(.keep) { display: none; } }
+.nav ul { display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; font-size: 12.5px; }
+.nav ul a { display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 980px; color: var(--fg-muted); transition: color .2s, background .2s; }
+.nav ul a:hover, .nav ul a:focus-visible { color: #fff; background: var(--accent); }
+@media (max-width: 640px) { .nav ul { gap: 4px; } .nav ul li:not(.keep) { display: none; } }
 
 /* Héroe */
 .hero { text-align: center; padding-top: 72px; overflow: hidden; }
@@ -136,6 +138,7 @@ h2 { font-size: clamp(32px, 5.4vw, 56px); line-height: 1.08; font-weight: 700; l
 .car-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .platform h4 { font-size: 21px; font-weight: 600; letter-spacing: -.02em; margin: 0 0 8px; }
 .platform p { margin: 0; color: var(--fg-muted); font-size: 17px; }
+.platform .section-head p { margin: 14px auto 0; font-size: clamp(17px, 2vw, 21px); text-align: center; }
 .platform .ico { width: 44px; height: 44px; border-radius: 12px; background: var(--tile-dark); display: grid; place-items: center; margin-bottom: 18px; }
 .platform .ico svg { width: 24px; height: 24px; stroke: var(--amber); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 @media (max-width: 760px) { .slide { flex-basis: 84%; min-height: 260px; padding: 26px; } }
@@ -191,16 +194,19 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
 }
 
 /* Biblioteca técnica */
-.lib-tools { display: flex; justify-content: center; margin: 32px 0 20px; }
-.search { width: min(100%, 420px); min-height: 44px; padding: 0 18px; border-radius: 980px; border: 1px solid var(--line); background: var(--tile); color: var(--fg); font: inherit; font-size: 16px; }
+.lib-tools { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin: 32px 0 20px; }
+.lib-tools .pick[hidden] { display: none; }
+.select { appearance: none; -webkit-appearance: none; min-height: 44px; max-width: 100%; padding: 0 44px 0 18px; border-radius: 980px; border: 1px solid var(--line); color: var(--fg); font: inherit; font-size: 16px; cursor: pointer; background: var(--tile) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%238a857d' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E") no-repeat right 18px center; }
+.select:hover { border-color: var(--fg-muted); }
+.search { width: min(100%, 340px); min-height: 44px; padding: 0 18px; border-radius: 980px; border: 1px solid var(--line); background: var(--tile); color: var(--fg); font: inherit; font-size: 16px; }
 .search::placeholder { color: var(--fg-muted); }
 .lib .chips { margin: 0 0 8px; }
-.lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 18px; margin-top: 24px; }
+.lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 16px; margin-top: 24px; }
 .doc { display: flex; flex-direction: column; min-width: 0; background: var(--tile); border: 1px solid var(--line); border-radius: 24px; overflow: hidden; }
-.doc .thumb { display: grid; place-items: center; aspect-ratio: 4 / 3; background: var(--bg-alt); overflow: hidden; }
+.doc .thumb { display: grid; place-items: center; aspect-ratio: 2 / 1; background: var(--bg-alt); overflow: hidden; }
 .doc .thumb img, .doc .thumb video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s; }
 .doc:hover .thumb img, .doc:hover .thumb video { transform: scale(1.04); }
-.kind { font-family: var(--font-mono); font-size: 26px; font-weight: 600; letter-spacing: .08em; color: var(--accent); }
+.kind { font-family: var(--font-mono); font-size: 20px; font-weight: 600; letter-spacing: .08em; color: var(--accent); }
 .doc .body { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 18px; flex: 1; min-width: 0; }
 .doc .topic { margin: 0; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
 .doc h3 { margin: 0; font-size: 17px; line-height: 1.25; font-weight: 600; letter-spacing: -.015em; overflow-wrap: anywhere; }
@@ -241,6 +247,34 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
 .st .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; }
 .doc .thumb { position: relative; }
 .badge { position: absolute; left: 12px; bottom: 12px; padding: 3px 10px; border-radius: 980px; background: rgba(20,19,18,.78); color: #f3f1ed; font-family: var(--font-mono); font-size: 11.5px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+
+/* Repisa de libros: lomos de cara al público; al pasar el puntero el libro sale y muestra su portada */
+.case { display: grid; gap: 26px; margin-top: 28px; }
+.shelf { padding: 26px 20px 0; border-radius: 18px 18px 0 0; background: linear-gradient(var(--bg-alt), transparent 85%); }
+.books { display: flex; align-items: flex-end; gap: 3px; min-height: 140px; }
+.bk { position: relative; flex: none; }
+.book { position: absolute; inset: 0; display: block; overflow: hidden; border-radius: 2px 2px 1px 1px; color: #fff; background: linear-gradient(90deg, rgba(255,255,255,.16), rgba(255,255,255,0) 22%, rgba(0,0,0,.2) 100%), var(--bk); box-shadow: 0 8px 10px -8px rgba(0,0,0,.7); transition: transform .25s cubic-bezier(.2,.7,.3,1), box-shadow .25s; }
+.book::before, .book::after { content: ""; position: absolute; left: 0; right: 0; height: 9px; background: rgba(255,255,255,.2); }
+.book::before { top: 9px; }
+.book::after { bottom: 9px; }
+.sp { position: absolute; left: 50%; top: 26px; bottom: 26px; transform: translateX(-50%); writing-mode: vertical-rl; display: flex; align-items: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 11.5px; font-weight: 600; letter-spacing: .02em; }
+.bk:hover .book, .book:focus-visible { transform: translateY(-18px); box-shadow: 0 18px 16px -10px rgba(0,0,0,.6); }
+.board { height: 16px; margin: 0 -8px; border-radius: 4px; background: linear-gradient(var(--wood), var(--wood-2)); box-shadow: 0 14px 18px -12px rgba(0,0,0,.55); }
+.bk .del { position: absolute; top: -26px; left: 50%; z-index: 2; transform: translateX(-50%); min-width: 22px; height: 22px; padding: 0; border: 0; border-radius: 980px; background: #1c1b19; color: #fff; font: inherit; font-size: 13px; line-height: 1; cursor: pointer; opacity: 0; transition: opacity .15s; }
+.bk:hover .del, .bk:focus-within .del { opacity: 1; }
+.bk .del[data-armed] { padding: 0 9px; font-size: 11px; white-space: nowrap; }
+.tip { position: fixed; z-index: 50; display: grid; grid-template-columns: 124px minmax(0, 1fr); gap: 16px; width: 348px; max-width: calc(100vw - 16px); padding: 16px; border-radius: 18px; background: var(--tile-dark); color: var(--on-dark); box-shadow: 0 24px 48px -16px rgba(0,0,0,.65); pointer-events: none; opacity: 0; transform: translateY(6px); transition: opacity .15s, transform .15s; }
+.tip.on { opacity: 1; transform: none; }
+.cov { position: relative; width: 124px; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 3px 8px 8px 3px; background: var(--bk, #3a3733); box-shadow: 0 14px 22px -12px rgba(0,0,0,.8); }
+.cov img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.cov::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 9px; background: linear-gradient(90deg, rgba(0,0,0,.5), rgba(0,0,0,0)); }
+.cov b { position: absolute; left: 18px; right: 9px; top: 18px; padding: 7px; border-radius: 3px; background: #f3f1ed; color: #1c1b19; font-size: 12px; line-height: 1.2; font-weight: 600; overflow-wrap: anywhere; }
+.inf { min-width: 0; display: flex; flex-direction: column; }
+.tip .tp { margin: 0 0 4px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--amber); overflow-wrap: anywhere; }
+.tip .tt { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.25; letter-spacing: -.01em; overflow-wrap: anywhere; }
+.tip .tm { margin: 8px 0 0; font-family: var(--font-mono); font-size: 12px; line-height: 1.5; color: var(--on-dark-muted); }
+.tip .th { margin: auto 0 0; padding-top: 10px; font-size: 12px; color: var(--amber); }
+@media (max-width: 520px) { .shelf { padding: 22px 14px 0; } .tip { width: 300px; grid-template-columns: 104px minmax(0, 1fr); gap: 12px; padding: 12px; } .cov { width: 104px; } .sp { font-size: 10.5px; } }
 
 /* Paralaje: el script escribe --py, --rot, --sc y --op según la posición de cada elemento al desplazarse. Sin script, todo queda en su lugar. */
 [data-par], [data-sp] { transform: translate3d(var(--px, 0px), var(--py, 0px), 0) rotate(var(--rot, 0deg)) scale(var(--sc, 1)); opacity: var(--op, 1); }
@@ -494,59 +528,98 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
       <p>Apuntes, esquemas y fotografías de terreno, ordenados por tema para consultarlos cuando los necesites.</p>
     </div>
 
-    <div class="lib-tools"><input id="lib-q" class="search" type="search" placeholder="Buscar en la biblioteca" aria-label="Buscar en la biblioteca" autocomplete="off"></div>
-    <div class="chips" id="lib-chips" role="group" aria-label="Filtrar por tema"></div>
+    <div id="up" hidden>
+      <input id="file" type="file"><label id="drop"></label><div id="staged"></div>
+      <div id="merge" hidden><input id="merge-on" type="checkbox"><b id="merge-n"></b><input id="merge-title"></div>
+      <input id="up-topic"><datalist id="topics"></datalist><button id="up-go" type="button"></button><p id="up-msg"></p>
+    </div>
+
+    <div class="lib-tools">
+      <input id="lib-q" class="search" type="search" placeholder="Buscar en la biblioteca" aria-label="Buscar en la biblioteca" autocomplete="off">
+      <div class="pick" id="lib-chips" hidden><select id="lib-topic" class="select" aria-label="Filtrar por tema"></select></div>
+    </div>
     <div class="lib-grid" id="lib-grid" aria-live="polite"></div>
     <p class="note" id="lib-count"></p>
   </section>
 
   <script>
   (function () {
-    var PAGE = 24;
+    var TOPICS = ['Geología y minerales', 'Perforación y tronadura', 'Geomecánica', 'Procesamiento de minerales', 'Túneles y TBM', 'Hormigón y construcción', 'Sismos', 'Seguridad', 'Otros'];
+    var TYPES = { pdf: 'application/pdf', jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', gif: 'image/gif', webp: 'image/webp', svg: 'image/svg+xml', mp4: 'video/mp4', webm: 'video/webm', csv: 'text/csv', md: 'text/markdown', json: 'application/json', txt: 'text/plain' };
+    var MAX = 20 * 1024 * 1024, MAX_SVG = 2 * 1024 * 1024, PAGE = 300;
     var $ = function (id) { return document.getElementById(id); };
-    var q = $('lib-q'), chips = $('lib-chips'), grid = $('lib-grid'), count = $('lib-count');
-    var S = { docs: [], topic: 'all', q: '', shown: PAGE, loaded: false, error: false };
+    var up = $('up'), drop = $('drop'), file = $('file'), staged = $('staged'), topicIn = $('up-topic'), topicList = $('topics'),
+        go = $('up-go'), msg = $('up-msg'), q = $('lib-q'), chips = $('lib-chips'), grid = $('lib-grid'), count = $('lib-count');
+    var S = { docs: [], topic: 'all', q: '', shown: PAGE, staged: [], db: null, assets: null, loaded: false, error: '', busy: false, merge: true };
+    var mergeBox = $('merge'), mergeOn = $('merge-on'), mergeN = $('merge-n'), mergeTitle = $('merge-title'), topicSel = $('lib-topic');
 
+    function U(p) { return encodeURI(p || ''); }
     function h(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+    function ext(n) { var m = /\.([A-Za-z0-9]+)$/.exec(n); return m ? m[1].toLowerCase() : ''; }
     function fmt(b) { if (b < 1024) return b + ' B'; if (b < 1048576) return Math.round(b / 1024) + ' KB'; return (b / 1048576).toFixed(1).replace('.', ',') + ' MB'; }
-    function fdate(s) { try { return new Date(s + 'T12:00:00').toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } }
+    function fdate(ms) { try { return new Date(ms).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } }
     function kind(ct) { ct = ct || ''; if (ct === 'application/pdf') return 'pdf'; if (ct.indexOf('image/') === 0) return 'img'; if (ct.indexOf('video/') === 0) return 'video'; return 'txt'; }
     var tick = false;
     function relayout() { if (tick) return; tick = true; requestAnimationFrame(function () { tick = false; window.dispatchEvent(new Event('resize')); }); }
+
+    function errText(e) {
+      var c = e && e.code;
+      if (c === 'too_large') return 'Pesa más de lo permitido (20 MB).';
+      if (c === 'unsupported_type') return 'Ese formato no se admite. Convierte los Word a PDF.';
+      if (c === 'quota_or_state') return 'Se llenó el espacio de la biblioteca. Elimina material que no uses.';
+      if (c === 'rate_limited') return 'Demasiados envíos seguidos. Espera un momento y vuelve a intentar.';
+      return 'No se pudo cargar. Intenta de nuevo.';
+    }
 
     function render() {
       var counts = {};
       S.docs.forEach(function (d) { counts[d.topic] = (counts[d.topic] || 0) + 1; });
       var names = Object.keys(counts).sort(function (a, b) { return a.localeCompare(b, 'es'); });
       if (S.topic !== 'all' && !counts[S.topic]) S.topic = 'all';
-      chips.textContent = '';
+
+      topicSel.textContent = '';
       chips.hidden = names.length < 2;
-      [['all', 'Todos (' + S.docs.length + ')']].concat(names.map(function (n) { return [n, n + ' (' + counts[n] + ')']; })).forEach(function (p) {
-        var b = h('button', 'chip', p[1]);
-        b.type = 'button';
-        b.setAttribute('aria-pressed', S.topic === p[0] ? 'true' : 'false');
-        b.addEventListener('click', function () { S.topic = p[0]; S.shown = PAGE; render(); });
-        chips.appendChild(b);
+      [['all', 'Todos los temas (' + S.docs.length + ')']].concat(names.map(function (n) { return [n, n + ' (' + counts[n] + ')']; })).forEach(function (p) {
+        var o = document.createElement('option');
+        o.value = p[0]; o.textContent = p[1];
+        topicSel.appendChild(o);
       });
+      topicSel.value = S.topic;
+
       var term = S.q.trim().toLowerCase();
       var list = S.docs.filter(function (d) {
-        return (S.topic === 'all' || d.topic === S.topic) && (!term || ((d.title || '') + ' ' + (d.topic || '')).toLowerCase().indexOf(term) > -1);
+        return (S.topic === 'all' || d.topic === S.topic) && (!term || ((d.title || '') + ' ' + (d.topic || '') + ' ' + (d.name || '')).toLowerCase().indexOf(term) > -1);
       });
+
       grid.textContent = '';
       count.textContent = '';
+      grid.className = list.length ? 'case' : 'lib-grid';
+      list.sort(function (a, b) { return (a.topic || '').localeCompare(b.topic || '', 'es') || (a.title || '').localeCompare(b.title || '', 'es'); });
       if (!list.length) {
-        var e = h('div', 'lib-empty'), t = h('strong'), s = document.createElement('span');
-        if (S.error) { t.textContent = 'No se pudo abrir la biblioteca.'; s.textContent = 'Abre el sitio desde su dirección web y recarga la página.'; }
+        var e = h('div', 'lib-empty');
+        var t = h('strong'), s = document.createElement('span');
+        if (S.error) { t.textContent = 'No se pudo abrir la biblioteca.'; s.textContent = S.error; }
+        else if (!S.db) { t.textContent = 'La biblioteca no está disponible en esta vista.'; s.textContent = 'Abre la página con tu cuenta para ver el material.'; }
         else if (!S.loaded) { t.textContent = 'Cargando la biblioteca…'; }
-        else if (!S.docs.length) { t.textContent = 'Todavía no hay material.'; s.textContent = 'Cuando se cargue, aparecerá aquí ordenado por tema.'; }
-        else { t.textContent = 'Nada coincide con tu búsqueda.'; s.textContent = 'Prueba con otra palabra o elige Todos.'; }
+        else if (!S.docs.length) {
+          t.textContent = 'Todavía no hay material.';
+          s.textContent = S.assets ? 'Arrastra tus primeros archivos al recuadro de arriba y aparecerán aquí, ordenados por tema.' : 'Cuando se cargue, aparecerá aquí ordenado por tema.';
+        } else { t.textContent = 'Nada coincide con tu búsqueda.'; s.textContent = 'Prueba con otra palabra o elige Todos.'; }
         e.appendChild(t); e.appendChild(s); grid.appendChild(e);
       } else {
-        list.slice(0, S.shown).forEach(function (d) { grid.appendChild(card(d)); });
+        var shown = list.slice(0, S.shown);
+        S.gw = grid.clientWidth;
+        packRows(shown).forEach(function (rowDocs) {
+          var shelf = h('div', 'shelf'), books = h('div', 'books');
+          rowDocs.forEach(function (d) { books.appendChild(book(d)); });
+          shelf.appendChild(books); shelf.appendChild(h('div', 'board'));
+          grid.appendChild(shelf);
+        });
         count.textContent = 'Mostrando ' + Math.min(S.shown, list.length) + ' de ' + list.length;
         if (list.length > S.shown) {
           var m = h('button', 'btn more', 'Ver más');
-          m.type = 'button'; m.style.border = '0'; m.style.cursor = 'pointer'; m.style.font = 'inherit';
+          m.type = 'button';
+          m.style.border = '0'; m.style.cursor = 'pointer'; m.style.font = 'inherit';
           m.addEventListener('click', function () { S.shown += PAGE; render(); });
           count.appendChild(m);
         }
@@ -555,37 +628,282 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
     }
 
     function card(d) {
-      var a = h('article', 'doc'), href = encodeURI(d.file), k = kind(d.type);
+      var a = h('article', 'doc'), href = U(d.file), k = kind(d.contentType);
       var th = h('a', 'thumb');
       th.href = href; th.target = '_blank'; th.rel = 'noopener';
       th.setAttribute('aria-label', 'Abrir ' + (d.title || 'archivo'));
       if (k === 'img') { var im = h('img'); im.loading = 'lazy'; im.alt = ''; im.src = href; th.appendChild(im); }
+      else if (k === 'video') { var v = document.createElement('video'); v.preload = 'metadata'; v.muted = true; v.playsInline = true; v.src = href + '#t=0.5'; th.appendChild(v); }
       else if (k === 'pdf' && d.cover) {
-        var cv = h('img'); cv.loading = 'lazy'; cv.alt = ''; cv.src = encodeURI(d.cover); th.appendChild(cv);
+        var cvr = h('img'); cvr.loading = 'lazy'; cvr.alt = ''; cvr.src = U(d.cover); th.appendChild(cvr);
         th.appendChild(h('span', 'badge', 'PDF' + (d.pages ? ' · ' + d.pages + (d.pages === 1 ? ' pág.' : ' págs.') : '')));
       }
       else th.appendChild(h('span', 'kind', k === 'pdf' ? 'PDF' : 'TXT'));
       var body = h('div', 'body');
       body.appendChild(h('p', 'topic', d.topic || 'Otros'));
-      body.appendChild(h('h3', '', d.title || 'Sin título'));
-      body.appendChild(h('p', 'meta', fmt(d.size || 0) + (d.date ? ' · ' + fdate(d.date) : '')));
+      body.appendChild(h('h3', '', d.title || d.name || 'Sin título'));
+      body.appendChild(h('p', 'meta', fmt(d.size || 0) + (d.createdAt ? ' · ' + fdate(d.createdAt) : '')));
       var acts = h('div', 'acts');
       var open = h('a', 'link', 'Abrir');
       open.href = href; open.target = '_blank'; open.rel = 'noopener';
-      acts.appendChild(open); body.appendChild(acts);
+      acts.appendChild(open);
+      if (S.assets) {
+        var del = h('button', 'linkbtn', 'Eliminar');
+        del.type = 'button';
+        del.addEventListener('click', function () {
+          if (!del.dataset.armed) {
+            del.dataset.armed = '1'; del.textContent = 'Confirmar';
+            setTimeout(function () { if (del.isConnected) { delete del.dataset.armed; del.textContent = 'Eliminar'; } }, 3000);
+            return;
+          }
+          del.disabled = true;
+          S.db.doc('library/' + d.id).delete()
+            .then(function () { return S.assets.delete(d.asset).catch(function () {}); })
+            .then(function () { return d.cover ? S.assets.delete(d.cover).catch(function () {}) : null; })
+            .catch(function () { del.disabled = false; del.textContent = 'No se pudo eliminar'; });
+        });
+        acts.appendChild(del);
+      }
+      body.appendChild(acts);
       a.appendChild(th); a.appendChild(body);
       return a;
     }
 
+    var COLORS = ['#b8541f', '#c98a14', '#3a3733', '#3b5b73', '#55663a', '#8a3a2e', '#5b4a7a'];
+    var GAP = 3;
+    function small() { return window.innerWidth <= 520; }
+    function hash(t) { var n = 0; t = t || ''; for (var i = 0; i < t.length; i++) n = (n * 31 + t.charCodeAt(i)) >>> 0; return n; }
+    function dims(d) {
+      var n = hash((d.title || '') + (d.asset || '')), s = small();
+      return { w: (s ? 26 : 30) + (n % 4) * (s ? 3 : 4), h: (s ? 112 : 128) + ((n >> 3) % 5) * (s ? 5 : 7) };
+    }
+    function packRows(docs) {
+      var avail = Math.max(120, (grid.clientWidth || 600) - (small() ? 28 : 40)), rows = [[]], used = 0;
+      docs.forEach(function (d) {
+        var w = dims(d).w + GAP;
+        if (used + w > avail && rows[rows.length - 1].length) { rows.push([]); used = 0; }
+        rows[rows.length - 1].push(d); used += w;
+      });
+      return rows;
+    }
+    function colorOf(d) { return COLORS[hash(d.topic) % COLORS.length]; }
+
+    var tip = null;
+    function hideTip() { if (tip) tip.classList.remove('on'); }
+    function showTip(d, el) {
+      if (!tip) { tip = h('div', 'tip'); tip.setAttribute('role', 'tooltip'); document.body.appendChild(tip); }
+      tip.textContent = '';
+      var cov = h('div', 'cov'), pic = d.cover ? U(d.cover) : (kind(d.contentType) === 'img' ? U(d.file) : '');
+      cov.style.setProperty('--bk', colorOf(d));
+      if (pic) { var im = h('img'); im.alt = ''; im.src = pic; cov.appendChild(im); }
+      else cov.appendChild(h('b', '', d.title || d.name || 'Sin título'));
+      var inf = h('div', 'inf');
+      inf.appendChild(h('p', 'tp', d.topic || 'Otros'));
+      inf.appendChild(h('p', 'tt', d.title || d.name || 'Sin título'));
+      var bits = [];
+      if (d.pages) bits.push(d.pages + (d.pages === 1 ? ' página' : ' páginas'));
+      bits.push(fmt(d.size || 0));
+      if (d.createdAt) bits.push(fdate(d.createdAt));
+      inf.appendChild(h('p', 'tm', bits.join('\n')));
+      inf.lastChild.style.whiteSpace = 'pre-line';
+      inf.appendChild(h('p', 'th', 'Clic para abrir'));
+      tip.appendChild(cov); tip.appendChild(inf);
+      var r = el.getBoundingClientRect(), tw = tip.offsetWidth || 348, th = tip.offsetHeight || 200;
+      var left = Math.max(8, Math.min(window.innerWidth - tw - 8, r.left + r.width / 2 - tw / 2));
+      var top = r.top - 18 - th >= 8 ? r.top - 18 - th : Math.min(window.innerHeight - th - 8, r.bottom + 14);
+      tip.style.left = left + 'px'; tip.style.top = top + 'px';
+      tip.classList.add('on');
+    }
+
+    function book(d) {
+      var m = dims(d), wrap = h('div', 'bk'), a = h('a', 'book');
+      wrap.style.width = m.w + 'px'; wrap.style.height = m.h + 'px';
+      a.href = U(d.file); a.target = '_blank'; a.rel = 'noopener';
+      a.style.setProperty('--bk', colorOf(d));
+      a.setAttribute('aria-label', (d.title || 'Documento') + '. Tema: ' + (d.topic || 'Otros') + '. Abrir');
+      a.appendChild(h('span', 'sp', d.title || d.name || 'Sin título'));
+      a.addEventListener('mouseenter', function () { showTip(d, a); });
+      a.addEventListener('focus', function () { showTip(d, a); });
+      a.addEventListener('mouseleave', hideTip);
+      a.addEventListener('blur', hideTip);
+      wrap.appendChild(a);
+      if (S.assets) {
+        var del = h('button', 'del', '×');
+        del.type = 'button'; del.setAttribute('aria-label', 'Eliminar ' + (d.title || 'documento'));
+        del.addEventListener('click', function () {
+          if (!del.dataset.armed) {
+            del.dataset.armed = '1'; del.textContent = 'Confirmar';
+            setTimeout(function () { if (del.isConnected) { delete del.dataset.armed; del.textContent = '×'; } }, 3000);
+            return;
+          }
+          del.disabled = true; hideTip();
+          S.db.doc('library/' + d.id).delete()
+            .then(function () { return S.assets.delete(d.asset).catch(function () {}); })
+            .then(function () { return d.cover ? S.assets.delete(d.cover).catch(function () {}) : null; })
+            .catch(function () { del.disabled = false; del.textContent = 'Error'; });
+        });
+        wrap.appendChild(del);
+      }
+      return wrap;
+    }
+
+    function mergeable(it) { return !it.err && it.ct.indexOf('image/') === 0 && it.ct !== 'image/svg+xml'; }
+
+    function renderStaged() {
+      staged.textContent = '';
+      var imgs = S.staged.filter(mergeable).length;
+      mergeBox.hidden = !imgs;
+      mergeN.textContent = imgs;
+      S.staged.forEach(function (it, i) {
+        var row = h('div', 'st');
+        if (S.merge && mergeable(it)) row.appendChild(h('span', 'nm', it.file.name));
+        else {
+          var t = h('input'); t.type = 'text'; t.value = it.title; t.setAttribute('aria-label', 'Título de ' + it.file.name);
+          t.addEventListener('input', function () { it.title = t.value; });
+          row.appendChild(t);
+        }
+        var sz = h('span', 'sz', fmt(it.file.size));
+        var x = h('button', 'x', '×'); x.type = 'button'; x.setAttribute('aria-label', 'Quitar ' + it.file.name);
+        x.addEventListener('click', function () { S.staged.splice(i, 1); renderStaged(); });
+        row.appendChild(sz); row.appendChild(x);
+        if (it.err) row.appendChild(h('span', 'er', it.file.name + ': ' + it.err));
+        staged.appendChild(row);
+      });
+      var ok = S.staged.filter(function (i) { return !i.err; }).length;
+      var docs = ok - (S.merge && imgs > 1 ? imgs - 1 : 0);
+      go.disabled = S.busy || !ok;
+      go.textContent = docs > 1 ? 'Cargar ' + docs + ' documentos' : 'Cargar';
+    }
+
+    function stage(files) {
+      Array.prototype.forEach.call(files, function (f) {
+        var ct = TYPES[ext(f.name)] || '', err = '';
+        if (!ct) err = 'formato no admitido. Convierte los Word a PDF.';
+        else if (!f.size) err = 'el archivo está vacío.';
+        else if (f.size > (ct === 'image/svg+xml' ? MAX_SVG : MAX)) err = 'pesa más de ' + (ct === 'image/svg+xml' ? '2' : '20') + ' MB.';
+        S.staged.push({ file: f, ct: ct, err: err, done: false, title: f.name.replace(/\.[^.]+$/, '').replace(/[_]+/g, ' ') });
+      });
+      S.staged.sort(function (a, b) { return a.file.name.localeCompare(b.file.name, 'es', { numeric: true }); });
+      msg.textContent = '';
+      renderStaged();
+    }
+
+    async function toCanvas(file, maxSide) {
+      var bmp;
+      try { bmp = await createImageBitmap(file, { imageOrientation: 'from-image' }); } catch (e) { bmp = await createImageBitmap(file); }
+      var sc = Math.min(1, maxSide / Math.max(bmp.width, bmp.height));
+      var c = document.createElement('canvas');
+      c.width = Math.max(1, Math.round(bmp.width * sc)); c.height = Math.max(1, Math.round(bmp.height * sc));
+      var g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(bmp, 0, 0, c.width, c.height);
+      if (bmp.close) bmp.close();
+      return c;
+    }
+
+    function canvasBlob(c, q) { return new Promise(function (res) { c.toBlob(res, 'image/jpeg', q); }); }
+
+    /* Una página por imagen, en A4 vertical u horizontal según la forma de la foto. Si pasa de 20 MB, baja la calidad. */
+    async function buildPdf(files) {
+      var J = window.jspdf && window.jspdf.jsPDF;
+      if (!J) throw { code: 'no_pdf_lib' };
+      var presets = [[1800, 0.82], [1400, 0.7], [1000, 0.6]];
+      for (var p = 0; p < presets.length; p++) {
+        var pdf = null, cover = null;
+        for (var i = 0; i < files.length; i++) {
+          msg.textContent = 'Armando el PDF: página ' + (i + 1) + ' de ' + files.length + '…';
+          var c = await toCanvas(files[i], presets[p][0]), land = c.width > c.height;
+          var pw = land ? 841.89 : 595.28, ph = land ? 595.28 : 841.89, m = 18;
+          var s = Math.min((pw - 2 * m) / c.width, (ph - 2 * m) / c.height), dw = c.width * s, dh = c.height * s;
+          if (!pdf) pdf = new J({ unit: 'pt', format: 'a4', orientation: land ? 'l' : 'p', compress: true });
+          else pdf.addPage('a4', land ? 'l' : 'p');
+          pdf.addImage(c.toDataURL('image/jpeg', presets[p][1]), 'JPEG', (pw - dw) / 2, (ph - dh) / 2, dw, dh, undefined, 'FAST');
+          if (i === 0) {
+            var tw = 480, tc = document.createElement('canvas');
+            tc.width = tw; tc.height = Math.max(1, Math.round(c.height * tw / c.width));
+            tc.getContext('2d').drawImage(c, 0, 0, tc.width, tc.height);
+            cover = await canvasBlob(tc, 0.8);
+          }
+        }
+        var blob = pdf.output('blob');
+        if (blob.size <= MAX) return { blob: blob, cover: cover, pages: files.length };
+      }
+      throw { code: 'pdf_too_large' };
+    }
+
+    async function upload() {
+      var valid = S.staged.filter(function (i) { return !i.err; });
+      if (!valid.length || S.busy) return;
+      var topic = (topicIn.value || '').trim() || 'Otros', okN = 0, failN = 0, notes = [];
+      var group = S.merge ? valid.filter(mergeable) : [];
+      var singles = valid.filter(function (i) { return group.indexOf(i) < 0; });
+      S.busy = true; renderStaged();
+
+      if (group.length) {
+        var made = [];
+        try {
+          var title = (mergeTitle.value || '').trim() || topic;
+          var built = await buildPdf(group.map(function (g) { return g.file; }));
+          msg.textContent = 'Cargando el PDF (' + fmt(built.blob.size) + ')…';
+          var r = await S.assets.upload(built.blob, { type: 'application/pdf' }); made.push(r.id);
+          var cv = built.cover ? await S.assets.upload(built.cover, { type: 'image/jpeg' }) : null;
+          if (cv) made.push(cv.id);
+          await S.db.collection('library').add({ title: title, topic: topic, asset: r.id, cover: cv ? cv.id : '', contentType: 'application/pdf', size: r.sizeBytes, name: title + '.pdf', pages: built.pages, createdAt: Date.now() });
+          group.forEach(function (g) { g.done = true; }); okN++;
+        } catch (e) {
+          failN++;
+          notes.push(e && e.code === 'pdf_too_large' ? 'El PDF pasa de 20 MB aun con calidad baja. Carga las imágenes en dos tandas.'
+            : e && e.code === 'no_pdf_lib' ? 'No se pudo preparar el PDF. Recarga la página.' : 'No se pudo armar el PDF. ' + errText(e));
+          for (var k = 0; k < made.length; k++) { try { await S.assets.delete(made[k]); } catch (e2) {} }
+        }
+      }
+
+      for (var n = 0; n < singles.length; n++) {
+        var it = singles[n], r2 = null;
+        msg.textContent = 'Cargando ' + (n + 1) + ' de ' + singles.length + ': ' + it.file.name;
+        try {
+          r2 = await S.assets.upload(it.file, { type: it.ct });
+          await S.db.collection('library').add({ title: (it.title || it.file.name).trim(), topic: topic, asset: r2.id, contentType: r2.contentType, size: r2.sizeBytes, name: it.file.name, createdAt: Date.now() });
+          it.done = true; okN++;
+        } catch (e) {
+          it.err = errText(e); failN++;
+          if (r2) { try { await S.assets.delete(r2.id); } catch (e2) {} }
+        }
+      }
+      S.staged = S.staged.filter(function (i) { return !i.done; });
+      S.busy = false; renderStaged();
+      msg.textContent = (okN ? okN + (okN === 1 ? ' documento cargado' : ' documentos cargados') : 'No se cargó ningún documento') + (failN ? '. ' + failN + ' con error. ' : '. ') + notes.join(' ');
+      refreshTopics();
+    }
+
+    function refreshTopics() {
+      var set = TOPICS.slice();
+      S.docs.forEach(function (d) { if (d.topic && set.indexOf(d.topic) < 0) set.push(d.topic); });
+      topicList.textContent = '';
+      set.forEach(function (t) { var o = document.createElement('option'); o.value = t; topicList.appendChild(o); });
+    }
+
     q.addEventListener('input', function () { S.q = q.value; S.shown = PAGE; render(); });
+    topicSel.addEventListener('change', function () { S.topic = topicSel.value; S.shown = PAGE; render(); });
+    window.addEventListener('resize', function () { if (S.loaded && grid.classList.contains('case') && grid.clientWidth !== S.gw) render(); });
+    window.addEventListener('scroll', hideTip, { passive: true });
+    file.addEventListener('change', function () { stage(file.files); file.value = ''; });
+    go.addEventListener('click', upload);
+    mergeOn.addEventListener('change', function () { S.merge = mergeOn.checked; renderStaged(); });
+    ['dragenter', 'dragover'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('over'); }); });
+    ['dragleave', 'drop'].forEach(function (ev) { drop.addEventListener(ev, function () { drop.classList.remove('over'); }); });
+    drop.addEventListener('drop', function (e) { e.preventDefault(); if (e.dataTransfer && e.dataTransfer.files) stage(e.dataTransfer.files); });
+
     render();
+    refreshTopics();
+
+    S.db = {};
     fetch('library/library.json', { cache: 'no-cache' })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(function (list) {
-        S.docs = list.slice().sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
-        S.loaded = true; render();
+        S.docs = list.map(function (d) { d.createdAt = Date.parse(d.date + 'T12:00:00') || 0; d.contentType = d.type; d.asset = d.file; return d; })
+          .sort(function (a, b) { return b.createdAt - a.createdAt; });
+        S.loaded = true; refreshTopics(); render();
       })
-      .catch(function () { S.error = true; render(); });
+      .catch(function () { S.error = 'Abre el sitio desde su dirección web y recarga la página.'; render(); });
   })();
   </script>
 
