@@ -248,33 +248,65 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
 .doc .thumb { position: relative; }
 .badge { position: absolute; left: 12px; bottom: 12px; padding: 3px 10px; border-radius: 980px; background: rgba(20,19,18,.78); color: #f3f1ed; font-family: var(--font-mono); font-size: 11.5px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 
-/* Repisa de libros: lomos de cara al público; al pasar el puntero el libro sale y muestra su portada */
-.case { display: grid; gap: 26px; margin-top: 28px; }
-.shelf { padding: 26px 20px 0; border-radius: 18px 18px 0 0; background: linear-gradient(var(--bg-alt), transparent 85%); }
-.books { display: flex; align-items: flex-end; gap: 3px; min-height: 140px; }
+/* Biblioteca: librero moderno. Libros grandes de colores clásicos, algunos inclinados o acostados, sobre repisas finas. */
+.case { position: relative; margin-top: 28px; }
+.shelf { position: relative; padding: 22px 12px 0; border-radius: 16px 16px 0 0; background: linear-gradient(var(--bg-alt), transparent 92%); }
+.books { position: relative; display: flex; align-items: flex-end; min-height: 180px; }
+.board { height: 10px; margin: 0 -6px 18px; border-radius: 3px; background: linear-gradient(color-mix(in srgb, var(--fg) 78%, var(--bg)), color-mix(in srgb, var(--fg) 92%, var(--bg))); box-shadow: 0 16px 20px -12px rgba(0,0,0,.42); }
+.shelf:last-child .board { margin-bottom: 0; }
+
 .bk { position: relative; flex: none; }
-.book { position: absolute; inset: 0; display: block; overflow: hidden; border-radius: 2px 2px 1px 1px; color: #fff; background: linear-gradient(90deg, rgba(255,255,255,.16), rgba(255,255,255,0) 22%, rgba(0,0,0,.2) 100%), var(--bk); box-shadow: 0 8px 10px -8px rgba(0,0,0,.7); transition: transform .25s cubic-bezier(.2,.7,.3,1), box-shadow .25s; }
-.book::before, .book::after { content: ""; position: absolute; left: 0; right: 0; height: 9px; background: rgba(255,255,255,.2); }
-.book::before { top: 9px; }
-.book::after { bottom: 9px; }
-.sp { position: absolute; left: 50%; top: 26px; bottom: 26px; transform: translateX(-50%); writing-mode: vertical-rl; display: flex; align-items: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 11.5px; font-weight: 600; letter-spacing: .02em; }
-.bk:hover .book, .book:focus-visible { transform: translateY(-18px); box-shadow: 0 18px 16px -10px rgba(0,0,0,.6); }
-.board { height: 16px; margin: 0 -8px; border-radius: 4px; background: linear-gradient(var(--wood), var(--wood-2)); box-shadow: 0 14px 18px -12px rgba(0,0,0,.55); }
+.bk::before { content: ""; position: absolute; left: 2px; right: -6px; bottom: -3px; height: 7px; background: radial-gradient(ellipse at 40% 0, rgba(0,0,0,.34), transparent 70%); pointer-events: none; }
+.book { --paper: #f1ebdd; --ink: #f6f1e5; --shade: linear-gradient(90deg, rgba(255,255,255,.14), rgba(255,255,255,0) 22%, rgba(0,0,0,0) 68%, rgba(0,0,0,.2));
+  position: absolute; inset: 0; display: block; overflow: hidden; border-radius: 3px 4px 2px 2px; color: var(--ink); background-color: var(--bk, #1f3a5f);
+  filter: brightness(var(--br, 1)); box-shadow: 7px 9px 14px -9px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.18);
+  transform: translate(var(--tx, 0), var(--ty, 0)) rotate(var(--rot, 0deg)); transform-origin: var(--org, 50% 100%); transition: transform .28s cubic-bezier(.2,.7,.3,1), box-shadow .28s; }
+.book::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: var(--shade); }
+/* Cinco estilos de lomo: banda clásica, líneas finas, doble filete, libro claro con bloques de color y pestaña */
+.book.v0 { background-image: linear-gradient(var(--paper), var(--paper)); background-size: 100% 54%; background-position: 0 50%; background-repeat: no-repeat; --ink: color-mix(in srgb, var(--bk) 55%, #000); }
+.book.v1 { background-image: linear-gradient(var(--paper), var(--paper)), linear-gradient(var(--paper), var(--paper)); background-size: 100% 2px, 100% 2px; background-position: 0 7%, 0 84%; background-repeat: no-repeat; }
+.book.v2 { background-image: linear-gradient(var(--paper), var(--paper)), linear-gradient(var(--paper), var(--paper)), linear-gradient(var(--paper), var(--paper)), linear-gradient(var(--paper), var(--paper)); background-size: 100% 2px; background-position: 0 9%, 0 12%, 0 79%, 0 82%; background-repeat: no-repeat; }
+.book.v3 { background-color: var(--paper); --ink: #22252b; background-image: linear-gradient(var(--bk), var(--bk)), linear-gradient(var(--bk), var(--bk)); background-size: 100% 7%, 100% 20%; background-position: 0 0, 0 100%; background-repeat: no-repeat; }
+.book.v4 { background-image: linear-gradient(var(--paper), var(--paper)); background-size: 54% 9px; background-position: 50% 6%; background-repeat: no-repeat; }
+.sp { position: absolute; left: 50%; top: 22%; bottom: 22%; transform: translateX(-50%); writing-mode: vertical-rl; display: block; line-height: 1.15; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-family: var(--font); font-size: 12px; font-weight: 600; letter-spacing: .01em; }
+.pg { position: absolute; left: 50%; bottom: 9px; transform: translateX(-50%); font-family: var(--font-mono); font-size: 8px; letter-spacing: .06em; opacity: .85; pointer-events: none; }
+.book.v0 .pg, .book.v3 .pg { color: var(--paper); opacity: 1; }
+.book.v3 .pg { bottom: 10px; }
+.bk:hover .book, .book:focus-visible { --ty: -14px; box-shadow: 8px 18px 18px -10px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.22); }
+.bk.lean .book { --org: 100% 100%; }
+.bk.lean.l .book { --org: 0% 100%; }
+
+/* Libros acostados, en pila */
+.pile { position: relative; flex: none; }
+.bk.flat { position: absolute; }
+.bk.flat::before { left: 4px; right: 4px; bottom: -3px; height: 6px; }
+.flat .book { border-radius: 3px 2px 2px 3px; box-shadow: 0 6px 8px -4px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.18); --shade: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,0) 24%, rgba(0,0,0,0) 66%, rgba(0,0,0,.2)); }
+.flat .book.v0 { background-size: 54% 100%; background-position: 50% 0; }
+.flat .book.v1 { background-size: 2px 100%, 2px 100%; background-position: 7% 0, 93% 0; }
+.flat .book.v2 { background-size: 2px 100%; background-position: 9% 0, 12% 0, 88% 0, 91% 0; }
+.flat .book.v3 { background-size: 7% 100%, 20% 100%; background-position: 0 0, 100% 0; }
+.flat .book.v4 { background-size: 9px 54%; background-position: 6% 50%; }
+.flat .sp { left: 0; right: 0; top: 50%; bottom: auto; transform: translateY(-50%); writing-mode: horizontal-tb; text-align: center; line-height: 1.2; padding: 0 20%; font-size: 11.5px; }
+.flat .book.v3 .sp { padding: 0 24%; }
+.flat .pg { display: none; }
+.bk.flat:hover .book, .flat .book:focus-visible { --ty: 0; --tx: 18px; }
+
 .bk .del { position: absolute; top: -26px; left: 50%; z-index: 2; transform: translateX(-50%); min-width: 22px; height: 22px; padding: 0; border: 0; border-radius: 980px; background: #1c1b19; color: #fff; font: inherit; font-size: 13px; line-height: 1; cursor: pointer; opacity: 0; transition: opacity .15s; }
 .bk:hover .del, .bk:focus-within .del { opacity: 1; }
 .bk .del[data-armed] { padding: 0 9px; font-size: 11px; white-space: nowrap; }
+.bk.flat .del { top: 50%; left: auto; right: -12px; transform: translateY(-50%); }
 .tip { position: fixed; z-index: 50; display: grid; grid-template-columns: 124px minmax(0, 1fr); gap: 16px; width: 348px; max-width: calc(100vw - 16px); padding: 16px; border-radius: 18px; background: var(--tile-dark); color: var(--on-dark); box-shadow: 0 24px 48px -16px rgba(0,0,0,.65); pointer-events: none; opacity: 0; transform: translateY(6px); transition: opacity .15s, transform .15s; }
 .tip.on { opacity: 1; transform: none; }
 .cov { position: relative; width: 124px; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 3px 8px 8px 3px; background: var(--bk, #3a3733); box-shadow: 0 14px 22px -12px rgba(0,0,0,.8); }
 .cov img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .cov::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 9px; background: linear-gradient(90deg, rgba(0,0,0,.5), rgba(0,0,0,0)); }
-.cov b { position: absolute; left: 18px; right: 9px; top: 18px; padding: 7px; border-radius: 3px; background: #f3f1ed; color: #1c1b19; font-size: 12px; line-height: 1.2; font-weight: 600; overflow-wrap: anywhere; }
+.cov b { position: absolute; left: 18px; right: 9px; top: 18px; padding: 7px; border-radius: 3px; background: #f1ebdd; color: #22252b; font-size: 12px; line-height: 1.2; font-weight: 600; overflow-wrap: anywhere; }
 .inf { min-width: 0; display: flex; flex-direction: column; }
 .tip .tp { margin: 0 0 4px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--amber); overflow-wrap: anywhere; }
 .tip .tt { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.25; letter-spacing: -.01em; overflow-wrap: anywhere; }
 .tip .tm { margin: 8px 0 0; font-family: var(--font-mono); font-size: 12px; line-height: 1.5; color: var(--on-dark-muted); }
 .tip .th { margin: auto 0 0; padding-top: 10px; font-size: 12px; color: var(--amber); }
-@media (max-width: 520px) { .shelf { padding: 22px 14px 0; } .tip { width: 300px; grid-template-columns: 104px minmax(0, 1fr); gap: 12px; padding: 12px; } .cov { width: 104px; } .sp { font-size: 10.5px; } }
+@media (max-width: 520px) { .shelf { padding: 20px 6px 0; } .books { min-height: 170px; } .board { margin: 0 -4px 20px; } .tip { width: 300px; grid-template-columns: 104px minmax(0, 1fr); gap: 12px; padding: 12px; } .cov { width: 104px; } .sp { font-size: 11px; } }
 
 /* Paralaje: el script escribe --py, --rot, --sc y --op según la posición de cada elemento al desplazarse. Sin script, todo queda en su lugar. */
 [data-par], [data-sp] { transform: translate3d(var(--px, 0px), var(--py, 0px), 0) rotate(var(--rot, 0deg)) scale(var(--sc, 1)); opacity: var(--op, 1); }
@@ -609,9 +641,9 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
       } else {
         var shown = list.slice(0, S.shown);
         S.gw = grid.clientWidth;
-        packRows(shown).forEach(function (rowDocs) {
+        packRows(shown).forEach(function (rowBlocks) {
           var shelf = h('div', 'shelf'), books = h('div', 'books');
-          rowDocs.forEach(function (d) { books.appendChild(book(d)); });
+          rowBlocks.forEach(function (b) { books.appendChild(blockEl(b)); });
           shelf.appendChild(books); shelf.appendChild(h('div', 'board'));
           grid.appendChild(shelf);
         });
@@ -669,24 +701,47 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
       return a;
     }
 
-    var COLORS = ['#b8541f', '#c98a14', '#3a3733', '#3b5b73', '#55663a', '#8a3a2e', '#5b4a7a'];
-    var GAP = 3;
+    var PALETTE = ['#23364f', '#6e2330', '#2c4a3a', '#a8802c', '#2f3238', '#5d4128', '#46586b', '#2d5a5e', '#55283a', '#5f6a33', '#8a6a45', '#333b63', '#9a5233', '#44464c', '#1f4a3d', '#7a3b2e'];
     function small() { return window.innerWidth <= 520; }
-    function hash(t) { var n = 0; t = t || ''; for (var i = 0; i < t.length; i++) n = (n * 31 + t.charCodeAt(i)) >>> 0; return n; }
-    function dims(d) {
-      var n = hash((d.title || '') + (d.asset || '')), s = small();
-      return { w: (s ? 26 : 30) + (n % 4) * (s ? 3 : 4), h: (s ? 112 : 128) + ((n >> 3) % 5) * (s ? 5 : 7) };
+    function hash(t) { var n = 2166136261; t = t || ''; for (var i = 0; i < t.length; i++) { n ^= t.charCodeAt(i); n = Math.imul(n, 16777619); } n ^= n >>> 16; n = Math.imul(n, 2246822507); n ^= n >>> 13; n = Math.imul(n, 3266489909); n ^= n >>> 16; return n >>> 0; }
+    function colorOf(d) { return PALETTE[(hash(d.topic) + hash(d.title || d.asset) % 3) % PALETTE.length]; }
+    /* Todo se deriva del propio documento, así que cada libro luce igual cada vez */
+    function spec(d) {
+      var n = hash((d.title || '') + '|' + (d.asset || '')), k = small() ? 0.9 : 1;
+      return { n: n, w: Math.round((22 + (n % 7) * 2) * k), h: Math.round((140 + ((n >>> 4) % 8) * 6) * k), v: (n >>> 8) % 5, r: (n >>> 12) % 100, br: (0.95 + ((n >>> 16) % 11) / 100).toFixed(2) };
     }
+    function pileDims(s) { return { L: Math.min(small() ? 118 : 160, Math.round(s.h * 0.9)), T: Math.max(small() ? 14 : 17, Math.round(s.w * 0.55)) }; }
+    /* Pilas e inclinados están desactivados (r < 0 nunca ocurre); todos los libros van de pie. Para volver a usarlos, sube esos límites. */
+    function blocksOf(docs) {
+      var out = [], i = 0;
+      while (i < docs.length) {
+        var d = docs[i], s = spec(d);
+        if (s.r < 0) {
+          var g = docs.slice(i, i + 2 + (s.n % 2));
+          out.push({ t: 'pile', docs: g, w: Math.max.apply(null, g.map(function (x) { return pileDims(spec(x)).L; })) + 8 });
+          i += g.length;
+        } else if (s.r < 0) {
+          var ang = 5 + (s.n % 8), left = ((s.n >>> 20) % 2) === 0, gap = Math.round(s.h * Math.sin(ang * Math.PI / 180));
+          out.push({ t: 'lean', d: d, s: s, ang: left ? -ang : ang, gap: gap, w: s.w + gap + 1 });
+          i++;
+        } else { out.push({ t: 'stand', d: d, s: s, w: s.w + 1 }); i++; }
+      }
+      return out;
+    }
+    /* Llena cada repisa: si el siguiente bloque no cabe, busca entre los próximos uno más angosto que sí quepa */
     function packRows(docs) {
-      var avail = Math.max(120, (grid.clientWidth || 600) - (small() ? 28 : 40)), rows = [[]], used = 0;
-      docs.forEach(function (d) {
-        var w = dims(d).w + GAP;
-        if (used + w > avail && rows[rows.length - 1].length) { rows.push([]); used = 0; }
-        rows[rows.length - 1].push(d); used += w;
-      });
+      var pad = small() ? 14 : 26, avail = Math.max(160, (grid.clientWidth || 600) - pad), rest = blocksOf(docs), rows = [];
+      while (rest.length) {
+        var row = [], used = 0, i = 0, skipped = 0;
+        while (i < rest.length) {
+          var b = rest[i];
+          if (used + b.w <= avail || !row.length) { row.push(b); used += b.w; rest.splice(i, 1); skipped = 0; }
+          else { i++; if (++skipped > 8) break; }
+        }
+        rows.push(row);
+      }
       return rows;
     }
-    function colorOf(d) { return COLORS[hash(d.topic) % COLORS.length]; }
 
     var tip = null;
     function hideTip() { if (tip) tip.classList.remove('on'); }
@@ -715,13 +770,17 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
       tip.classList.add('on');
     }
 
-    function book(d) {
-      var m = dims(d), wrap = h('div', 'bk'), a = h('a', 'book');
-      wrap.style.width = m.w + 'px'; wrap.style.height = m.h + 'px';
+    function bookEl(d, s, flat) {
+      var wrap = h('div', 'bk' + (flat ? ' flat' : '')), a = h('a', 'book v' + s.v);
       a.href = U(d.file); a.target = '_blank'; a.rel = 'noopener';
       a.style.setProperty('--bk', colorOf(d));
+      a.style.setProperty('--br', s.br);
+      a.style.setProperty('--sx', (10 + (s.n >>> 3) % 80) + '%');
+      a.style.setProperty('--sy', (10 + (s.n >>> 9) % 80) + '%');
       a.setAttribute('aria-label', (d.title || 'Documento') + '. Tema: ' + (d.topic || 'Otros') + '. Abrir');
       a.appendChild(h('span', 'sp', d.title || d.name || 'Sin título'));
+      var kd = kind(d.contentType);
+      a.appendChild(h('span', 'pg', kd === 'pdf' ? 'PDF' : kd === 'img' ? 'IMG' : kd === 'video' ? 'VID' : 'TXT'));
       a.addEventListener('mouseenter', function () { showTip(d, a); });
       a.addEventListener('focus', function () { showTip(d, a); });
       a.addEventListener('mouseleave', hideTip);
@@ -745,6 +804,29 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
         wrap.appendChild(del);
       }
       return wrap;
+    }
+
+    function blockEl(b) {
+      if (b.t === 'pile') {
+        var p = h('div', 'pile'), y = 0, specs = b.docs.map(spec), maxL = b.w - 8;
+        b.docs.forEach(function (d, i) {
+          var s = specs[i], m = pileDims(s), w = bookEl(d, s, true);
+          w.style.width = m.L + 'px'; w.style.height = m.T + 'px';
+          w.style.left = (4 + (maxL - m.L) / 2 + ((s.n >>> 6) % 7) - 3) + 'px'; w.style.bottom = y + 'px';
+          w.firstChild.style.setProperty('--rot', (((s.n >>> 9) % 7) - 3) * 0.45 + 'deg');
+          p.appendChild(w); y += m.T;
+        });
+        p.style.width = b.w + 'px'; p.style.height = y + 'px';
+        return p;
+      }
+      var w2 = bookEl(b.d, b.s, false);
+      w2.style.width = b.s.w + 'px'; w2.style.height = b.s.h + 'px'; w2.style.marginRight = '1px';
+      if (b.t === 'lean') {
+        w2.classList.add('lean');
+        w2.firstChild.style.setProperty('--rot', b.ang + 'deg');
+        if (b.ang < 0) { w2.classList.add('l'); w2.style.marginLeft = b.gap + 'px'; } else w2.style.marginRight = (b.gap + 1) + 'px';
+      }
+      return w2;
     }
 
     function mergeable(it) { return !it.err && it.ct.indexOf('image/') === 0 && it.ct !== 'image/svg+xml'; }
