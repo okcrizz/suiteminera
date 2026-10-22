@@ -308,6 +308,18 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
 .tip .th { margin: auto 0 0; padding-top: 10px; font-size: 12px; color: var(--amber); }
 @media (max-width: 520px) { .shelf { padding: 20px 6px 0; } .books { min-height: 170px; } .board { margin: 0 -4px 20px; } .tip { width: 300px; grid-template-columns: 104px minmax(0, 1fr); gap: 12px; padding: 12px; } .cov { width: 104px; } .sp { font-size: 11px; } }
 
+/* Franjas de palabras y cifras con zoom al desplazarse */
+.words { padding-top: 96px; text-align: center; }
+.words .eyebrow { margin-bottom: 6px; }
+.word { margin: 0; padding-block: clamp(6px, 2vh, 18px); }
+.word span { display: inline-block; font-size: clamp(54px, 13vw, 148px); font-weight: 700; letter-spacing: -.045em; line-height: 1; color: var(--fg-muted); transition: color .35s; }
+.word span.hot { color: var(--accent); }
+.words-note { margin: 30px auto 0; max-width: 40ch; color: var(--fg-muted); font-size: clamp(17px, 2vw, 21px); text-wrap: balance; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; padding-block: 120px 8px; text-align: center; }
+.stat .num { display: block; font-size: clamp(72px, 12vw, 150px); font-weight: 700; letter-spacing: -.05em; line-height: .95; font-variant-numeric: tabular-nums; background: linear-gradient(var(--accent), var(--amber)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stat p { margin: 12px auto 0; max-width: 18ch; color: var(--fg-muted); font-size: clamp(15px, 1.6vw, 19px); text-wrap: balance; }
+@media (max-width: 640px) { .stats { grid-template-columns: minmax(0, 1fr); gap: 64px; padding-block: 96px 0; } }
+
 /* Paralaje: el script escribe --py, --rot, --sc y --op según la posición de cada elemento al desplazarse. Sin script, todo queda en su lugar. */
 [data-par], [data-sp] { transform: translate3d(var(--px, 0px), var(--py, 0px), 0) rotate(var(--rot, 0deg)) scale(var(--sc, 1)); opacity: var(--op, 1); }
 .viz > svg, .viz > .bigstat { will-change: transform; }
@@ -344,15 +356,30 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
 
 <main id="inicio">
   <header class="hero wrap">
-    <p class="eyebrow" data-sp="0.14">Herramientas para la mina</p>
-    <h1 data-sp="0.3">Minería, calculada.</h1>
-    <p class="lede" data-sp="0.46">Todas nuestras aplicaciones mineras en un solo lugar. De la perforación a la ley final.</p>
-    <div class="cta" data-sp="0.6">
+    <p class="eyebrow" data-sp="0.14" data-zm="0.12">Herramientas para la mina</p>
+    <h1 data-sp="0.3" data-zm="0.55">Minería, calculada.</h1>
+    <p class="lede" data-sp="0.46" data-zm="0.25">Todas nuestras aplicaciones mineras en un solo lugar. De la perforación a la ley final.</p>
+    <div class="cta" data-sp="0.6" data-zm="0.12">
       <a class="btn" href="#apps">Ver aplicaciones</a>
       <a class="link" href="#plataforma">Cómo funciona</a>
     </div>
     <svg class="pit" id="pit" viewBox="0 0 1000 420" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Curvas de nivel de un tajo abierto con bancos cada 15 metros"></svg>
   </header>
+
+  <section class="words wrap" aria-label="El ciclo minero">
+    <p class="eyebrow">El ciclo minero</p>
+    <p class="word"><span>Perforar.</span></p>
+    <p class="word"><span>Tronar.</span></p>
+    <p class="word"><span>Cargar.</span></p>
+    <p class="word"><span>Procesar.</span></p>
+    <p class="words-note">Cada etapa tiene su herramienta. Todas viven en este portal.</p>
+  </section>
+
+  <section class="stats wrap" aria-label="El portal en cifras">
+    <div class="stat"><span class="num" id="st-docs" data-to="0">0</span><p>documentos técnicos en la biblioteca</p></div>
+    <div class="stat"><span class="num" id="st-topics" data-to="0">0</span><p>temas distintos</p></div>
+    <div class="stat"><span class="num" data-to="4">4</span><p>aplicaciones en uso en terreno</p></div>
+  </section>
 
   <section id="en-uso" class="showcase" aria-labelledby="uso-t">
     <div class="wrap">
@@ -535,7 +562,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
         <h3>Inspecciones y riesgos.</h3>
         <p class="desc">Registra hallazgos en terreno y sigue cada acción hasta cerrarla.</p>
         <div class="actions"><a class="link" href="#">Abrir app</a><a class="link" href="#">Más información</a></div>
-        <div class="viz"><p class="bigstat" style="color:var(--amber)">412<small>días sin incidentes con tiempo perdido</small></p></div>
+        <div class="viz"><p class="bigstat" style="color:var(--amber)"><span class="num" data-to="412">412</span><small>días sin incidentes con tiempo perdido</small></p></div>
       </article>
 
       <!-- 6. Balance metalúrgico -->
@@ -592,6 +619,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
     function fdate(ms) { try { return new Date(ms).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } }
     function kind(ct) { ct = ct || ''; if (ct === 'application/pdf') return 'pdf'; if (ct.indexOf('image/') === 0) return 'img'; if (ct.indexOf('video/') === 0) return 'video'; return 'txt'; }
     var tick = false;
+    function setStat(id, v) { var e = $(id); if (!e) return; e.dataset.to = v; if (window.__count) window.__count(e); }
     function relayout() { if (tick) return; tick = true; requestAnimationFrame(function () { tick = false; window.dispatchEvent(new Event('resize')); }); }
 
     function errText(e) {
@@ -608,6 +636,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
       S.docs.forEach(function (d) { counts[d.topic] = (counts[d.topic] || 0) + 1; });
       var names = Object.keys(counts).sort(function (a, b) { return a.localeCompare(b, 'es'); });
       if (S.topic !== 'all' && !counts[S.topic]) S.topic = 'all';
+      if (S.loaded) { setStat('st-docs', S.docs.length); setStat('st-topics', names.length); }
 
       topicSel.textContent = '';
       chips.hidden = names.length < 2;
@@ -1155,9 +1184,9 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
   var PAR = [
     ['.tile .cat', 8], ['.tile h3', 14], ['.tile p.desc', 22], ['.tile .tags', 28], ['.tile .actions', 34],
     ['.viz > svg, .viz > .bigstat', -28],
-    ['.section-head h2', 10], ['.section-head p', 20],
+    ['.section-head h2', 10, 0, 0.16], ['.section-head p', 20, 0, 0.07], ['.stat', 10, 0, 0.22],
     ['.platform .ico', 16, 14, 0.14], ['.slide h4', 0], ['.slide p', 0],
-    ['.contact h2', 10], ['.contact .lede', 18], ['.contact .cta', 28],
+    ['.contact h2', 10, 0, 0.16], ['.contact .lede', 18], ['.contact .cta', 28],
     /* En uso: el teléfono avanza más lento que la página y se inclina; halo y etiquetas van a otra profundidad */
     ['.show:nth-of-type(odd) .phone', -46, 3, 0.06], ['.show:nth-of-type(even) .phone', -46, -3, 0.06],
     ['.show .halo', 70, 0, 0.3],
@@ -1174,6 +1203,11 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
       n.setAttribute('data-par', '');
       items.push({ n: n, speed: p[1], rk: p[2] || 0, sk: p[3] || 0, cy: 0, vis: true });
     });
+  });
+  /* Palabras del ciclo minero: crecen y se encienden al acercarse al centro de la pantalla */
+  document.querySelectorAll('.word span').forEach(function (n) {
+    n.setAttribute('data-par', '');
+    items.push({ n: n, speed: 0, rk: 0, sk: 0, zoom: true, cy: 0, vis: true });
   });
   var heroEl = document.querySelector('.hero');
   var heroEls = Array.prototype.slice.call(document.querySelectorAll('[data-sp]'));
@@ -1211,7 +1245,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
       links.forEach(function (l) { l.style.strokeDashoffset = (-d * 160).toFixed(1); });
     } },
     { sel: '.bigstat', fn: function (d) {
-      document.querySelector('.bigstat').style.setProperty('--sc', (1 - Math.min(Math.abs(d), 1) * 0.08).toFixed(3));
+      document.querySelector('.bigstat').style.setProperty('--sc', (0.6 + 0.55 * (1 - Math.min(Math.abs(d), 1))).toFixed(3));
     } }
   ];
   tfx.forEach(function (t) { t.tile = document.querySelector(t.sel).closest('.tile'); t.cy = 0; t.vis = true; });
@@ -1228,6 +1262,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
     heroEls.forEach(function (n) {
       n.style.setProperty('--py', (clamp(sy, 0, heroH * 1.2) * parseFloat(n.getAttribute('data-sp'))).toFixed(1) + 'px');
       n.style.setProperty('--op', clamp(1 - hp * 1.3, 0, 1).toFixed(3));
+      n.style.setProperty('--sc', (1 + hp * parseFloat(n.getAttribute('data-zm') || 0)).toFixed(3));
     });
     ringGs.forEach(function (o) {
       o.g.style.transform = 'translate3d(' + (-hp * o.depth * 80).toFixed(1) + 'px,' + (hp * (20 + o.depth * 300)).toFixed(1) + 'px,0) scale(' + (1 + hp * o.depth * 0.7).toFixed(3) + ')';
@@ -1236,10 +1271,18 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
     items.forEach(function (it) {
       if (!it.vis) return;
       var d = clamp((it.cy - sy - vh / 2) / vh, -1.5, 1.5);
+      if (it.zoom) {
+        var f = 1 - clamp(Math.abs(d) * 1.35, 0, 1);
+        it.n.style.setProperty('--sc', (0.58 + 0.56 * f).toFixed(3));
+        it.n.style.setProperty('--op', (0.16 + 0.84 * f).toFixed(3));
+        it.n.classList.toggle('hot', f > 0.72);
+        return;
+      }
       it.n.style.setProperty('--py', (d * it.speed * KS).toFixed(1) + 'px');
       if (it.rk) it.n.style.setProperty('--rot', (d * it.rk * KR).toFixed(1) + 'deg');
       if (it.sk) it.n.style.setProperty('--sc', (1 - Math.min(Math.abs(d), 1) * it.sk * KR).toFixed(3));
     });
+    checkNums();
     tfx.forEach(function (t) {
       if (!t.vis) return;
       var d = (t.cy - sy - vh / 2) / vh;
@@ -1267,6 +1310,29 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
     });
     heroH = heroEl.offsetHeight;
     update();
+  }
+  /* Cifras: cuentan desde 0 cuando entran en pantalla. Con movimiento reducido se muestran de una vez. */
+  var nums = [].slice.call(document.querySelectorAll('.num[data-to]'));
+  function showNum(n, v) { n.textContent = Math.round(v).toLocaleString('es-CL'); }
+  function countAnim(n, from, to) {
+    var t0 = performance.now(), dur = 1400;
+    (function step(t) {
+      var p = clamp((t - t0) / dur, 0, 1), e = 1 - Math.pow(1 - p, 3);
+      showNum(n, from + (to - from) * e);
+      if (p < 1) requestAnimationFrame(step);
+    })(t0);
+  }
+  window.__count = function (n) {
+    var to = +n.dataset.to || 0;
+    if (reduce) { showNum(n, to); return; }
+    if (n.dataset.started) countAnim(n, parseInt((n.textContent || '0').replace(/\D/g, ''), 10) || 0, to);
+  };
+  nums.forEach(function (n) { if (reduce) showNum(n, +n.dataset.to || 0); });
+  function checkNums() {
+    nums.forEach(function (n) {
+      if (n.dataset.started) return;
+      if (n.getBoundingClientRect().top < vh * 0.92) { n.dataset.started = '1'; countAnim(n, 0, +n.dataset.to || 0); }
+    });
   }
   function schedule() { if (!pending) { pending = true; requestAnimationFrame(update); } }
   var measureQueued = false;
