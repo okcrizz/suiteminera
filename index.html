@@ -309,26 +309,20 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
 @media (max-width: 520px) { .shelf { padding: 20px 6px 0; } .books { min-height: 170px; } .board { margin: 0 -4px 20px; } .tip { width: 300px; grid-template-columns: 104px minmax(0, 1fr); gap: 12px; padding: 12px; } .cov { width: 104px; } .sp { font-size: 11px; } }
 
 /* Franjas de palabras y cifras con zoom al desplazarse */
-.words { padding-top: 96px; text-align: center; }
-.words .eyebrow { margin-bottom: 6px; }
-.word { margin: 0; padding-block: clamp(6px, 2vh, 18px); }
-.word span { display: inline-block; font-size: clamp(54px, 13vw, 148px); font-weight: 700; letter-spacing: -.045em; line-height: 1; color: var(--fg-muted); transition: color .35s; }
-.word span.hot { color: var(--accent); }
-.words-note { margin: 30px auto 0; max-width: 40ch; color: var(--fg-muted); font-size: clamp(17px, 2vw, 21px); text-wrap: balance; }
 .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; padding-block: 120px 8px; text-align: center; }
 .stat .num { display: block; font-size: clamp(72px, 12vw, 150px); font-weight: 700; letter-spacing: -.05em; line-height: .95; font-variant-numeric: tabular-nums; background: linear-gradient(var(--accent), var(--amber)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .stat p { margin: 12px auto 0; max-width: 18ch; color: var(--fg-muted); font-size: clamp(15px, 1.6vw, 19px); text-wrap: balance; }
 @media (max-width: 640px) { .stats { grid-template-columns: minmax(0, 1fr); gap: 64px; padding-block: 96px 0; } }
 
 /* Minería: video a pantalla completa que, al desplazarte, queda dentro de la palabra (efecto de apple.com) */
-.mn { position: relative; height: 340vh; margin-top: 96px; background: #0b0d11; }
+.mn { position: relative; height: 560vh; margin-top: 96px; background: #0b0d11; }
 .mn-pin { position: sticky; top: 0; height: 100vh; overflow: hidden; background: #0b0d11; --vs: 1.14; --eb: 0; --cp: 0; --hint: 1; --fs: 220px; }
 .mn-v { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(var(--vs)); }
 .mn-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .mn-svg text { font-family: var(--font); font-weight: 800; letter-spacing: -.045em; }
 .mn-eb, .mn-cap { position: absolute; left: 0; right: 0; margin: 0; text-align: center; color: #f6f1e8; padding-inline: max(16px, env(safe-area-inset-left, 0px)); }
-.mn-eb { top: calc(50% - var(--fs) * 0.42 - 54px); font-size: clamp(15px, 2vw, 21px); font-weight: 600; letter-spacing: .02em; color: var(--amber); opacity: var(--eb); transform: translateY(calc((1 - var(--eb)) * 18px)); }
-.mn-cap { top: calc(50% + var(--fs) * 0.42 + 26px); max-width: 36ch; margin-inline: auto; font-size: clamp(17px, 2.2vw, 26px); line-height: 1.3; font-weight: 500; letter-spacing: -.015em; color: rgba(246,241,232,.86); text-wrap: balance; opacity: var(--cp); transform: translateY(calc((1 - var(--cp)) * 24px)); }
+.mn-eb { top: var(--ebt, 20%); font-size: clamp(15px, 2vw, 21px); font-weight: 600; letter-spacing: .02em; color: var(--amber); opacity: var(--eb); transform: translateY(calc((1 - var(--eb)) * 18px)); }
+.mn-cap { top: var(--cpt, 80%); max-width: 36ch; margin-inline: auto; font-size: clamp(17px, 2.2vw, 26px); line-height: 1.3; font-weight: 500; letter-spacing: -.015em; color: rgba(246,241,232,.86); text-wrap: balance; opacity: var(--cp); transform: translateY(calc((1 - var(--cp)) * 24px)); }
 .mn-hint { position: absolute; left: 50%; bottom: max(28px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: rgba(246,241,232,.8); text-shadow: 0 1px 12px rgba(0,0,0,.6); opacity: var(--hint); pointer-events: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 @media (prefers-reduced-motion: reduce) { .mn { height: auto; } .mn-pin { position: relative; height: 86vh; --vs: 1; --eb: 1; --cp: 1; --hint: 0; } }
@@ -357,7 +351,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
       Portal Minero
     </a>
     <ul>
-      <li><a href="#mineria">Minería</a></li>
+      <li><a href="#mineria">Ciclo minero</a></li>
       <li class="keep"><a href="#en-uso">En uso</a></li>
       <li class="keep"><a href="#biblioteca">Biblioteca</a></li>
       <li><a href="#plataforma">Plataforma</a></li>
@@ -379,69 +373,80 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
     <svg class="pit" id="pit" viewBox="0 0 1000 420" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Terreno de cerros que, al desplazarte, se transforma en un rajo abierto con bancos"></svg>
   </header>
 
-  <section class="words wrap" aria-label="El ciclo minero">
-    <p class="eyebrow">El ciclo minero</p>
-    <p class="word"><span>Perforar.</span></p>
-    <p class="word"><span>Tronar.</span></p>
-    <p class="word"><span>Cargar.</span></p>
-    <p class="word"><span>Procesar.</span></p>
-    <p class="words-note">Cada etapa tiene su herramienta. Todas viven en este portal.</p>
-  </section>
-
-  <section class="mn" id="mineria" aria-label="Minería">
+  <section class="mn" id="mineria" aria-label="El ciclo minero">
     <div class="mn-pin">
       <video class="mn-v" muted loop playsinline preload="none" poster="media/tronadura.jpg" aria-label="Tronadura en una mina a cielo abierto, vista desde el aire"><source src="media/tronadura.mp4" type="video/mp4"></video>
       <svg class="mn-svg" aria-hidden="true" preserveAspectRatio="none">
-        <defs><mask id="mn-m"><rect id="mn-r" x="0" y="0" width="100" height="100" fill="#fff"/><text id="mn-t" x="50" y="50" text-anchor="middle" dominant-baseline="central" fill="#000">Minería</text></mask></defs>
+        <defs><mask id="mn-m">
+          <rect id="mn-r" x="0" y="0" width="100" height="100" fill="#fff"/>
+          <text id="mn-t0" x="0" y="0" text-anchor="middle" dominant-baseline="central" fill="#000">Perforar.</text>
+          <text id="mn-t1" x="0" y="0" text-anchor="middle" dominant-baseline="central" fill="#fff">Tronar.</text>
+          <text id="mn-t2" x="0" y="0" text-anchor="middle" dominant-baseline="central" fill="#fff">Cargar.</text>
+          <text id="mn-t3" x="0" y="0" text-anchor="middle" dominant-baseline="central" fill="#fff">Procesar.</text>
+        </mask></defs>
         <rect id="mn-ov" x="0" y="0" width="100" height="100" fill="#0b0d11" mask="url(#mn-m)"/>
       </svg>
-      <h2 class="sr-only">Minería</h2>
-      <p class="mn-eb">Voladura a cielo abierto</p>
-      <p class="mn-cap">Un disparo, miles de toneladas de roca en movimiento.</p>
+      <h2 class="sr-only">El ciclo minero: perforar, tronar, cargar y procesar</h2>
+      <p class="mn-eb">El ciclo minero</p>
+      <p class="mn-cap">Cada etapa tiene su herramienta. Todas viven en este portal.</p>
       <span class="mn-hint">Desliza</span>
     </div>
   </section>
 
   <script>
+  /* El video sale de la palabra «Perforar.»; al seguir desplazando, la palabra sube y aparecen Tronar., Cargar. y Procesar. hacia abajo */
   (function () {
     var sect = document.getElementById('mineria');
     if (!sect) return;
     var pin = sect.querySelector('.mn-pin'), vid = pin.querySelector('video'), svg = pin.querySelector('svg');
-    var rect = document.getElementById('mn-r'), ov = document.getElementById('mn-ov'), tx = document.getElementById('mn-t');
+    var rect = document.getElementById('mn-r'), ov = document.getElementById('mn-ov');
+    var T = [0, 1, 2, 3].map(function (i) { return document.getElementById('mn-t' + i); });
     var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-    var W = 0, H = 0, KMAX = 16, ticking = false;
+    var W = 0, H = 0, ratio = 0.5, ys = [0, 0, 0, 0], KMAX = 16, ticking = false;
     function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
     function smooth(a, b, x) { var q = clamp((x - a) / (b - a), 0, 1); return q * q * (3 - 2 * q); }
+    var APPEAR = [null, [0.56, 0.68], [0.65, 0.77], [0.74, 0.86]];
 
     function update() {
       ticking = false;
-      var r = sect.getBoundingClientRect(), total = Math.max(1, r.height - window.innerHeight), p = clamp(-r.top / total, 0, 1);
-      var e = reduce ? 1 : smooth(0.1, 0.72, p), k = Math.exp(Math.log(KMAX) * (1 - e));
-      tx.setAttribute('transform', 'translate(' + W / 2 + ' ' + H / 2 + ') scale(' + k.toFixed(4) + ') translate(' + (-W / 2) + ' ' + (-H / 2) + ')');
-      ov.style.opacity = reduce ? 1 : smooth(0.05, 0.36, p).toFixed(3);
-      pin.style.setProperty('--vs', (1.14 - 0.14 * e).toFixed(4));
-      if (!reduce) {
-        pin.style.setProperty('--eb', smooth(0.62, 0.8, p).toFixed(3));
-        pin.style.setProperty('--cp', smooth(0.74, 0.92, p).toFixed(3));
-        pin.style.setProperty('--hint', (1 - smooth(0, 0.07, p)).toFixed(3));
+      var r = sect.getBoundingClientRect(), total = Math.max(1, r.height - window.innerHeight);
+      var p = reduce ? 0.97 : clamp(-r.top / total, 0, 1);
+      var e = smooth(0.06, 0.38, p), k = Math.exp(Math.log(KMAX) * (1 - e)), s = smooth(0.42, 0.62, p);
+      var m = 1 + (ratio - 1) * s, y0 = H / 2 + (ys[0] - H / 2) * s;
+      T[0].setAttribute('transform', 'translate(' + (W / 2).toFixed(1) + ' ' + y0.toFixed(1) + ') scale(' + (k * m).toFixed(4) + ')');
+      for (var i = 1; i < 4; i++) {
+        var o = smooth(APPEAR[i][0], APPEAR[i][1], p), v = Math.round(255 * (1 - o));
+        T[i].setAttribute('transform', 'translate(' + (W / 2).toFixed(1) + ' ' + ys[i].toFixed(1) + ') scale(' + (ratio * (0.7 + 0.3 * o)).toFixed(4) + ')');
+        T[i].setAttribute('fill', 'rgb(' + v + ',' + v + ',' + v + ')');
+        T[i].setAttribute('opacity', smooth(0, 0.12, o).toFixed(3));
       }
+      ov.style.opacity = smooth(0.04, 0.26, p).toFixed(3);
+      pin.style.setProperty('--vs', (1.14 - 0.14 * smooth(0.06, 0.6, p)).toFixed(4));
+      pin.style.setProperty('--eb', smooth(0.5, 0.62, p).toFixed(3));
+      pin.style.setProperty('--cp', smooth(0.86, 0.96, p).toFixed(3));
+      pin.style.setProperty('--hint', (1 - smooth(0, 0.05, p)).toFixed(3));
     }
     function layout() {
       W = pin.clientWidth || window.innerWidth; H = pin.clientHeight || window.innerHeight;
       svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
       [rect, ov].forEach(function (n) { n.setAttribute('width', W); n.setAttribute('height', H); });
-      tx.setAttribute('x', W / 2); tx.setAttribute('y', H / 2);
-      tx.style.fontSize = '100px';
-      var len = tx.getComputedTextLength() || 360, fs = Math.min(100 * (W * 0.88) / len, H * 0.62);
-      tx.style.fontSize = fs.toFixed(1) + 'px';
-      pin.style.setProperty('--fs', fs.toFixed(1) + 'px');
+      T.forEach(function (t) { t.style.fontSize = '100px'; });
+      var lens = T.map(function (t) { return t.getComputedTextLength() || 380; });
+      var big = Math.min(100 * (W * 0.88) / lens[0], H * 0.62);
+      var fsF = Math.min(100 * (W * 0.8) / Math.max.apply(null, lens), H * 0.16, big);
+      ratio = fsF / big;
+      var ls = fsF * 1.12;
+      ys = [0, 1, 2, 3].map(function (i) { return H * 0.5 + (i - 1.5) * ls; });
+      T.forEach(function (t) { t.style.fontSize = big.toFixed(1) + 'px'; });
+      pin.style.setProperty('--ebt', Math.max(64, ys[0] - fsF * 0.6 - 44).toFixed(0) + 'px');
+      pin.style.setProperty('--cpt', Math.min(H - 70, ys[3] + fsF * 0.6 + 20).toFixed(0) + 'px');
       update();
     }
     function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
 
     layout();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
-    window.addEventListener('scroll', onScroll, { passive: true });
+    if (!reduce) window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', layout);
     if (!reduce && 'IntersectionObserver' in window) {
       new IntersectionObserver(function (es) {
@@ -1190,11 +1195,6 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
       n.setAttribute('data-par', '');
       items.push({ n: n, speed: p[1], rk: p[2] || 0, sk: p[3] || 0, cy: 0, vis: true });
     });
-  });
-  /* Palabras del ciclo minero: crecen y se encienden al acercarse al centro de la pantalla */
-  document.querySelectorAll('.word span').forEach(function (n) {
-    n.setAttribute('data-par', '');
-    items.push({ n: n, speed: 0, rk: 0, sk: 0, zoom: true, cy: 0, vis: true });
   });
   var heroEl = document.querySelector('.hero'), pitEl = document.getElementById('pit'), pitTop = 400;
   var heroEls = Array.prototype.slice.call(document.querySelectorAll('[data-sp]'));
