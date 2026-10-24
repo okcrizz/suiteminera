@@ -78,8 +78,22 @@ h1 { font-size: clamp(44px, 9vw, 92px); line-height: 1.04; font-weight: 700; let
 .link { display: inline-flex; align-items: center; min-height: 44px; font-size: 17px; color: var(--accent); }
 .link::after { content: "›"; margin-left: 5px; font-size: 1.15em; transition: transform .2s; }
 .link:hover::after { transform: translateX(3px); }
-.pit { position: relative; z-index: 3; margin-top: 28px; width: 100%; height: clamp(220px, 38vw, 420px); display: block; }
-.pit text { font-family: var(--font-mono); font-size: 11px; fill: var(--fg-muted); }
+
+/* Cabecera: fila de aplicaciones con su icono, como la Store de apple.com */
+.apps { position: relative; z-index: 3; background: var(--bg); text-align: left; margin-top: 76px; padding: 0 0 72px; }
+.apps-t { font-size: clamp(40px, 6.4vw, 68px); letter-spacing: -.035em; }
+.apps-row { list-style: none; margin: 56px 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px; }
+.apps-row a { display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 8px 4px 14px; text-align: center; font-size: 15px; font-weight: 500; letter-spacing: -.01em; line-height: 1.25; }
+.apps-row img { width: clamp(84px, 11vw, 124px); height: auto; aspect-ratio: 1; display: block; border-radius: 50% 50% 4% 50%; box-shadow: 0 14px 26px -14px rgba(0,0,0,.45); transition: transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s; }
+.apps-row a:hover img, .apps-row a:focus-visible img { transform: translateY(-6px) scale(1.06); box-shadow: 0 26px 34px -16px rgba(0,0,0,.5); }
+.apps-row a:hover span, .apps-row a:focus-visible span { color: var(--accent); }
+@media (max-width: 760px) {
+  .apps { margin-top: 48px; padding-bottom: 48px; }
+  .apps-row { display: flex; gap: 8px; margin: 36px -16px 0; padding: 4px 16px 0; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; }
+  .apps-row::-webkit-scrollbar { display: none; }
+  .apps-row li { flex: 0 0 112px; scroll-snap-align: start; }
+}
+.show { scroll-margin-top: 48px; }
 
 /* Aplicaciones */
 .section-head { text-align: center; padding-top: 96px; }
@@ -366,11 +380,16 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
     <p class="eyebrow" data-sp="0.14" data-zm="0.12">Herramientas para la mina</p>
     <h1 data-sp="0.3" data-zm="0.55">Minería, calculada.</h1>
     <p class="lede" data-sp="0.46" data-zm="0.25">Todas nuestras aplicaciones mineras en un solo lugar. De la perforación a la ley final.</p>
-    <div class="cta" data-sp="0.6" data-zm="0.12">
-      <a class="btn" href="#en-uso">Ver aplicaciones</a>
-      <a class="link" href="#plataforma">Cómo funciona</a>
-    </div>
-    <svg class="pit" id="pit" viewBox="0 0 1000 420" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Terreno de cerros que, al desplazarte, se transforma en un rajo abierto con bancos"></svg>
+    <nav class="apps" aria-label="Aplicaciones">
+      <h2 class="apps-t">Aplicaciones.</h2>
+      <ul class="apps-row">
+        <li><a href="#app-marina"><img src="media/app-marina.jpg" width="200" height="200" alt=""><span>Reporte Marina</span></a></li>
+        <li><a href="#app-sosart"><img src="media/app-sosart.jpg" width="200" height="200" alt=""><span>SOS ART</span></a></li>
+        <li><a href="#app-frentes"><img src="media/app-frentes.jpg" width="200" height="200" alt=""><span>Diseñador de Frentes</span></a></li>
+        <li><a href="#app-equipo"><img src="media/app-equipo.jpg" width="200" height="200" alt=""><span>Reporte Equipo</span></a></li>
+        <li><a href="#app-calturno"><img src="media/app-calturno.jpg" width="200" height="200" alt=""><span>Calendario de Riña</span></a></li>
+      </ul>
+    </nav>
   </header>
 
   <section class="mn" id="mineria" aria-label="El ciclo minero">
@@ -474,7 +493,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
 
       <div class="shows">
         <!-- Reporte Marina -->
-        <article class="show" style="--app:#ea7a1c">
+        <article class="show" id="app-marina" style="--app:#ea7a1c">
           <div class="stage">
             <div class="halo" aria-hidden="true"></div>
             <div class="phone"><div class="screen"><video muted loop playsinline preload="none" data-fs="4" poster="media/reporte-marina.jpg" aria-label="Grabación de Reporte Marina: tarea, equipos, cronómetro y cálculo de toneladas"><source src="media/reporte-marina.mp4" type="video/mp4"></video></div></div>
@@ -498,7 +517,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
         </article>
 
         <!-- SOS ART -->
-        <article class="show" style="--app:#ef5a28">
+        <article class="show" id="app-sosart" style="--app:#ef5a28">
           <div class="stage">
             <div class="halo" aria-hidden="true"></div>
             <div class="phone"><div class="screen"><video muted loop playsinline preload="none" data-fs="3" poster="media/sos-art.jpg" aria-label="Grabación de SOS ART: búsqueda de tarea, controles críticos y foco de fin de semana"><source src="media/sos-art.mp4" type="video/mp4"></video></div></div>
@@ -522,7 +541,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
         </article>
 
         <!-- Diseñador de Frentes -->
-        <article class="show" style="--app:#f0a31c">
+        <article class="show" id="app-frentes" style="--app:#f0a31c">
           <div class="stage">
             <div class="halo" aria-hidden="true"></div>
             <div class="phone"><div class="screen"><video muted loop playsinline preload="none" data-fs="4" poster="media/disenador-frentes.jpg" aria-label="Grabación de Diseñador de Frentes: malla de tiros en vista frontal y 3D, parámetros y tipos de corte"><source src="media/disenador-frentes.mp4" type="video/mp4"></video></div></div>
@@ -547,7 +566,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
         </article>
 
         <!-- Reporte Equipo -->
-        <article class="show" style="--app:#2d6cdf">
+        <article class="show" id="app-equipo" style="--app:#2d6cdf">
           <div class="stage">
             <div class="halo" aria-hidden="true"></div>
             <div class="phone"><div class="screen"><video muted loop playsinline preload="none" data-fs="3" poster="media/reporte-equipo.jpg" aria-label="Grabación de Reporte Equipo: apertura de sesión, niveles, inspección por partes y entrega"><source src="media/reporte-equipo.mp4" type="video/mp4"></video></div></div>
@@ -572,7 +591,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
         </article>
 
         <!-- Calendario de Riña -->
-        <article class="show" style="--app:#3f5fcf">
+        <article class="show" id="app-calturno" style="--app:#3f5fcf">
           <div class="stage">
             <div class="halo" aria-hidden="true"></div>
             <div class="phone"><div class="screen"><video muted loop playsinline preload="none" data-fs="1" poster="media/calendario-rina.jpg" aria-label="Grabación de Calendario de Riña: calendario de turnos, configuración del ciclo, vacaciones y alarma de ingreso"><source src="media/calendario-rina.mp4" type="video/mp4"></video></div></div>
@@ -1092,82 +1111,6 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
     return n;
   }
 
-  /* Terreno de la portada: parte como un plano con cerros y, al desplazarte, se cava un rajo abierto con bancos.
-     Son líneas de nivel vistas en perspectiva; cada fila tapa a las de atrás. */
-  var pit = document.getElementById('pit');
-  var ROWS = 34, COLS = 130, rowEls = [], T_LAST = -1;
-  function gauss(x, m, s) { var q = (x - m) / s; return Math.exp(-q * q); }
-  function smooth(e0, e1, x) { var q = Math.min(1, Math.max(0, (x - e0) / (e1 - e0))); return q * q * (3 - 2 * q); }
-  function baseH(u, z) {
-    var mount = (95 * gauss(u, -0.62, 0.30) + 125 * gauss(u, 0.60, 0.27) + 70 * gauss(u, 0.02, 0.2)) * Math.pow(1 - z, 1.3);
-    var rough = 15 * Math.sin(3.2 * u + 5.1 * z + 1) + 8 * Math.sin(7.4 * u - 4 * z) + 4 * Math.sin(13 * u + 9 * z);
-    return 26 + mount + rough * (0.45 + 0.4 * z);
-  }
-  /* t de 0 a 1: 0 es el terreno natural; 1 es el rajo terminado, con seis bancos escalonados y un borde de botaderos */
-  /* El borde del rajo es irregular, como uno real: el radio cambia con el ángulo */
-  function pitMod(th) { return 1 + 0.07 * Math.sin(3 * th + 0.7) + 0.05 * Math.sin(5 * th + 2.1) + 0.03 * Math.sin(9 * th); }
-  function heightAt(u, z, t) {
-    var b = baseH(u, z), dx = u / 0.92, dz = (z - 0.6) / 0.4, r = Math.sqrt(dx * dx + dz * dz) / pitMod(Math.atan2(dz, dx));
-    var m = smooth(1.4, 0.7, r) * t, h = b + (26 - b) * m;
-    if (r < 1) { var d = 1 - r, B = 6, q = Math.floor(d * B), fr = d * B - q; h -= t * 122 * (q + smooth(0.5, 0.92, fr)) / B; }
-    return h + t * 12 * gauss(r, 1.12, 0.1);
-  }
-  function rowY(z) { return 72 + 322 * Math.pow(z, 1.2); }
-  function rowK(z) { return 0.4 + 0.75 * z; }
-  for (var j = 0; j < ROWS; j++) {
-    var zr = j / (ROWS - 1);
-    rowEls.push(el('path', { fill: 'var(--bg)', stroke: 'var(--accent)', 'stroke-width': (0.8 + zr * 0.8).toFixed(2), 'stroke-linejoin': 'round', 'stroke-opacity': (0.28 + 0.72 * zr).toFixed(2) }, pit));
-  }
-  /* Los bancos del rajo, uno por escalón, dibujados sobre el terreno (solo la pared del fondo y los costados, que es lo que se ve) */
-  var BENCHES = 6, benchEls = [];
-  for (var q0 = 0; q0 < BENCHES; q0++) {
-    benchEls.push(el('path', { fill: 'none', stroke: q0 % 2 ? 'var(--accent)' : 'var(--amber)', 'stroke-width': 1.8, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', opacity: 0 }, pit));
-  }
-  var pitLabels = [
-    { u: 0.30, z: 0.43, text: 'Banco 3 450 m', side: 1, g: el('g', { opacity: 0 }, pit) },
-    { u: -0.34, z: 0.48, text: 'Banco 3 330 m', side: -1, g: el('g', { opacity: 0 }, pit) }
-  ];
-  pitLabels.forEach(function (l) {
-    l.dot = el('circle', { r: 3.2, fill: 'var(--amber)' }, l.g);
-    l.tx = el('text', { 'text-anchor': l.side > 0 ? 'start' : 'end' }, l.g);
-    l.tx.textContent = l.text;
-  });
-  function drawTerrain(t) {
-    t = Math.round(t * 500) / 500;
-    if (t === T_LAST) return;
-    T_LAST = t;
-    for (var j = 0; j < ROWS; j++) {
-      var z = j / (ROWS - 1), y0 = rowY(z), k = rowK(z), d = '';
-      for (var i = 0; i < COLS; i++) {
-        var x = -40 + 1080 * i / (COLS - 1), u = (x - 500) / 500;
-        d += (i ? 'L' : 'M') + x.toFixed(1) + ' ' + (y0 - k * heightAt(u, z, t)).toFixed(1);
-      }
-      rowEls[j].setAttribute('d', d + 'L1040 470L-40 470Z');
-    }
-    var ro = smooth(0.12, 0.7, t).toFixed(2);
-    for (var q = 0; q < BENCHES; q++) {
-      var rq = 1 - (q + 0.71) / BENCHES, dd = '';
-      for (var k = 0; k <= 56; k++) {
-        var th = Math.PI - 0.35 + (Math.PI + 0.7) * k / 56, rho = rq * pitMod(th), uu = 0.92 * rho * Math.cos(th), zz = 0.6 + 0.4 * rho * Math.sin(th);
-        dd += (k ? 'L' : 'M') + (500 + 500 * uu).toFixed(1) + ' ' + (rowY(zz) - rowK(zz) * heightAt(uu, zz, t)).toFixed(1);
-      }
-      benchEls[q].setAttribute('d', dd); benchEls[q].setAttribute('opacity', ro);
-    }
-    var op = smooth(0.6, 0.92, t).toFixed(2);
-    pitLabels.forEach(function (l) {
-      var x = 500 + l.u * 500, y = rowY(l.z) - rowK(l.z) * heightAt(l.u, l.z, t);
-      l.dot.setAttribute('cx', x.toFixed(1)); l.dot.setAttribute('cy', y.toFixed(1));
-      l.tx.setAttribute('x', (x + l.side * 9).toFixed(1)); l.tx.setAttribute('y', (y + 4).toFixed(1));
-      l.g.setAttribute('opacity', op);
-    });
-  }
-  var fade = el('defs', {}, pit);
-  var g = el('linearGradient', { id: 'pf', x1: 0, y1: 0, x2: 0, y2: 1 }, fade);
-  el('stop', { offset: '62%', 'stop-color': 'var(--bg)', 'stop-opacity': 0 }, g);
-  el('stop', { offset: '100%', 'stop-color': 'var(--bg)', 'stop-opacity': 1 }, g);
-  el('rect', { x: 0, y: 0, width: 1000, height: 420, fill: 'url(#pf)' }, pit);
-  drawTerrain(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 0);
-
   /* Paralaje al desplazarse: cada capa avanza a su propio ritmo */
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
   var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -1196,7 +1139,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
       items.push({ n: n, speed: p[1], rk: p[2] || 0, sk: p[3] || 0, cy: 0, vis: true });
     });
   });
-  var heroEl = document.querySelector('.hero'), pitEl = document.getElementById('pit'), pitTop = 400;
+  var heroEl = document.querySelector('.hero');
   var heroEls = Array.prototype.slice.call(document.querySelectorAll('[data-sp]'));
 
 
@@ -1207,14 +1150,13 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
     root.style.setProperty('--prog', clamp(sy / maxS, 0, 1).toFixed(4));
     root.style.setProperty('--logo-rot', (sy * 0.3).toFixed(1) + 'deg');
 
-    /* Héroe: el texto se queda atrás y se desvanece, el tajo se abre hacia el fondo */
+    /* Héroe: el texto se queda atrás y se desvanece */
     var hp = clamp(sy / Math.max(1, heroH), 0, 1);
     heroEls.forEach(function (n) {
       n.style.setProperty('--py', (clamp(sy, 0, heroH * 1.2) * parseFloat(n.getAttribute('data-sp'))).toFixed(1) + 'px');
       n.style.setProperty('--op', clamp(1 - hp * 1.3, 0, 1).toFixed(3));
       n.style.setProperty('--sc', (1 + hp * parseFloat(n.getAttribute('data-zm') || 0)).toFixed(3));
     });
-    drawTerrain(clamp(sy / Math.max(140, pitTop - 100), 0, 1));
 
     items.forEach(function (it) {
       if (!it.vis) return;
@@ -1246,7 +1188,6 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
       it.cy = r.top + sy + r.height / 2;
     });
     heroH = heroEl.offsetHeight;
-    pitTop = pitEl.getBoundingClientRect().top + sy;
     update();
   }
   /* Cifras: cuentan desde 0 cuando entran en pantalla. Con movimiento reducido se muestran de una vez. */
