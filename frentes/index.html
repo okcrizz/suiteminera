@@ -7,10 +7,77 @@
 <link rel="stylesheet" href="styles.css" />
 <style>
   html, body, #root { height: 100%; margin: 0; padding: 0; background: #12161b; overscroll-behavior: none; }
+  body { display: flex; flex-direction: column; }
+  #root { flex: none; height: calc(100% - 44px); }
+  .site { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 44px; padding: 0 20px; background: #0e0e0d; border-bottom: 1px solid #2c2a27; font: 500 12.5px -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Helvetica Neue", Arial, sans-serif; letter-spacing: -.01em; }
+  .site a { color: #a29d94; text-decoration: none; }
+  .site .brand { display: flex; align-items: center; gap: 9px; color: #f3f1ed; font-weight: 600; font-size: 15px; }
+  .site .brand svg { width: 20px; height: 20px; }
+  .site ul { display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; }
+  .site ul a { display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 980px; transition: color .2s, background .2s; }
+  .site ul a:hover, .site ul a:focus-visible { color: #fff; background: #e07a3a; }
+  .site ul a[aria-current="page"] { color: #f3f1ed; background: #232120; }
+  @media (max-width: 720px) { .site { padding: 0 12px; } .site ul li:not(.keep) { display: none; } }
 </style>
 </head>
 <body>
+<nav class="site" aria-label="Portal Minero">
+  <a class="brand" href="../" aria-label="Volver al Portal Minero">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 21 8v8l-9 6-9-6V8z" fill="#e07a3a"/><path d="M12 2v20M3 8l9 6 9-6" stroke="#0e0e0d" stroke-width="1.2" fill="none" opacity=".55"/></svg>
+    Portal Minero
+  </a>
+  <ul>
+    <li><a href="../#mineria">Ciclo minero</a></li>
+    <li class="keep"><a href="../#en-uso">En uso</a></li>
+    <li class="keep"><a href="../#biblioteca">Biblioteca</a></li>
+    <li><a href="index.html" aria-current="page">Diseñador de Frentes</a></li>
+    <li><a href="../#plataforma">Plataforma</a></li>
+    <li><a href="../#contacto">Contacto</a></li>
+  </ul>
+</nav>
 <div id="root"></div>
 <script src="bundle.js"></script>
+<script>
+/* Advertencias: marca con un pulso de neón los parámetros que explican cada aviso, y al tocar el aviso lleva hasta ellos */
+(function () {
+  var RULES = [
+    [/m.ximo te.rico del corte/, ['Largo de perforación', 'Diám. tiro alivio', 'Alivios']],
+    [/Corte angular/, ['Largo de perforación']],
+    [/Contorno forzado/, ['Contorno']],
+    [/Zapateras forzadas/, ['Zapateras']],
+    [/auxiliares/, ['Auxiliares']],
+    [/eje est. demasiado/, ['Desplazamiento del eje']],
+    [/gradiente queda/, ['Altura línea de gradiente']]
+  ];
+  var root = document.getElementById('root'), queued = false;
+  function rows() { return [].slice.call(root.querySelectorAll('.py-1, .mb-2.rounded.p-2')); }
+  function find(label, all) {
+    return all.filter(function (r) { return (r.textContent || '').indexOf(label) === 0; })[0];
+  }
+  function run() {
+    queued = false;
+    var all = rows(), want = [], first = {};
+    [].slice.call(root.querySelectorAll('p')).forEach(function (p) {
+      var t = p.textContent || '';
+      p.classList.remove('warn-link'); p.__go = null; p.removeAttribute('title');
+      if (t.indexOf('· ') !== 0) return;
+      RULES.forEach(function (rule) {
+        if (!rule[0].test(t)) return;
+        var hit = rule[1].map(function (l) { return find(l, all); }).filter(Boolean);
+        hit.forEach(function (r) { if (want.indexOf(r) < 0) want.push(r); });
+        if (hit.length) { p.classList.add('warn-link'); p.title = 'Ir al parámetro'; p.__go = hit[0]; }
+      });
+    });
+    all.forEach(function (r) { r.classList.toggle('warn-hl', want.indexOf(r) >= 0); });
+  }
+  function queue() { if (!queued) { queued = true; requestAnimationFrame(run); } }
+  root.addEventListener('click', function (e) {
+    var p = e.target.closest && e.target.closest('p.warn-link');
+    if (p && p.__go) p.__go.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  });
+  new MutationObserver(queue).observe(root, { childList: true, subtree: true, characterData: true });
+  queue();
+})();
+</script>
 </body>
 </html>
