@@ -368,6 +368,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
       <li><a href="#mineria">Ciclo minero</a></li>
       <li class="keep"><a href="#en-uso">En uso</a></li>
       <li class="keep"><a href="#biblioteca">Biblioteca</a></li>
+      <li><a href="frentes/index.html">Diseñador de Frentes</a></li>
       <li><a href="#plataforma">Plataforma</a></li>
       <li><a href="#contacto">Soporte</a></li>
       <li><a href="#contacto">Contacto</a></li>
@@ -447,6 +448,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
     }
     function layout() {
       W = pin.clientWidth || window.innerWidth; H = pin.clientHeight || window.innerHeight;
+      if (W < 2 || H < 2) return;
       svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
       [rect, ov].forEach(function (n) { n.setAttribute('width', W); n.setAttribute('height', H); });
       T.forEach(function (t) { t.style.fontSize = '100px'; });
