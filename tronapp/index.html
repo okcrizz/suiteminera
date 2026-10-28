@@ -458,18 +458,23 @@
 
   /* Escritorio y tablet horizontal: el diagrama queda fijo a la derecha y el resto de las opciones se desplaza a la izquierda */
   @media (min-width:900px){
-    #view-rajo>.shell{ display:grid; grid-template-columns:minmax(0,1fr) minmax(380px,44%); column-gap:24px; align-content:start; }
+    #view-rajo>.shell, #view-subte>.shell{ max-width:none; }
+    #view-rajo>.shell{ display:grid; grid-template-columns:minmax(0,1fr) minmax(420px,50%); column-gap:24px; align-content:start; }
     #view-rajo>.shell>*{ grid-column:1; }
     #view-rajo>.shell>.diagram-stick{ grid-column:2; grid-row:1 / span 4; }
-    #tab-carguio.active{ display:grid; grid-template-columns:minmax(0,1fr) minmax(380px,44%); column-gap:24px; align-content:start; }
+    #tab-carguio.active{ display:grid; grid-template-columns:minmax(0,1fr) minmax(480px,60%); column-gap:24px; align-content:start; }
     #tab-carguio>*{ grid-column:1; grid-row:1 / span 2; }
     #tab-carguio>.diagram-stick{ grid-column:2; }
+    #rajo-diagram{ max-height:calc(100vh - 245px); }
     #view-rajo .diagram-stick, #tab-carguio .diagram-stick{ align-self:start; margin-bottom:0; max-height:calc(100vh - var(--site-h) - 96px); overflow-y:auto; }
     #tab-carguio .ld-row{ grid-template-columns:1fr; }
     #tab-carguio .ld-row .loading-diagram{ margin-bottom:12px; }
   }
-  @media (min-width:900px) and (max-width:1279px){
-    #view-rajo .layout-2col, #tab-carguio .layout-2col{ grid-template-columns:1fr; }
+  @media (min-width:900px) and (max-width:1699px){
+    #view-rajo .layout-2col{ grid-template-columns:1fr; }
+  }
+  @media (min-width:900px) and (max-width:2099px){
+    #tab-carguio .layout-2col{ grid-template-columns:1fr; }
   }
 </style>
 
@@ -1268,8 +1273,12 @@
   function renderRajoDiagram(r, v){
     var mainSvg = $('#rajo-diagram');
     if(mainSvg){
-      mainSvg.setAttribute('viewBox', '0 0 '+RAJO_DIAGRAM_W+' 170');
-      mainSvg.innerHTML = buildRajoDiagramSVG(r, v, 170, 50, 38);
+      // En pantalla ancha el diagrama va fijo en un panel lateral y se dibuja
+      // más del doble de alto; en celular se mantiene corto para no tapar los deslizadores.
+      var tall = !!(window.matchMedia && window.matchMedia('(min-width:900px)').matches);
+      var mh = tall ? 630 : 170;
+      mainSvg.setAttribute('viewBox', '0 0 '+RAJO_DIAGRAM_W+' '+mh);
+      mainSvg.innerHTML = buildRajoDiagramSVG(r, v, mh, tall ? 84 : 50, tall ? 62 : 38);
     }
     var modalSvg = $('#rajo-diagram-modal');
     if(modalSvg){
@@ -1279,6 +1288,12 @@
   }
 
   var rajoGetters, rajoCache;
+  if(window.matchMedia){
+    var mqRajoWide = window.matchMedia('(min-width:900px)');
+    var onRajoWide = function(){ if(rajoCache && rajoGetters) renderRajoDiagram(rajoCache, readValues(rajoGetters)); };
+    if(mqRajoWide.addEventListener) mqRajoWide.addEventListener('change', onRajoWide);
+    else if(mqRajoWide.addListener) mqRajoWide.addListener(onRajoWide);
+  }
   function recalcRajo(){
     var v = readValues(rajoGetters);
     var override = rajoOverrideActive ? { active:true, taco:v.tacoManual, carga:v.cargaManual, pas:v.pasaduraManual } : null;
