@@ -454,6 +454,8 @@
   @media (max-width:720px){ .site{ padding:0 12px; } .site ul li:not(.keep){ display:none; } }
   .appbar{ top:var(--site-h); }
   .diagram-stick{ top:calc(var(--site-h) + 74px); }
+  /* Malla de perforación: el gráfico solo es fijo en pantalla ancha; en celular y tablet vertical va en el flujo normal */
+  .diagram-stick.malla-stick{ position:static; padding:0; margin:0; background:none; }
   @media (max-width:480px){ .diagram-stick{ top:calc(var(--site-h) + 91px); } }
 
   /* Escritorio y tablet horizontal: el diagrama queda fijo a la derecha y el resto de las opciones se desplaza a la izquierda */
@@ -465,10 +467,24 @@
     #tab-carguio.active{ display:grid; grid-template-columns:minmax(0,1fr) minmax(480px,60%); column-gap:24px; align-content:start; }
     #tab-carguio>*{ grid-column:1; grid-row:1 / span 2; }
     #tab-carguio>.diagram-stick{ grid-column:2; }
-    #rajo-diagram{ max-height:calc(100vh - 245px); }
-    #view-rajo .diagram-stick, #tab-carguio .diagram-stick{ align-self:start; margin-bottom:0; max-height:calc(100vh - var(--site-h) - 96px); overflow-y:auto; }
-    #tab-carguio .ld-row{ grid-template-columns:1fr; }
-    #tab-carguio .ld-row .loading-diagram{ margin-bottom:12px; }
+    /* El panel fijo mide exactamente lo que queda de ventana (sin scroll
+       interno) y el diagrama se redibuja para llenarlo: se adapta al
+       tamaño de la ventana y siempre se ve completo. */
+    #view-rajo .diagram-stick, #tab-carguio .diagram-stick, #tab-malla .diagram-stick{ align-self:start; margin-bottom:0; padding-bottom:0; height:calc(100vh - var(--site-h) - 96px); display:flex; flex-direction:column; overflow:hidden; }
+    #view-rajo .diagram-stick>.chart-card, #tab-carguio .diagram-stick>.chart-card, #tab-malla .diagram-stick>.chart-card{ flex:1 1 0; min-height:0; margin-bottom:0; display:flex; flex-direction:column; }
+    #rajo-diagram-hold, #rainura-hold{ flex:1 1 0; min-height:0; position:relative; }
+    .diagram-stick.malla-stick{ position:sticky; }
+    #tab-malla.active{ display:grid; grid-template-columns:minmax(0,1fr) minmax(480px,56%); column-gap:24px; align-content:start; }
+    #tab-malla .layout-2col, #tab-malla .layout-2col>div{ display:contents; }
+    #tab-malla .layout-2col .col-stick, #tab-malla .layout-2col>div>*{ grid-column:1; }
+    #tab-malla .layout-2col>div>.malla-stick{ grid-column:2; grid-row:1 / span 6; }
+    #view-rajo .chart-card svg#rainura-chart, #tab-malla .chart-card svg#rainura-chart{ position:absolute; inset:0; width:100%; height:100%; }
+    #view-rajo .chart-card svg#rajo-diagram{ position:absolute; inset:0; width:100%; height:100%; }
+    #tab-carguio .ld-row{ flex:1 1 0; min-height:0; display:flex; flex-direction:column; align-items:stretch; gap:0; }
+    #tab-carguio .ld-row .loading-diagram{ flex:1 1 0; min-height:0; display:flex; flex-direction:column; margin-bottom:10px; }
+    #tab-carguio .ld-row .loading-diagram:last-child{ margin-bottom:0; }
+    #tab-carguio .ld-row .loading-diagram h4{ flex:none; margin-bottom:4px; }
+    #tab-carguio .ld-row .loading-diagram svg{ flex:1 1 0; min-height:0; height:0; }
   }
   @media (min-width:900px) and (max-width:1699px){
     #view-rajo .layout-2col{ grid-template-columns:1fr; }
@@ -690,10 +706,15 @@
             </div>
           </div>
 
+          <div class="diagram-stick malla-stick">
+            <div class="chart-card" id="rainura-chart-card">
+              <div class="panel-title"><span class="dot"></span>Progresión de la rainura (corte quemado)</div>
+              <div id="rainura-hold"><svg id="rainura-chart" viewBox="0 0 560 300" preserveAspectRatio="xMidYMid meet"></svg></div>
+            </div>
+          </div>
+
           <div class="chart-card">
-            <div class="panel-title"><span class="dot"></span>Progresión de la rainura (corte quemado)</div>
-            <svg id="rainura-chart" viewBox="0 0 560 300" preserveAspectRatio="xMidYMid meet"></svg>
-            <div class="table-wrap" style="margin-top:10px;">
+            <div class="table-wrap">
               <table class="cmp" id="rainura-table"></table>
             </div>
             <div class="note" id="rainura-note"></div>
@@ -1277,8 +1298,14 @@
       // más del doble de alto; en celular se mantiene corto para no tapar los deslizadores.
       var tall = !!(window.matchMedia && window.matchMedia('(min-width:900px)').matches);
       var mh = tall ? 630 : 170;
+      var hold = $('#rajo-diagram-hold');
+      if(tall && hold && hold.clientWidth>80 && hold.clientHeight>80){
+        // El alto del dibujo sale de la proporción real del panel fijo, así
+        // llena todo el espacio disponible sea cual sea la ventana.
+        mh = Math.max(330, Math.min(1000, Math.round(RAJO_DIAGRAM_W*hold.clientHeight/hold.clientWidth)));
+      }
       mainSvg.setAttribute('viewBox', '0 0 '+RAJO_DIAGRAM_W+' '+mh);
-      mainSvg.innerHTML = buildRajoDiagramSVG(r, v, mh, tall ? 84 : 50, tall ? 62 : 38);
+      mainSvg.innerHTML = buildRajoDiagramSVG(r, v, mh, tall ? 64 : 50, tall ? 46 : 38);
     }
     var modalSvg = $('#rajo-diagram-modal');
     if(modalSvg){
@@ -1415,6 +1442,13 @@
   function renderRainuraChart(r){
     var svg = $('#rainura-chart');
     var W=560,H=300, top=34,bottom=16,left=104,right=110;
+    // En pantalla ancha el gráfico va en el panel fijo: su alto sale de la
+    // proporción real del panel para llenarlo sea cual sea la ventana.
+    var hold = $('#rainura-hold');
+    if(window.matchMedia && window.matchMedia('(min-width:900px)').matches && hold && hold.clientWidth>80 && hold.clientHeight>80){
+      H = Math.max(220, Math.min(900, Math.round(W*hold.clientHeight/hold.clientWidth)));
+    }
+    svg.setAttribute('viewBox', '0 0 '+W+' '+H);
     var plotW = W-left-right, plotH = H-top-bottom;
     var shown = r.rings.slice(0, Math.min(r.rings.length, 8));
     var anchoMm = r.anchoTunelM*1000;
@@ -1556,7 +1590,18 @@
   }
 
   function renderLoadingDiagram(containerId, idPrefix, title, totalLen, taco, carga, style, cartridgeCount){
-    var W=600, H=112, left=24, right=24, tubeY=34, tubeH=32;
+    // En pantalla ancha el bloque de diagramas es fijo y mide lo que deja la
+    // ventana: se dibuja una vez con tamaño base, se mide el espacio real de
+    // cada diagrama y se redibuja más alto (k) para llenarlo.
+    drawLoadingDiagram(containerId, idPrefix, title, totalLen, taco, carga, style, cartridgeCount, 1);
+    var svg = $('#'+containerId+' svg');
+    if(svg && window.matchMedia && window.matchMedia('(min-width:900px)').matches && svg.clientWidth>80 && svg.clientHeight>20){
+      var k = Math.max(1, Math.min(2.4, (600*svg.clientHeight/svg.clientWidth)/112));
+      if(k>1.02) drawLoadingDiagram(containerId, idPrefix, title, totalLen, taco, carga, style, cartridgeCount, k);
+    }
+  }
+  function drawLoadingDiagram(containerId, idPrefix, title, totalLen, taco, carga, style, cartridgeCount, k){
+    var W=600, H=Math.round(112*k), left=24, right=24, tubeY=34*k, tubeH=32*k, fs=Math.round(12*Math.min(k,1.5)*10)/10;
     var usable = W-left-right;
     var scale = usable/Math.max(totalLen, 0.01);
     var tacoW = Math.max(0, taco)*scale;
@@ -1602,7 +1647,7 @@
       var sparks = Math.min(5, Math.max(2, Math.round(cargaW/90)));
       for(var i=1;i<=sparks;i++){
         var sx = xTacoEnd + (cargaW*i)/(sparks+1);
-        s += starIcon(sx, midY, 6, COL.ember);
+        s += starIcon(sx, midY, 6*k, COL.ember);
       }
       var primerW2 = Math.min(cargaW*0.1, 20);
       s += '<rect x="'+(xCargaEnd-primerW2)+'" y="'+tubeY+'" width="'+primerW2+'" height="'+tubeH+'" fill="'+COL.red+'"/>';
@@ -1613,16 +1658,16 @@
     }
 
     // initiation wire (twisted pair at collar + line through + primer dot at toe)
-    s += '<line x1="4" y1="'+(midY-6)+'" x2="'+x0+'" y2="'+midY+'" stroke="'+COL.blue+'" stroke-width="1.6"/>';
-    s += '<line x1="4" y1="'+(midY+6)+'" x2="'+x0+'" y2="'+midY+'" stroke="'+COL.blue+'" stroke-width="1.6"/>';
+    s += '<line x1="4" y1="'+(midY-6*k)+'" x2="'+x0+'" y2="'+midY+'" stroke="'+COL.blue+'" stroke-width="1.6"/>';
+    s += '<line x1="4" y1="'+(midY+6*k)+'" x2="'+x0+'" y2="'+midY+'" stroke="'+COL.blue+'" stroke-width="1.6"/>';
     s += '<line x1="'+x0+'" y1="'+midY+'" x2="'+xCargaEnd+'" y2="'+midY+'" stroke="'+COL.blue+'" stroke-width="1.4" stroke-dasharray="1 3.5" opacity="0.85"/>';
     s += '<circle cx="'+xCargaEnd+'" cy="'+midY+'" r="3.2" fill="'+COL.red+'" stroke="'+COL.rock+'" stroke-width="1"/>';
 
     // labels
-    s += '<text x="'+(x0+tacoW/2)+'" y="'+(tubeY+tubeH+18)+'" text-anchor="middle" font-family="Barlow Condensed" font-size="12" fill="'+COL.paperDim+'">Taco '+fmt(taco,2)+' m</text>';
+    s += '<text x="'+(x0+tacoW/2)+'" y="'+(tubeY+tubeH+18*k)+'" text-anchor="middle" font-family="Barlow Condensed" font-size="'+fs+'" fill="'+COL.paperDim+'">Taco '+fmt(taco,2)+' m</text>';
     var cargaLabel = 'Carga '+fmt(carga,2)+' m';
     if(style!=='anfo') cargaLabel += ' · ≈'+count+' cartuchos';
-    s += '<text x="'+(xTacoEnd+cargaW/2)+'" y="'+(tubeY+tubeH+18)+'" text-anchor="middle" font-family="Barlow Condensed" font-size="12" fill="'+COL.paper+'">'+cargaLabel+'</text>';
+    s += '<text x="'+(xTacoEnd+cargaW/2)+'" y="'+(tubeY+tubeH+18*k)+'" text-anchor="middle" font-family="Barlow Condensed" font-size="'+fs+'" fill="'+COL.paper+'">'+cargaLabel+'</text>';
 
     var container = $('#'+containerId);
     container.innerHTML = '<h4><span class="panel-title" style="margin:0;"><span class="dot"></span></span>'+title+'</h4>'+
@@ -1679,6 +1724,29 @@
     renderLoadingDiagram('ld-contorno','ldcont','Contorno ('+carguioProductLabels.contorno+')', carguioCache.longPerf, carguioCache.contorno.taco, carguioCache.contorno.largoCarga, 'contorno', carguioCache.contorno.varillasPorTiro);
     renderLoadingDiagram('ld-zapateras','ldzap','Zapateras ('+carguioProductLabels.zapateras+')', carguioCache.longPerf, carguioCache.zapateras.taco, carguioCache.zapateras.largoCarga, 'zapateras', carguioCache.zapateras.cartuchosPorTiro);
   }
+
+  // Los diagramas fijos se redibujan cuando cambia el tamaño de la ventana
+  // o cuando su panel pasa a ser visible (cambio de vista o de pestaña).
+  (function(){
+    var raf = 0;
+    function refit(){
+      if(raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(function(){
+        raf = 0;
+        if(rajoCache && rajoGetters) renderRajoDiagram(rajoCache, readValues(rajoGetters));
+        if(carguioCache && carguioGetters) recalcCarguio();
+        if(mallaCache) renderRainuraChart(mallaCache);
+      });
+    }
+    window.addEventListener('resize', refit);
+    if(window.ResizeObserver){
+      var ro = new ResizeObserver(refit);
+      ['#rajo-diagram-hold', '#tab-carguio .ld-row', '#rainura-hold'].forEach(function(sel){
+        var el = document.querySelector(sel);
+        if(el) ro.observe(el);
+      });
+    }
+  })();
 
   /* ============================================================
      INIT
