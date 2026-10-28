@@ -1,0 +1,1802 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<title>TRONAPP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil:wght@700;800;900&family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --rock-900:#1c130e;
+    --rock-800:#2b1e15;
+    --rock-700:#3c2c1f;
+    --blast:#e4531f;
+    --blast-dark:#a83816;
+    --ember:#f6a83c;
+    --spark:#ffe2a1;
+    --stone:#8a7862;
+    --stone-dim:#5c4f40;
+    --paper:#f4ead9;
+    --paper-dim:#cdbda6;
+    --ok:#3fae6a;
+
+    --panel:rgba(60,44,31,0.5);
+    --panel-strong:rgba(28,19,14,0.82);
+    --line:rgba(138,120,98,0.32);
+    --line-strong:rgba(228,83,31,0.55);
+    --input-bg:rgba(15,10,7,0.6);
+
+    --seg-taco:#c9b48a;
+    --seg-carga:#e4531f;
+    --seg-pasadura:#4a3527;
+  }
+
+  *{box-sizing:border-box;}
+
+  html,body{
+    margin:0;
+    padding:0;
+    background:var(--rock-900);
+    color:var(--paper);
+    min-height:100%;
+  }
+
+  body{
+    font-family:'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    overflow-x:hidden;
+    width:100%;
+  }
+  #app-main{ width:100%; display:flex; flex-direction:column; align-items:center; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ---------- background: rock + blast field (fixed, whole app) ---------- */
+  .field{
+    position:fixed; inset:0; z-index:-2;
+    background:
+      radial-gradient(1100px 620px at 50% -6%, rgba(228,83,31,0.42), transparent 62%),
+      radial-gradient(900px 700px at 82% 18%, rgba(246,168,60,0.11), transparent 60%),
+      linear-gradient(185deg, var(--rock-800) 0%, var(--rock-900) 46%, #140d09 100%);
+  }
+  .field::after{
+    content:"";
+    position:absolute; inset:0;
+    opacity:0.5;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .vignette{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:radial-gradient(ellipse at 50% 30%, transparent 45%, rgba(10,6,4,0.6) 100%);
+  }
+
+  /* ================= APP BAR ================= */
+  .appbar{
+    position:sticky; top:0; z-index:20;
+    width:100%;
+    display:flex; justify-content:center;
+    background:linear-gradient(180deg, rgba(20,13,9,0.92), rgba(20,13,9,0.78));
+    border-bottom:1px solid var(--line);
+    backdrop-filter:blur(6px);
+  }
+  .appbar.hidden{ display:none; }
+  .appbar-inner{
+    width:100%; max-width:1180px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px;
+    padding:10px clamp(16px,4vw,32px);
+  }
+  .appbar-logo{
+    display:flex; align-items:baseline; gap:6px;
+    font-family:'Big Shoulders Stencil', sans-serif;
+    font-weight:800;
+    font-size:22px;
+    letter-spacing:0.02em;
+    color:var(--paper);
+    cursor:pointer;
+    background:none; border:none; padding:0;
+  }
+  .appbar-logo b{color:var(--ember);}
+  .appbar-nav{ display:flex; gap:6px; }
+  @media (max-width:480px){
+    .appbar-inner{ flex-wrap:wrap; row-gap:8px; }
+    .appbar-nav{ width:100%; justify-content:center; }
+  }
+  .navlink{
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:600; font-size:14px; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--paper-dim);
+    background:transparent; border:1px solid transparent; border-radius:8px;
+    padding:7px 14px; cursor:pointer;
+    transition:background 0.15s ease, color 0.15s ease, border-color .15s ease;
+  }
+  .navlink:hover{ color:var(--paper); border-color:var(--line); }
+  .navlink.active{ color:var(--rock-900); background:var(--ember); border-color:var(--ember); }
+
+  /* ================= LAYOUT SHELL ================= */
+  .shell{ width:100%; max-width:1180px; padding:clamp(18px,4vw,32px); }
+  .view{ display:none; width:100%; }
+  .view.active{ display:block; }
+
+  .view-header{ margin-bottom:22px; }
+  .view-eyebrow{
+    font-family:'Barlow Condensed', sans-serif; font-weight:600;
+    letter-spacing:0.28em; text-transform:uppercase; font-size:12px;
+    color:var(--ember); display:flex; align-items:center; gap:10px; margin-bottom:6px;
+  }
+  .view-eyebrow .dash{width:22px;height:2px;background:var(--ember);display:inline-block;}
+  .view-title{
+    font-family:'Barlow Condensed', sans-serif; font-weight:700; font-size:clamp(26px,4vw,38px);
+    color:var(--paper); margin:0 0 6px 0; text-wrap:balance;
+  }
+  .view-sub{ color:var(--paper-dim); max-width:70ch; line-height:1.5; font-size:15.5px; margin:0; }
+
+  .layout-2col{
+    display:grid;
+    grid-template-columns:minmax(280px,360px) 1fr;
+    gap:22px;
+    align-items:start;
+  }
+  @media (max-width:760px){ .layout-2col{ grid-template-columns:1fr; } }
+  /* Tablet (iPad de 11" vertical = 834px, y rangos similares): sigue en
+     2 columnas en vez de apilarse como en celular — hay espacio de sobra
+     — pero la columna fija se angosta un poco para dejar más aire a la
+     columna de contenido (stats/tabla/gráfico). */
+  @media (min-width:761px) and (max-width:900px){
+    .layout-2col{ grid-template-columns:minmax(260px,300px) 1fr; }
+  }
+  .layout-2col > *{ min-width:0; }
+
+  /* Rajo Abierto: SOLO el diagrama del barreno queda fijo arriba de la
+     página mientras el usuario ingresa datos. Los deslizadores y el resto
+     de las opciones van en flujo normal (no fijos) y se desplazan con el
+     scroll. El selector de método va justo debajo del diagrama, tampoco
+     fijo. */
+  .diagram-stick{
+    position:sticky; top:74px; z-index:5;
+    background:var(--rock-900);
+    padding-top:2px; padding-bottom:4px;
+    margin-bottom:4px;
+  }
+  /* Queda fijo también en pantallas angostas (celular) — a pedido
+     explícito del usuario, para ver el barreno cambiar en vivo sin perder
+     de vista los sliders. En móviles muy angostos el appbar se parte en
+     dos filas (ver @media(max-width:480px) más abajo) y queda más alto,
+     así que el punto de anclaje sube para no tapar el ícono/menú. */
+  @media (max-width:480px){ .diagram-stick{ top:91px; } }
+
+  /* ================= PANELS / CARDS ================= */
+  .panel{
+    background:linear-gradient(165deg, rgba(60,44,31,0.5), rgba(24,16,11,0.78));
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:18px 18px 8px;
+    margin-bottom:18px;
+  }
+  .panel-title{
+    font-family:'Barlow Condensed', sans-serif; font-weight:700; font-size:17.5px;
+    letter-spacing:0.02em; color:var(--paper); margin:0 0 4px 0;
+    display:flex; align-items:center; gap:8px;
+  }
+  .panel-title .dot{width:7px;height:7px;border-radius:50%;background:var(--blast);flex:none;}
+  .group-title{
+    font-family:'Barlow Condensed', sans-serif; font-weight:600; font-size:13px;
+    letter-spacing:0.14em; text-transform:uppercase; color:var(--stone);
+    margin:14px 0 2px 0;
+  }
+  .group-title:first-of-type{ margin-top:6px; }
+
+  /* ---------- sliders ---------- */
+  .slider-row{ padding:9px 0; border-bottom:1px solid var(--line); }
+  .slider-row:last-child{ border-bottom:none; }
+  .slider-top{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:6px; }
+  .slider-name{ font-size:15px; color:var(--paper); line-height:1.3; }
+  .slider-unit{ font-size:12px; color:var(--stone); white-space:nowrap; font-family:'Barlow Condensed'; text-transform:uppercase; letter-spacing:.04em;}
+  .slider-controls{ display:flex; align-items:center; gap:10px; }
+
+  input[type=range]{
+    -webkit-appearance:none; appearance:none;
+    flex:1; height:4px; border-radius:999px;
+    background:rgba(138,120,98,0.32);
+    outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:15px; height:15px; border-radius:50%;
+    background:var(--ember); border:2px solid var(--rock-900);
+    box-shadow:0 0 0 1px var(--blast); cursor:pointer; margin-top:0;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:13px; height:13px; border-radius:50%; background:var(--ember);
+    border:2px solid var(--rock-900); box-shadow:0 0 0 1px var(--blast); cursor:pointer;
+  }
+  input[type=range]::-moz-range-track{ height:4px; border-radius:999px; background:rgba(138,120,98,0.32); }
+  input[type=range]:focus-visible{ outline:2px solid var(--ember); outline-offset:4px; }
+
+  .slider-value{
+    width:90px; text-align:right;
+    background:var(--input-bg); border:1px solid var(--line); border-radius:6px;
+    padding:7px 9px; color:var(--paper); font-family:'IBM Plex Sans';
+    font-variant-numeric:tabular-nums; font-size:16px; font-weight:600;
+  }
+  .slider-value:focus{ outline:2px solid var(--ember); border-color:var(--ember); }
+
+  select.slider-value{ width:auto; padding:5px 8px; }
+
+  /* ---------- stat tiles ---------- */
+  .stat-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-bottom:18px; }
+  .stat{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:13px 15px; display:flex; flex-direction:column; gap:3px;
+  }
+  .stat .label{ font-family:'Barlow Condensed'; font-size:12.5px; letter-spacing:0.06em; text-transform:uppercase; color:var(--paper-dim); }
+  .stat .value{ font-family:'Barlow Condensed'; font-weight:700; font-size:29px; color:var(--paper); font-variant-numeric:tabular-nums; line-height:1.1; }
+  .stat .value .unit{ font-size:14px; font-weight:500; color:var(--paper-dim); margin-left:4px; }
+  .stat.highlight{
+    border-color:var(--blast);
+    background:linear-gradient(160deg, rgba(228,83,31,0.24), rgba(24,16,11,0.85));
+    box-shadow:0 10px 24px -16px rgba(228,83,31,0.7);
+  }
+  .stat.highlight .value{ color:var(--ember); font-size:33px; }
+
+  /* ---------- comparison table ---------- */
+  .table-wrap{ overflow-x:auto; margin-bottom:18px; border-radius:10px; border:1px solid var(--line); }
+  table.cmp{ width:100%; border-collapse:collapse; font-size:14.5px; min-width:480px; }
+  table.cmp th, table.cmp td{ padding:10px 12px; text-align:right; white-space:nowrap; }
+  table.cmp th:first-child, table.cmp td:first-child{ text-align:left; }
+  table.cmp thead th{
+    font-family:'Barlow Condensed'; text-transform:uppercase; letter-spacing:0.05em; font-size:12.5px;
+    color:var(--paper-dim); border-bottom:1px solid var(--line); background:rgba(0,0,0,0.18);
+  }
+  table.cmp tbody td{ border-bottom:1px solid rgba(138,120,98,0.15); font-variant-numeric:tabular-nums; color:var(--paper); }
+  table.cmp tbody tr:last-child td{ border-bottom:none; }
+  table.cmp th.col-official, table.cmp td.col-official{ background:rgba(228,83,31,0.13); }
+  .badge-official{
+    display:inline-block; font-family:'Barlow Condensed'; font-size:9.5px; font-weight:700;
+    letter-spacing:0.06em; text-transform:uppercase; color:var(--rock-900); background:var(--ember);
+    border-radius:100px; padding:1px 7px; margin-left:6px; vertical-align:2px;
+  }
+
+  .method-picker{ display:flex; flex-wrap:wrap; gap:8px; }
+  .method-btn{
+    font-family:'Barlow Condensed'; font-weight:600; font-size:14px; letter-spacing:0.02em;
+    color:var(--paper-dim); background:var(--panel); border:1.5px solid var(--line);
+    border-radius:100px; padding:8px 18px; cursor:pointer; transition:background .15s ease, color .15s ease, border-color .15s ease, transform .15s ease;
+  }
+  .method-btn:hover{ border-color:var(--line-strong); color:var(--paper); transform:translateY(-1px); }
+  .method-btn:focus-visible{ outline:2px solid var(--ember); outline-offset:2px; }
+  .method-btn.selected{
+    color:var(--rock-900); background:linear-gradient(180deg, var(--ember), var(--blast)); border-color:var(--blast);
+    box-shadow:0 6px 16px -8px rgba(228,83,31,0.7);
+  }
+
+  .explosive-picker{
+    margin:6px 0 14px 0; padding:12px 12px 13px;
+    background:rgba(228,83,31,0.06); border:1px solid var(--line); border-radius:10px;
+  }
+  .explosive-picker .ep-label{
+    font-family:'Barlow Condensed'; font-weight:600; font-size:12px; letter-spacing:0.05em;
+    text-transform:uppercase; color:var(--stone); margin-bottom:7px;
+  }
+  .explosive-picker select{
+    width:100%; background:var(--input-bg); border:1px solid var(--line); border-radius:6px;
+    padding:9px 10px; color:var(--paper); font-family:'IBM Plex Sans'; font-size:14.5px; cursor:pointer;
+  }
+  .explosive-picker select:focus-visible{ outline:2px solid var(--ember); border-color:var(--ember); }
+  .explosive-info{ font-size:12.5px; color:var(--paper-dim); margin-top:8px; line-height:1.5; }
+  .explosive-info b{ color:var(--paper); font-weight:600; }
+
+  .override-toggle-row{ margin:2px 0 10px 0; }
+  .override-toggle{
+    display:flex; align-items:flex-start; gap:9px; cursor:pointer;
+    font-size:13.5px; color:var(--paper-dim); line-height:1.4;
+  }
+  .override-toggle input[type=checkbox]{
+    width:18px; height:18px; margin:1px 0 0 0; flex:none; accent-color:var(--ember); cursor:pointer;
+  }
+  .override-toggle span{ color:var(--paper); }
+
+  /* ---------- chart card ---------- */
+  .chart-card{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin-bottom:18px; }
+  .chart-card svg{ width:100%; height:auto; display:block; }
+  /* Tarjeta del diagrama del barreno: queda fija arriba de la página, así
+     que se ajusta lo más compacta posible (menos relleno, título/leyenda
+     más chicos) para no ocupar tanta pantalla mientras el usuario scrollea
+     para ingresar datos más abajo. */
+  .chart-card-tight{ padding:11px 14px 9px; margin-bottom:12px; }
+  .chart-card-tight .panel-title{ margin-bottom:2px; }
+  .chart-card-tight .chart-legend{ margin-top:5px; gap:10px 14px; font-size:11px; }
+
+  /* El diagrama del barreno se achica al ancho de pantalla como cualquier
+     otro gráfico (nunca hay que deslizarlo para verlo completo). En
+     pantallas angostas el texto queda chico — para eso existe la opción
+     de mantener presionado y abrirlo ampliado (ver .diagram-modal-*). */
+  .diagram-scroll{ cursor:zoom-in; -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; touch-action:manipulation; }
+  .diagram-hint{ font-size:12.5px; color:var(--paper-dim); margin:-2px 0 8px 0; }
+
+  .diagram-modal-backdrop{
+    position:fixed; inset:0; z-index:200; display:flex; align-items:center; justify-content:center;
+    padding:14px; background:rgba(10,6,3,0.72);
+    -webkit-backdrop-filter:blur(9px); backdrop-filter:blur(9px);
+  }
+  .diagram-modal-backdrop[hidden]{ display:none; }
+  .diagram-modal-card{
+    position:relative; width:100%; max-width:820px;
+    background:var(--panel-strong); border:1px solid var(--line-strong); border-radius:16px;
+    padding:14px 12px 10px; box-shadow:0 40px 90px -24px rgba(0,0,0,0.7);
+  }
+  .diagram-modal-card svg{ width:100%; height:auto; display:block; }
+  /* La cruz de cierre va abajo (no arriba) del diagrama ampliado: a pedido
+     del usuario, para tenerla más a mano del pulgar en celular, donde se
+     sostiene el teléfono con las manos abajo de la pantalla. */
+  .diagram-modal-close{
+    position:absolute; bottom:-15px; left:50%; transform:translateX(-50%);
+    width:36px; height:36px; border-radius:50%;
+    background:linear-gradient(180deg, var(--ember), var(--blast)); color:var(--rock-900);
+    border:2px solid var(--rock-900); font-size:20px; line-height:1; font-weight:700; cursor:pointer;
+  }
+  .chart-legend{ display:flex; gap:16px; flex-wrap:wrap; margin-top:8px; font-size:12px; color:var(--paper-dim); }
+  .legend-item{ display:flex; align-items:center; gap:6px; }
+  .legend-swatch{ width:11px; height:11px; border-radius:3px; flex:none; }
+
+  .note{
+    font-size:13.5px; color:var(--paper-dim); line-height:1.55;
+    background:rgba(0,0,0,0.2); border:1px solid var(--line); border-left:3px solid var(--ember);
+    border-radius:8px; padding:10px 12px; margin-bottom:18px;
+  }
+  .note b{ color:var(--paper); }
+
+  /* ---------- tabs (subterranea) ---------- */
+  .tabs{ display:flex; gap:6px; margin-bottom:18px; border-bottom:1px solid var(--line); }
+  .tab-btn{
+    font-family:'Barlow Condensed'; font-weight:600; font-size:14.5px; letter-spacing:0.03em;
+    color:var(--paper-dim); background:transparent; border:none; border-bottom:2px solid transparent;
+    padding:9px 4px; margin-right:20px; cursor:pointer;
+  }
+  .tab-btn.active{ color:var(--ember); border-bottom-color:var(--ember); }
+  .tabpanel{ display:none; }
+  .tabpanel.active{ display:block; }
+
+  .back-link{
+    display:inline-flex; align-items:center; gap:6px; margin-bottom:14px;
+    font-family:'Barlow Condensed'; font-size:13px; letter-spacing:0.03em; text-transform:uppercase;
+    color:var(--paper-dim); background:none; border:none; cursor:pointer; padding:0;
+  }
+  .back-link:hover{ color:var(--ember); }
+
+  .loading-diagram{ margin-bottom:20px; }
+  .loading-diagram h4{
+    font-family:'Barlow Condensed'; font-weight:600; font-size:14px; letter-spacing:0.03em;
+    color:var(--paper); margin:0 0 8px 0; display:flex; align-items:center; gap:8px;
+  }
+  .loading-diagram svg{ width:100%; height:auto; display:block; }
+  .ld-meta{ display:flex; gap:18px; flex-wrap:wrap; margin-top:6px; font-size:12px; color:var(--paper-dim); }
+  .ld-meta b{ color:var(--paper); font-variant-numeric:tabular-nums; }
+
+  /* El diagrama de carguío (3 tiros) va apilado por defecto (celular y
+     tablet vertical, donde sobra alto de pantalla). En pantallas anchas
+     Y bajas — el caso típico de un iPad en horizontal, 1194×834pt, donde
+     el bloque fijo (.diagram-stick) si no se achica tapa casi toda la
+     pantalla — los 3 diagramas pasan a ir en fila: el bloque baja de
+     ~800px a ~300px de alto sin perder ningún dato. */
+  .ld-row .loading-diagram{ margin-bottom:20px; }
+  @media (min-width:900px){
+    .ld-row{ display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; align-items:start; }
+    .ld-row .loading-diagram{ margin-bottom:0; }
+    .ld-row .loading-diagram h4{ font-size:12px; line-height:1.25; }
+    .ld-row .ld-meta{ gap:8px 12px; font-size:10.5px; }
+    #carguio-diagram-card{ padding:12px 16px 10px; }
+    #carguio-diagram-card .panel-title{ margin-bottom:4px; }
+  }
+
+  /* ---------- footer (shared) ---------- */
+  .appfooter{
+    margin-top:20px; padding:18px 0 40px; text-align:center;
+    font-family:'Barlow Condensed'; font-size:11px; letter-spacing:0.14em; text-transform:uppercase;
+    color:rgba(205,189,166,0.4);
+  }
+
+  /* ---------- reused portada styles ---------- */
+  .page{ position:relative; width:100%; max-width:1180px; min-height:calc(100vh - 53px); display:flex; flex-direction:column; align-items:center; padding:clamp(20px,5vw,56px) clamp(16px,5vw,48px) 40px; isolation:isolate; }
+  .eyebrow{ margin-top:clamp(6px,3vh,20px); font-family:'Barlow Condensed', sans-serif; font-weight:600; letter-spacing:0.32em; text-transform:uppercase; font-size:12.5px; color:var(--ember); display:flex; align-items:center; gap:10px; }
+  .eyebrow .dash{width:26px;height:2px;background:var(--ember);display:inline-block;}
+  .logo-wrap{ position:relative; width:100%; display:flex; justify-content:center; padding:8px 0 4px; }
+  .logo{ position:relative; z-index:1; display:inline-flex; font-family:'Big Shoulders Stencil', 'Arial Narrow', sans-serif; font-weight:800; font-size:clamp(58px, 15vw, 152px); line-height:0.86; letter-spacing:0.01em; white-space:nowrap; }
+  .rock-letters{ position:relative; background:radial-gradient(120% 160% at 26% 10%, rgba(255,240,220,0.55), transparent 42%), linear-gradient(158deg, #b7a086 0%, #8a7358 28%, #5b4837 55%, #34281c 78%, #6b5540 100%); background-blend-mode:soft-light, normal; -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(2px 3px 0 rgba(15,9,5,0.55)) drop-shadow(-1px -1px 0 rgba(255,232,200,0.18)) drop-shadow(0 10px 18px rgba(0,0,0,0.5)); }
+  .rock-letters::before{ content:attr(data-text); position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"); background-size:220px 220px; -webkit-background-clip:text; background-clip:text; color:transparent; opacity:0.5; mix-blend-mode:overlay; }
+  .logo .word-app{ position:relative; margin-left:0.06em; }
+  .burst{ position:absolute; left:50%; top:50%; width:clamp(320px, 62vw, 640px); height:clamp(320px, 62vw, 640px); transform:translate(-50%,-50%); z-index:0; pointer-events:none; }
+  .burst .glow{ position:absolute; inset:0; border-radius:50%; background:radial-gradient(circle, var(--spark) 0%, var(--ember) 24%, rgba(228,83,31,0.75) 46%, rgba(228,83,31,0) 70%); filter:blur(1px); animation:pulse 3.6s ease-in-out infinite; }
+  .burst .rays{ position:absolute; inset:-6%; border-radius:50%; background:repeating-conic-gradient(from 0deg, rgba(255,224,170,0.95) 0deg 3.2deg, rgba(255,224,170,0) 3.2deg 16deg); -webkit-mask-image:radial-gradient(circle, black 18%, transparent 66%); mask-image:radial-gradient(circle, black 18%, transparent 66%); animation:spin 26s linear infinite; }
+  .burst .rays.slow{ inset:6%; background:repeating-conic-gradient(from 12deg, rgba(228,83,31,0.8) 0deg 5deg, rgba(228,83,31,0) 5deg 22deg); animation:spin-rev 34s linear infinite; opacity:0.85; }
+  @keyframes pulse{ 0%,100%{opacity:0.85; transform:scale(1);} 50%{opacity:1; transform:scale(1.06);} }
+  @keyframes spin{ to{ transform:rotate(360deg);} }
+  @keyframes spin-rev{ to{ transform:rotate(-360deg);} }
+  .shard{ position:absolute; background:linear-gradient(135deg, var(--stone) 0%, var(--stone-dim) 100%); clip-path:polygon(50% 0%, 100% 38%, 78% 100%, 8% 84%); box-shadow:1px 2px 3px rgba(0,0,0,0.45); }
+  .tagline{ margin-top:18px; text-align:center; max-width:52ch; font-family:'Barlow Condensed', sans-serif; font-weight:500; font-size:clamp(15px, 2.2vw, 19px); letter-spacing:0.02em; color:var(--paper-dim); }
+  .tagline b{color:var(--paper); font-weight:600;}
+  .selector-label{ margin-top:clamp(28px,5vh,44px); font-family:'Barlow Condensed', sans-serif; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; font-size:13px; color:var(--ember); text-align:center; }
+  .options{ margin-top:22px; width:100%; max-width:920px; display:grid; grid-template-columns:1fr 1fr; gap:clamp(14px,2.4vw,26px); }
+  @media (max-width:660px){ .options{grid-template-columns:1fr;} }
+  .option{ position:relative; text-align:left; cursor:pointer; border-radius:14px; border:1.5px solid rgba(138,120,98,0.35); background:linear-gradient(165deg, rgba(60,44,31,0.55), rgba(28,19,14,0.75)); padding:24px 22px 22px; display:flex; flex-direction:column; gap:14px; color:inherit; font:inherit; transition:border-color 0.18s ease, transform 0.18s ease, background 0.18s ease; }
+  .option:hover{ border-color:rgba(228,83,31,0.55); transform:translateY(-2px); }
+  .option:focus-visible{ outline:2px solid var(--ember); outline-offset:3px; }
+  .option[aria-pressed="true"]{ border-color:var(--blast); background:linear-gradient(165deg, rgba(228,83,31,0.22), rgba(28,19,14,0.85)); box-shadow:0 0 0 1px rgba(228,83,31,0.4), 0 14px 30px -14px rgba(228,83,31,0.55); }
+  .option-top{ display:flex; align-items:center; justify-content:space-between; }
+  .option-icon{ width:58px; height:58px; flex:none; }
+  .check{ width:22px; height:22px; border-radius:50%; border:2px solid var(--stone); position:relative; flex:none; }
+  .option[aria-pressed="true"] .check{ border-color:var(--blast); background:var(--blast); }
+  .option[aria-pressed="true"] .check::after{ content:""; position:absolute; left:5px; top:1px; width:6px; height:11px; border:solid var(--rock-900); border-width:0 2.5px 2.5px 0; transform:rotate(40deg); }
+  .option-title{ font-family:'Barlow Condensed', sans-serif; font-weight:700; font-size:22px; letter-spacing:0.01em; color:var(--paper); }
+  .option-desc{ font-size:13.5px; line-height:1.5; color:var(--paper-dim); }
+  .option-meta{ margin-top:auto; display:flex; gap:8px; flex-wrap:wrap; }
+  .chip{ font-family:'Barlow Condensed', sans-serif; font-size:11.5px; letter-spacing:0.06em; text-transform:uppercase; color:var(--paper-dim); border:1px solid rgba(138,120,98,0.4); border-radius:100px; padding:3px 10px; }
+  .cta-row{ margin-top:clamp(24px,4vh,36px); display:flex; flex-direction:column; align-items:center; gap:12px; }
+  .continue-btn{ font-family:'Barlow Condensed', sans-serif; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; font-size:16px; color:var(--rock-900); background:linear-gradient(180deg, var(--ember), var(--blast)); border:none; border-radius:10px; padding:14px 40px; cursor:pointer; box-shadow:0 10px 24px -10px rgba(228,83,31,0.7); transition:transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease; }
+  .continue-btn:not(:disabled):hover{ transform:translateY(-1px); box-shadow:0 14px 28px -10px rgba(228,83,31,0.85); }
+  .continue-btn:disabled{ opacity:0.35; cursor:not-allowed; box-shadow:none; }
+  .status{ min-height:20px; font-family:'Barlow Condensed', sans-serif; font-size:13.5px; letter-spacing:0.03em; color:var(--paper-dim); text-align:center; }
+  .status.ready{ color:var(--ok); }
+  /* ================= MENÚ DEL PORTAL MINERO ================= */
+  :root{ --site-h:44px; }
+  .site{ position:sticky; top:0; z-index:30; align-self:stretch; flex:none; display:flex; align-items:center; justify-content:space-between; gap:16px; height:var(--site-h); padding:0 20px; background:#0e0e0d; border-bottom:1px solid #2c2a27; font:500 12.5px -apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,"Helvetica Neue",Arial,sans-serif; letter-spacing:-.01em; }
+  .site a{ color:#a29d94; text-decoration:none; }
+  .site .brand{ display:flex; align-items:center; gap:9px; color:#f3f1ed; font-weight:600; font-size:15px; }
+  .site .brand svg{ width:20px; height:20px; }
+  .site ul{ display:flex; gap:6px; list-style:none; margin:0; padding:0; }
+  .site ul a{ display:inline-flex; align-items:center; min-height:32px; padding:0 12px; border-radius:980px; transition:color .2s, background .2s; }
+  .site ul a:hover, .site ul a:focus-visible{ color:#fff; background:#e07a3a; }
+  .site ul a[aria-current="page"]{ color:#f3f1ed; background:#232120; }
+  @media (max-width:720px){ .site{ padding:0 12px; } .site ul li:not(.keep){ display:none; } }
+  .appbar{ top:var(--site-h); }
+  .diagram-stick{ top:calc(var(--site-h) + 74px); }
+  @media (max-width:480px){ .diagram-stick{ top:calc(var(--site-h) + 91px); } }
+
+  /* Escritorio y tablet horizontal: el diagrama queda fijo a la derecha y el resto de las opciones se desplaza a la izquierda */
+  @media (min-width:900px){
+    #view-rajo>.shell{ display:grid; grid-template-columns:minmax(0,1fr) minmax(380px,44%); column-gap:24px; align-content:start; }
+    #view-rajo>.shell>*{ grid-column:1; }
+    #view-rajo>.shell>.diagram-stick{ grid-column:2; grid-row:1 / span 4; }
+    #tab-carguio.active{ display:grid; grid-template-columns:minmax(0,1fr) minmax(380px,44%); column-gap:24px; align-content:start; }
+    #tab-carguio>*{ grid-column:1; grid-row:1 / span 2; }
+    #tab-carguio>.diagram-stick{ grid-column:2; }
+    #view-rajo .diagram-stick, #tab-carguio .diagram-stick{ align-self:start; margin-bottom:0; max-height:calc(100vh - var(--site-h) - 96px); overflow-y:auto; }
+    #tab-carguio .ld-row{ grid-template-columns:1fr; }
+    #tab-carguio .ld-row .loading-diagram{ margin-bottom:12px; }
+  }
+  @media (min-width:900px) and (max-width:1279px){
+    #view-rajo .layout-2col, #tab-carguio .layout-2col{ grid-template-columns:1fr; }
+  }
+</style>
+
+<nav class="site" aria-label="Portal Minero">
+  <a class="brand" href="../" aria-label="Volver al Portal Minero">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 21 8v8l-9 6-9-6V8z" fill="#e07a3a"/><path d="M12 2v20M3 8l9 6 9-6" stroke="#0e0e0d" stroke-width="1.2" fill="none" opacity=".55"/></svg>
+    Portal Minero
+  </a>
+  <ul>
+    <li><a href="../#mineria">Ciclo minero</a></li>
+    <li class="keep"><a href="../#en-uso">En uso</a></li>
+    <li class="keep"><a href="../#biblioteca">Biblioteca</a></li>
+    <li><a href="../frentes/index.html">Diseñador de Frentes</a></li>
+    <li><a href="index.html" aria-current="page">Tronapp</a></li>
+    <li><a href="../#plataforma">Plataforma</a></li>
+    <li><a href="../#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<div class="field" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+
+<nav class="appbar hidden" id="appbar">
+  <div class="appbar-inner">
+    <button class="appbar-logo" id="appbar-logo-btn" type="button">TRON<b>APP</b></button>
+    <div class="appbar-nav">
+      <button class="navlink" data-nav="rajo" type="button">Rajo Abierto</button>
+      <button class="navlink" data-nav="subte" type="button">Subterránea</button>
+    </div>
+  </div>
+</nav>
+
+<main id="app-main">
+
+<!-- ============================================================ -->
+<!-- VIEW: PORTADA                                                 -->
+<!-- ============================================================ -->
+<section class="view active" id="view-portada">
+  <div class="page">
+
+    <div class="eyebrow"><span class="dash"></span> Diseño de tronadura<span class="dash"></span></div>
+
+    <div class="logo-wrap">
+      <span class="burst" aria-hidden="true">
+        <span class="glow"></span>
+        <span class="rays"></span>
+        <span class="rays slow"></span>
+        <span class="shard" style="width:18px;height:18px;top:8%;left:14%;transform:rotate(18deg);"></span>
+        <span class="shard" style="width:12px;height:12px;top:80%;left:8%;transform:rotate(-30deg);"></span>
+        <span class="shard" style="width:15px;height:15px;top:12%;left:84%;transform:rotate(64deg);"></span>
+        <span class="shard" style="width:10px;height:10px;top:74%;left:90%;transform:rotate(-8deg);"></span>
+        <span class="shard" style="width:9px;height:9px;top:40%;left:2%;transform:rotate(50deg);"></span>
+        <span class="shard" style="width:11px;height:11px;top:36%;left:96%;transform:rotate(-60deg);"></span>
+      </span>
+      <div class="logo" aria-hidden="true">
+        <span class="rock-letters" data-text="TRON">TRON</span><span
+          class="word-app rock-letters" data-text="APP">APP</span>
+      </div>
+    </div>
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">TRONAPP</h1>
+
+    <p class="tagline">Cálculo de <b>factor de carga</b> en mallas de tronadura. Comienza definiendo el tipo de mina para ajustar geometría, explosivo y criterios de diseño.</p>
+
+    <div class="selector-label">Selecciona el tipo de faena</div>
+
+    <div class="options" role="group" aria-label="Tipo de mina">
+
+      <button type="button" class="option" id="opt-rajo" aria-pressed="false">
+        <div class="option-top">
+          <svg class="option-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <polygon points="4,14 60,14 50,24 14,24" fill="#8a7862"/>
+            <polygon points="14,24 50,24 42,34 22,34" fill="#7c6c57"/>
+            <polygon points="22,34 42,34 35,44 29,44" fill="#6b5c48"/>
+            <polygon points="29,44 35,44 32,52" fill="#5c4f40"/>
+            <line x1="4" y1="14" x2="4" y2="10" stroke="#e4531f" stroke-width="2"/>
+            <line x1="60" y1="14" x2="60" y2="10" stroke="#e4531f" stroke-width="2"/>
+          </svg>
+          <span class="check" aria-hidden="true"></span>
+        </div>
+        <div class="option-title">Rajo Abierto</div>
+        <div class="option-desc">Mallas de banqueo a cielo abierto: perforación vertical/inclinada, bancos escalonados y burden–espaciamiento en superficie.</div>
+        <div class="option-meta"><span class="chip">Banco</span><span class="chip">Burden</span><span class="chip">Talud</span></div>
+      </button>
+
+      <button type="button" class="option" id="opt-subte" aria-pressed="false">
+        <div class="option-top">
+          <svg class="option-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <path d="M8 52 V30 A24 24 0 0 1 56 30 V52" stroke="#8a7862" stroke-width="4" fill="rgba(138,120,98,0.12)"/>
+            <circle cx="18" cy="30" r="1.6" fill="#e4531f"/>
+            <circle cx="32" cy="17" r="1.6" fill="#e4531f"/>
+            <circle cx="46" cy="30" r="1.6" fill="#e4531f"/>
+            <circle cx="14" cy="44" r="1.6" fill="#e4531f"/>
+            <circle cx="50" cy="44" r="1.6" fill="#e4531f"/>
+            <line x1="10" y1="52" x2="54" y2="52" stroke="#5c4f40" stroke-width="3"/>
+            <line x1="16" y1="52" x2="16" y2="47" stroke="#5c4f40" stroke-width="2"/>
+            <line x1="48" y1="52" x2="48" y2="47" stroke="#5c4f40" stroke-width="2"/>
+          </svg>
+          <span class="check" aria-hidden="true"></span>
+        </div>
+        <div class="option-title">Subterránea</div>
+        <div class="option-desc">Mallas para labores confinadas: frentes, galerías y producción, con corte central (rainura), carguío por tipo de tiro y avance por disparo.</div>
+        <div class="option-meta"><span class="chip">Frente</span><span class="chip">Rainura</span><span class="chip">Carguío</span></div>
+      </button>
+
+    </div>
+
+    <div class="cta-row">
+      <button type="button" class="continue-btn" id="btn-continue" disabled>Continuar</button>
+      <div class="status" id="status">Elige rajo abierto o subterránea para continuar</div>
+    </div>
+
+    <footer class="appfooter">TRONAPP &middot; Factor de carga en malla de tronadura</footer>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW: RAJO ABIERTO                                            -->
+<!-- ============================================================ -->
+<section class="view" id="view-rajo">
+  <div class="shell">
+    <button class="back-link" data-nav="portada" type="button">&larr; Portada</button>
+    <div class="view-header">
+      <div class="view-eyebrow"><span class="dash"></span>Rajo abierto<span class="dash"></span></div>
+      <h2 class="view-title">Diseño de malla de banqueo</h2>
+      <p class="view-sub">Ajusta los parámetros de perforación, explosivo y roca. TRONAPP calcula el burden, espaciamiento, taco, pasadura y largo de carga con cuatro métodos clásicos, y entrega el diseño final y el factor de carga según el método que elijas como oficial.</p>
+    </div>
+
+    <div class="diagram-stick">
+      <div class="chart-card chart-card-tight">
+        <div class="panel-title"><span class="dot"></span>Diagrama del barreno</div>
+        <div class="diagram-hint">Mantén presionado para ampliar &nearr;</div>
+        <div class="diagram-scroll" id="rajo-diagram-hold">
+          <svg id="rajo-diagram" viewBox="0 0 560 170" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+        <div class="chart-legend">
+          <span class="legend-item"><span class="legend-swatch" style="background:var(--seg-taco)"></span>Taco</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:var(--seg-carga)"></span>Largo de carga (explosivo)</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:var(--blast)"></span>Cara libre</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="panel-title"><span class="dot"></span>Método de diseño oficial</div>
+      <div class="method-picker" id="rajo-method-picker"></div>
+    </div>
+
+    <div class="layout-2col">
+      <div>
+        <div class="panel" id="rajo-inputs"></div>
+      </div>
+
+      <div>
+        <div class="stat-grid" id="rajo-stats"></div>
+
+        <div class="table-wrap">
+          <table class="cmp" id="rajo-table"></table>
+        </div>
+
+        <div class="chart-card">
+          <div class="panel-title"><span class="dot"></span>Composición del barreno por método</div>
+          <svg id="rajo-chart" viewBox="0 0 560 300" preserveAspectRatio="xMidYMid meet"></svg>
+          <div class="chart-legend">
+            <span class="legend-item"><span class="legend-swatch" style="background:var(--seg-pasadura)"></span>Pasadura</span>
+            <span class="legend-item"><span class="legend-swatch" style="background:var(--seg-carga)"></span>Largo de carga</span>
+            <span class="legend-item"><span class="legend-swatch" style="background:var(--seg-taco)"></span>Taco</span>
+          </div>
+        </div>
+
+        <div class="note" id="rajo-note"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="diagram-modal-backdrop" id="rajo-diagram-modal-backdrop" hidden>
+    <div class="diagram-modal-card">
+      <button class="diagram-modal-close" id="rajo-diagram-modal-close" type="button" aria-label="Cerrar">&times;</button>
+      <svg id="rajo-diagram-modal" viewBox="0 0 560 520" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VIEW: SUBTERRANEA                                             -->
+<!-- ============================================================ -->
+<section class="view" id="view-subte">
+  <div class="shell">
+    <button class="back-link" data-nav="portada" type="button">&larr; Portada</button>
+    <div class="view-header">
+      <div class="view-eyebrow"><span class="dash"></span>Subterránea<span class="dash"></span></div>
+      <h2 class="view-title">Diseño de malla de frente</h2>
+      <p class="view-sub">Define la sección de la galería, la rainura y los tiros de carguío. TRONAPP calcula la progresión del corte, la zona de voladura y el factor de carga, con el diagrama de carguío por tipo de tiro.</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="malla" type="button">Malla de perforación</button>
+      <button class="tab-btn" data-tab="carguio" type="button">Carguío y factor de carga</button>
+    </div>
+
+    <!-- TAB: MALLA -->
+    <div class="tabpanel active" id="tab-malla">
+      <div class="layout-2col">
+        <div class="col-stick">
+          <div class="panel" id="malla-inputs"></div>
+        </div>
+        <div>
+          <div class="stat-grid" id="malla-stats"></div>
+
+          <div class="chart-card">
+            <div class="panel-title"><span class="dot"></span>Zona de voladura</div>
+            <div class="table-wrap">
+              <table class="cmp" id="malla-table"></table>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="panel-title"><span class="dot"></span>Progresión de la rainura (corte quemado)</div>
+            <svg id="rainura-chart" viewBox="0 0 560 300" preserveAspectRatio="xMidYMid meet"></svg>
+            <div class="table-wrap" style="margin-top:10px;">
+              <table class="cmp" id="rainura-table"></table>
+            </div>
+            <div class="note" id="rainura-note"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: CARGUIO -->
+    <div class="tabpanel" id="tab-carguio">
+      <!-- Igual que en Rajo Abierto: SOLO el diagrama de carguío queda fijo
+           arriba mientras el usuario ingresa datos. Los deslizadores y el
+           resto de las opciones van en flujo normal y se desplazan por
+           detrás de esta ventana. -->
+      <div class="diagram-stick">
+        <div class="chart-card" id="carguio-diagram-card">
+          <div class="panel-title"><span class="dot"></span>Diagrama de carguío por tipo de tiro</div>
+          <div class="ld-row">
+            <div class="loading-diagram" id="ld-aux"></div>
+            <div class="loading-diagram" id="ld-contorno"></div>
+            <div class="loading-diagram" id="ld-zapateras"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout-2col">
+        <div>
+          <div class="panel" id="carguio-inputs"></div>
+        </div>
+        <div>
+          <div class="stat-grid" id="carguio-stats"></div>
+
+          <div class="table-wrap">
+            <table class="cmp" id="carguio-table"></table>
+          </div>
+
+          <div class="note">El factor de carga se calcula a partir de los tiros <b>auxiliares, contorno y zapateras</b>, igual que en la planilla original (hoja CARGUIO). La carga de la <b>rainura</b> se diseña aparte, en la pestaña “Malla de perforación”, y no está sumada aún a este factor de carga — así viene también en la planilla base.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var COL = { taco:'#c9b48a', carga:'#e4531f', pasadura:'#4a3527', ember:'#f6a83c', blast:'#e4531f',
+              stone:'#8a7862', paper:'#f4ead9', paperDim:'#cdbda6', rock:'#1c130e', red:'#c23a2a', blue:'#4f7fbf' };
+
+  function $(sel, ctx){ return (ctx||document).querySelector(sel); }
+  function fmt(n, d){ d = (d===undefined?2:d); if(!isFinite(n)) return '—'; return n.toFixed(d); }
+  function clamp(v,min,max){ return Math.min(max, Math.max(min, v)); }
+  function el(tag, cls, html){ var e=document.createElement(tag); if(cls) e.className=cls; if(html!=null) e.innerHTML=html; return e; }
+
+  /* ============================================================
+     NAVIGATION
+  ============================================================ */
+  var views = { portada: $('#view-portada'), rajo: $('#view-rajo'), subte: $('#view-subte') };
+  var appbar = $('#appbar');
+
+  function showView(name){
+    Object.keys(views).forEach(function(k){ views[k].classList.toggle('active', k===name); });
+    appbar.classList.toggle('hidden', name==='portada');
+    document.querySelectorAll('.navlink').forEach(function(b){
+      b.classList.toggle('active', b.getAttribute('data-nav')===name);
+    });
+    window.scrollTo(0,0);
+  }
+
+  document.querySelectorAll('[data-nav]').forEach(function(btn){
+    btn.addEventListener('click', function(){ showView(btn.getAttribute('data-nav')); });
+  });
+  $('#appbar-logo-btn').addEventListener('click', function(){ showView('portada'); });
+
+  /* ---- portada selector (unchanged behaviour, now routes into the app) ---- */
+  (function(){
+    var options = { rajo: $('#opt-rajo'), subte: $('#opt-subte') };
+    var btn = $('#btn-continue');
+    var status = $('#status');
+    var selected = null;
+
+    function readSaved(){ try{ return localStorage.getItem('tronapp.tipoFaena'); }catch(e){ return null; } }
+    function saveSelection(key){ try{ localStorage.setItem('tronapp.tipoFaena', key); }catch(e){} }
+
+    function select(key){
+      selected = key;
+      Object.keys(options).forEach(function(k){ options[k].setAttribute('aria-pressed', k===key?'true':'false'); });
+      btn.disabled = false;
+      status.textContent = key==='rajo'
+        ? 'Rajo abierto seleccionado. Listo para configurar la malla de banqueo.'
+        : 'Subterránea seleccionada. Listo para configurar la malla de frente.';
+      status.classList.add('ready');
+      saveSelection(key);
+    }
+    options.rajo.addEventListener('click', function(){ select('rajo'); });
+    options.subte.addEventListener('click', function(){ select('subte'); });
+    btn.addEventListener('click', function(){ if(selected) showView(selected); });
+    var saved = readSaved();
+    if(saved && options[saved]) select(saved);
+  })();
+
+  /* ---- subterránea sub-tabs ---- */
+  document.querySelectorAll('.tab-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var tab = btn.getAttribute('data-tab');
+      document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.toggle('active', b===btn); });
+      document.querySelectorAll('.tabpanel').forEach(function(p){ p.classList.toggle('active', p.id==='tab-'+tab); });
+    });
+  });
+
+  /* ============================================================
+     GENERIC PANEL / SLIDER BUILDER
+  ============================================================ */
+  function buildPanel(container, title, groups, onChange){
+    container.innerHTML = '<div class="panel-title"><span class="dot"></span>'+title+'</div>';
+    var getters = {};
+    groups.forEach(function(g){
+      container.appendChild(el('div','group-title', g.title));
+      g.fields.forEach(function(f){
+        var row = el('div','slider-row');
+        row.setAttribute('data-field', f.key);
+        row.innerHTML =
+          '<div class="slider-top"><span class="slider-name">'+f.label+'</span>'+
+          '<span class="slider-unit">'+(f.unit||'')+'</span></div>'+
+          '<div class="slider-controls">'+
+          '<input type="range" min="'+f.min+'" max="'+f.max+'" step="'+f.step+'" value="'+f.value+'">'+
+          '<input type="text" inputmode="decimal" autocomplete="off" value="'+f.value+'" class="slider-value">'+
+          '</div>';
+        container.appendChild(row);
+        var range = row.querySelector('input[type=range]');
+        var num = row.querySelector('input.slider-value');
+        range.addEventListener('input', function(){ num.value = range.value; onChange(); });
+        num.addEventListener('input', function(){
+          var v = parseFloat(num.value);
+          if(Number.isNaN(v)) return;
+          v = clamp(v, f.min, f.max);
+          range.value = v;
+          onChange();
+        });
+        num.addEventListener('change', function(){ num.value = range.value; });
+        // Select the whole value on focus so typing a new figure replaces it
+        // immediately, instead of requiring the user to delete it first.
+        num.addEventListener('focus', function(){ num.select(); });
+        num.addEventListener('mouseup', function(e){ e.preventDefault(); });
+        getters[f.key] = (function(range){ return function(){ return parseFloat(range.value); }; })(range);
+      });
+    });
+    return getters;
+  }
+
+  function readValues(getters){
+    var v = {};
+    Object.keys(getters).forEach(function(k){ v[k] = getters[k](); });
+    return v;
+  }
+
+  /* ============================================================
+     CATÁLOGO DE EXPLOSIVOS — ENAEX "Guía del Explosivista" (Ed. 2007)
+     Densidad (gr/cc), VOD (m/s, punto medio del rango del fabricante),
+     Potencia relativa al ANFO en peso (RWS, densidad ANFO ref. 0,78 gr/cc)
+  ============================================================ */
+  var EXPLOSIVOS_GRANEL = [
+    {key:'anfo', label:'ANFO (granel)', densidad:0.77, vod:3950, potPeso:1.00},
+    {key:'premium', label:'Premium (ANFO en saco)', densidad:0.75, vod:3850, potPeso:1.00},
+    {key:'2h', label:'2-H (ANFO en saco)', densidad:0.78, vod:3900, potPeso:0.98},
+    {key:'anfexl', label:'ANFEX-L (ANFO en saco)', densidad:0.60, vod:3100, potPeso:0.95},
+    {key:'al2', label:'Al-2 (ANFO aluminizado)', densidad:0.78, vod:4680, potPeso:1.04},
+    {key:'al4', label:'Al-4 (ANFO aluminizado)', densidad:0.78, vod:4700, potPeso:1.10},
+    {key:'al6', label:'Al-6 (ANFO aluminizado)', densidad:0.80, vod:4720, potPeso:1.16},
+    {key:'al8', label:'Al-8 (ANFO aluminizado)', densidad:0.80, vod:4660, potPeso:1.23},
+    {key:'al10', label:'Al-10 (ANFO aluminizado)', densidad:0.83, vod:4600, potPeso:1.31},
+    {key:'blendex920', label:'Blendex 920 (ANFO pesado vaciable)', densidad:0.90, vod:3940, potPeso:0.95},
+    {key:'blendex930', label:'Blendex 930 (ANFO pesado vaciable)', densidad:1.00, vod:4020, potPeso:0.93},
+    {key:'blendex940', label:'Blendex 940 (ANFO pesado vaciable)', densidad:1.20, vod:4150, potPeso:0.91},
+    {key:'blendex945', label:'Blendex 945 (ANFO pesado vaciable)', densidad:1.30, vod:4360, potPeso:0.89},
+    {key:'blendex950', label:'Blendex 950 (ANFO pesado vaciable)', densidad:1.30, vod:4250, potPeso:0.88},
+    {key:'blendexS', label:'Blendex S (ANFO pesado vaciable)', densidad:1.27, vod:5630, potPeso:0.87},
+    {key:'blendexG', label:'Blendex G (ANFO pesado vaciable)', densidad:1.165, vod:4600, potPeso:0.86},
+    {key:'emultexBN1600', label:'Emultex BN-1600 (ANFO pesado bombeable)', densidad:1.32, vod:3920, potPeso:0.84},
+    {key:'emultexGAL2', label:'Emultex GAL-2 (ANFO pesado bombeable)', densidad:1.32, vod:3850, potPeso:0.88},
+    {key:'emultexGAL4', label:'Emultex GAL-4 (ANFO pesado bombeable)', densidad:1.28, vod:3850, potPeso:0.96},
+    {key:'emultexBS2', label:'Emultex BS-2 (ANFO pesado bombeable)', densidad:1.28, vod:5500, potPeso:0.81},
+    {key:'emultexBG', label:'Emultex BG (ANFO pesado bombeable)', densidad:1.165, vod:4490, potPeso:0.81},
+    {key:'dynogel', label:'Dynogel (acuagel)', densidad:1.165, vod:3850, potPeso:0.74}
+  ];
+  var EXPLOSIVOS_AUX_GRANEL = EXPLOSIVOS_GRANEL.filter(function(p){
+    return ['anfo','premium','2h','anfexl','al2','al4'].indexOf(p.key) !== -1;
+  });
+  var EXPLOSIVOS_ENCARTUCHADOS = [
+    {key:'amongelatina60', label:'Amongelatina 60% (dinamita)', densidad:1.50, vod:3030, potPeso:1.02},
+    {key:'permicarb', label:'Permicarb (dinamita permisible)', densidad:1.33, vod:2260, potPeso:0.57},
+    {key:'samsonitaC', label:'Samsonita C (dinamita permisible)', densidad:1.25, vod:4720, potPeso:0.85},
+    {key:'softron', label:'Softrón (dinamita)', densidad:1.19, vod:3324, potPeso:1.13},
+    {key:'tronexPlus', label:'Tronex Plus (dinamita)', densidad:1.18, vod:5200, potPeso:1.22},
+    {key:'emultexCN', label:'Emultex CN (emulsión Ø pequeño)', densidad:1.15, vod:4600, potPeso:1.01},
+    {key:'emultexCH', label:'Emultex CH (emulsión Ø pequeño)', densidad:1.15, vod:4600, potPeso:1.07},
+    {key:'emultexCP', label:'Emultex CP (emulsión Ø pequeño)', densidad:1.15, vod:4400, potPeso:0.89},
+    {key:'emultexPG', label:'Emultex PG (emulsión Ø intermedio)', densidad:1.22, vod:5000, potPeso:0.89},
+    {key:'emultexP1', label:'Emultex P1 (emulsión Ø intermedio)', densidad:1.28, vod:5301, potPeso:0.79},
+    {key:'emultexP2', label:'Emultex P2 (emulsión Ø intermedio)', densidad:1.20, vod:4963, potPeso:0.78},
+    {key:'enaline', label:'Enaline (emulsión de precorte)', densidad:1.11, vod:5000, potPeso:0.89}
+  ];
+  // Masas de cartucho reales (g) — "Pesos y Medidas de Explosivos Encartuchados"
+  var CARTUCHOS_CEBO = [
+    {key:'tronex_118', label:'Tronex Plus 1 1/8" x 8" — 153 g', g:153},
+    {key:'tronex_114', label:'Tronex Plus 1 1/4" x 8" — 185 g', g:185},
+    {key:'tronex_112', label:'Tronex Plus 1 1/2" x 8" — 278 g', g:278},
+    {key:'amongel_118', label:'Amongelatina 60% 1 1/8" x 8" — 192 g', g:192},
+    {key:'amongel_112', label:'Amongelatina 60% 1 1/2" x 8" — 357 g', g:357},
+    {key:'samsonita_1', label:'Samsonita C 1" x 8" — 133 g', g:133}
+  ];
+  var CARTUCHOS_CONTORNO = [
+    {key:'softron_1116', label:'Softrón 11/16" x 20" — 141 g', g:141},
+    {key:'emultexCN_1', label:'Emultex CN 1" x 8" — 119 g', g:119},
+    {key:'emultexCN_114', label:'Emultex CN 1 1/4" x 8" — 186 g', g:186},
+    {key:'emultexCN_112', label:'Emultex CN 1 1/2" x 8" — 151 g', g:151},
+    {key:'emultexCP_118', label:'Emultex CP 1 1/8" x 8" — 151 g', g:151},
+    {key:'emultexCP_114', label:'Emultex CP 1 1/4" x 8" — 186 g', g:186}
+  ];
+  var CARTUCHOS_ZAPATERAS = [
+    {key:'tronex_1', label:'Tronex Plus 1" x 8" — 125 g', g:125},
+    {key:'tronex_118', label:'Tronex Plus 1 1/8" x 8" — 153 g', g:153},
+    {key:'tronex_114', label:'Tronex Plus 1 1/4" x 8" — 185 g', g:185},
+    {key:'tronex_112', label:'Tronex Plus 1 1/2" x 8" — 278 g', g:278},
+    {key:'amongel_1', label:'Amongelatina 60% 1" x 8" — 156 g', g:156},
+    {key:'amongel_118', label:'Amongelatina 60% 1 1/8" x 8" — 192 g', g:192},
+    {key:'samsonita_1', label:'Samsonita C 1" x 8" — 133 g', g:133}
+  ];
+
+  function setFieldValue(container, key, val){
+    var row = container.querySelector('.slider-row[data-field="'+key+'"]');
+    if(!row) return;
+    var range = row.querySelector('input[type=range]');
+    var num = row.querySelector('input.slider-value');
+    var v = clamp(val, parseFloat(range.min), parseFloat(range.max));
+    range.value = v; num.value = v;
+  }
+
+  // Inserts a native <select> explosive picker right after the group-title
+  // matching opts.afterGroupTitle inside `container`. Choosing a product
+  // writes its properties into the sliders named in opts.fieldMap
+  // (targetFieldKey -> productPropertyName) and triggers opts.onChange().
+  function mountExplosivePicker(container, opts){
+    var groupTitles = container.querySelectorAll('.group-title');
+    var anchor = null;
+    groupTitles.forEach(function(g){ if(g.textContent === opts.afterGroupTitle) anchor = g; });
+    if(!anchor) return;
+    // If earlier pickers were already mounted after this same group-title,
+    // insert after the last one so multiple pickers stack in call order.
+    while(anchor.nextElementSibling && anchor.nextElementSibling.classList.contains('explosive-picker')){
+      anchor = anchor.nextElementSibling;
+    }
+    var wrap = el('div','explosive-picker');
+    var label = el('div','ep-label', opts.label);
+    var select = document.createElement('select');
+    var html = '<option value="">— Manual (sin catálogo) —</option>';
+    opts.items.forEach(function(p){ html += '<option value="'+p.key+'">'+p.label+'</option>'; });
+    select.innerHTML = html;
+    var info = el('div','explosive-info','Selecciona un producto del catálogo ENAEX para cargar sus valores reales, o deja "Manual" y ajusta los deslizadores tú mismo.');
+    wrap.appendChild(label); wrap.appendChild(select); wrap.appendChild(info);
+    anchor.insertAdjacentElement('afterend', wrap);
+    select.addEventListener('change', function(){
+      var prod = null;
+      for(var i=0;i<opts.items.length;i++){ if(opts.items[i].key===select.value){ prod = opts.items[i]; break; } }
+      if(!prod){
+        info.textContent = 'Selecciona un producto del catálogo ENAEX para cargar sus valores reales, o deja "Manual" y ajusta los deslizadores tú mismo.';
+        return;
+      }
+      Object.keys(opts.fieldMap).forEach(function(fieldKey){
+        var prop = opts.fieldMap[fieldKey];
+        if(prod[prop] != null) setFieldValue(container, fieldKey, prod[prop]);
+      });
+      info.innerHTML = opts.infoHtml(prod);
+      opts.onChange();
+    });
+    return select;
+  }
+
+  /* ============================================================
+     RAJO ABIERTO
+  ============================================================ */
+  var rajoFieldGroups = [
+    { title:'Perforación y explosivo', fields:[
+      {key:'diamPulg', label:'Diámetro de perforación', unit:'pulg', min:4, max:30, step:0.125, value:10.5},
+      {key:'densExpl', label:'Densidad del explosivo', unit:'gr/cm³', min:0.5, max:3.5, step:0.01, value:0.5},
+      {key:'velDeton', label:'Velocidad de detonación', unit:'m/s', min:2000, max:7000, step:50, value:5600},
+      {key:'potRel', label:'Potencia relativa en peso (RWS)', unit:'', min:0.5, max:1.35, step:0.01, value:0.7}
+    ]},
+    { title:'Roca', fields:[
+      {key:'densRoca', label:'Densidad de la roca', unit:'gr/cm³', min:1.8, max:5, step:0.01, value:2.4},
+      {key:'velSismica', label:'Velocidad sísmica de propagación', unit:'m/s', min:2000, max:6000, step:50, value:4800}
+    ]},
+    { title:'Geometría de la malla', fields:[
+      {key:'banco', label:'Altura del banco', unit:'m', min:6, max:30, step:0.5, value:15},
+      {key:'constC', label:'Constante de roca c (Langefors)', unit:'', min:0.1, max:0.8, step:0.01, value:0.4},
+      {key:'relSB', label:'Relación espaciamiento / burden (S/B)', unit:'', min:1.0, max:2.0, step:0.01, value:1.2},
+      {key:'fFactor', label:'Factor de inclinación f (1 = vertical)', unit:'', min:0.85, max:1, step:0.01, value:1}
+    ]},
+    { title:'Ajuste manual del barreno (opcional)', fields:[
+      {key:'tacoManual', label:'Taco', unit:'m', min:0, max:15, step:0.05, value:4.48},
+      {key:'cargaManual', label:'Largo de carga', unit:'m', min:0, max:20, step:0.05, value:11.34},
+      {key:'pasaduraManual', label:'Pasadura', unit:'m', min:0, max:6, step:0.05, value:0.81}
+    ]}
+  ];
+
+  var RAJO_METHODS_META = [
+    {key:'konya', name:'Konya'},
+    {key:'ash', name:'Ash'},
+    {key:'lopezJimeno', name:'López Jimeno'},
+    {key:'langefors', name:'Langefors'}
+  ];
+  var rajoSelectedMethod = 'langefors';
+  var rajoOverrideActive = false;
+
+  function calcRajo(v, selectedKey, override){
+    var diamMm = v.diamPulg*25.4;
+
+    var bK = (0.024*(v.densExpl/v.densRoca)+0.018)*diamMm;
+    var espK = (v.banco+7*bK)/8, tacoK = 1.1*bK, pasK = 0.2*bK, cargaK = v.banco+pasK-tacoK;
+
+    var bA = 0.036*diamMm*Math.pow(v.densExpl/v.densRoca, 1/3);
+    var espA = bA*1.2, tacoA = 1.1*bA, pasA = 0.2*bA, cargaA = v.banco+pasA-tacoA;
+
+    var Fe = Math.pow((v.densExpl*Math.pow(v.velDeton,2))/(1.3*Math.pow(3660,2)), 0.33);
+    var Fr = Math.pow((2.7*3500)/(v.densRoca*v.velSismica), 0.33);
+    var Ftot = Fe*Fr;
+    var bLJ = 0.76*v.diamPulg*Ftot;
+    var espLJ = bLJ*1.2, tacoLJ = 1*bLJ, pasLJ = bLJ*0.3, cargaLJ = v.banco+pasLJ-tacoLJ;
+
+    var cTotal = 0.75+v.constC;
+    var bL = Math.sqrt((v.densExpl*v.potRel)/(cTotal*v.fFactor*v.relSB)) * diamMm/33;
+    var espL = bL*1.2, tacoL = bL*1.1, pasL = 0.2*bL, cargaL = v.banco+pasL-tacoL;
+
+    var methods = [
+      {key:'konya', name:'Konya', burden:bK, esp:espK, taco:tacoK, pas:pasK, carga:cargaK},
+      {key:'ash', name:'Ash', burden:bA, esp:espA, taco:tacoA, pas:pasA, carga:cargaA},
+      {key:'lopezJimeno', name:'López Jimeno', burden:bLJ, esp:espLJ, taco:tacoLJ, pas:pasLJ, carga:cargaLJ},
+      {key:'langefors', name:'Langefors', burden:bL, esp:espL, taco:tacoL, pas:pasL, carga:cargaL}
+    ];
+    var sel = null;
+    for(var i=0;i<methods.length;i++){ if(methods[i].key===selectedKey){ sel = methods[i]; break; } }
+    if(!sel) sel = methods[methods.length-1];
+
+    // Taco, largo de carga y pasadura pueden ajustarse manualmente (el
+    // perforista/tronador a menudo los redondea en terreno según el taco
+    // disponible, el largo de cartucho, etc.), sin tocar burden ni
+    // espaciamiento, que siguen viniendo del método elegido.
+    var manualActive = !!(override && override.active);
+    var finalTaco = manualActive ? Math.max(0, override.taco) : sel.taco;
+    var finalCarga = manualActive ? Math.max(0, override.carga) : sel.carga;
+    var finalPas = manualActive ? Math.max(0, override.pas) : sel.pas;
+
+    var cargaExplosivoKg = 0.507*Math.pow(v.diamPulg,2)*v.densExpl*finalCarga;
+    var toneladas = sel.burden*sel.esp*v.banco*v.densRoca;
+    var factorCarga = cargaExplosivoKg/toneladas;
+
+    return {
+      diamMm: diamMm,
+      methods: methods,
+      selectedKey: sel.key,
+      manual: manualActive,
+      final:{ name:sel.name, burden:sel.burden, esp:sel.esp, taco:finalTaco, pas:finalPas, carga:finalCarga,
+              cargaExplosivoKg:cargaExplosivoKg, toneladas:toneladas, factorCarga:factorCarga }
+    };
+  }
+
+  function renderMethodPicker(){
+    var html = RAJO_METHODS_META.map(function(m){
+      return '<button type="button" class="method-btn'+(m.key===rajoSelectedMethod?' selected':'')+'" data-method="'+m.key+'">'+m.name+'</button>';
+    }).join('');
+    var wrap = $('#rajo-method-picker');
+    wrap.innerHTML = html;
+    wrap.querySelectorAll('.method-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        rajoSelectedMethod = btn.getAttribute('data-method');
+        recalcRajo();
+      });
+    });
+  }
+
+  function renderRajoStats(r){
+    var items = [
+      ['Burden (B)', r.final.burden, 'm'],
+      ['Espaciamiento (S)', r.final.esp, 'm'],
+      ['Taco', r.final.taco, 'm'],
+      ['Pasadura', r.final.pas, 'm'],
+      ['Largo de carga', r.final.carga, 'm'],
+      ['Carga de explosivo', r.final.cargaExplosivoKg, 'kg'],
+      ['Toneladas removidas', r.final.toneladas, 'ton']
+    ];
+    var html = items.map(function(it){
+      return '<div class="stat"><span class="label">'+it[0]+'</span><span class="value">'+fmt(it[1])+'<span class="unit">'+it[2]+'</span></span></div>';
+    }).join('');
+    html += '<div class="stat highlight"><span class="label">Factor de carga</span><span class="value">'+fmt(r.final.factorCarga,3)+'<span class="unit">kg/ton</span></span></div>';
+    $('#rajo-stats').innerHTML = html;
+  }
+
+  function renderRajoTable(r){
+    var badgeLabel = r.manual ? 'Fórmula' : 'Oficial';
+    var thead = '<thead><tr><th>Parámetro</th>'+r.methods.map(function(m){
+      var official = m.key===r.selectedKey;
+      return '<th class="'+(official?'col-official':'')+'">'+m.name+(official?'<span class="badge-official">'+badgeLabel+'</span>':'')+'</th>';
+    }).join('')+'</tr></thead>';
+    var paramRows = [
+      {label:'Burden (m)', key:'burden'},
+      {label:'Espaciamiento (m)', key:'esp'},
+      {label:'Taco (m)', key:'taco'},
+      {label:'Pasadura (m)', key:'pas'},
+      {label:'Largo de carga (m)', key:'carga'}
+    ];
+    var tbody = '<tbody>'+paramRows.map(function(p){
+      return '<tr><td>'+p.label+'</td>'+r.methods.map(function(m){
+        return '<td class="'+(m.key===r.selectedKey?'col-official':'')+'">'+fmt(m[p.key])+'</td>';
+      }).join('')+'</tr>';
+    }).join('')+'</tbody>';
+    $('#rajo-table').innerHTML = thead+tbody;
+  }
+
+  function renderRajoChart(r){
+    var svg = $('#rajo-chart');
+    var W=560,H=300, top=24,bottom=48,left=30,right=30;
+    var plotH = H-top-bottom;
+    var slots = r.methods.length;
+    var slotW = (W-left-right)/slots;
+    var barW = Math.min(64, slotW*0.55);
+    var s = '';
+    r.methods.forEach(function(m,i){
+      var pas = Math.max(0, m.pas), car = Math.max(0, m.carga), tac = Math.max(0, m.taco);
+      var total = pas+car+tac || 1;
+      var cx = left + slotW*i + slotW/2;
+      var x = cx-barW/2;
+      var hPas = plotH*(pas/total);
+      var hCar = plotH*(car/total);
+      var hTac = plotH*(tac/total);
+      var y = top+plotH;
+      y -= hPas;
+      s += '<rect x="'+x+'" y="'+y+'" width="'+barW+'" height="'+hPas+'" fill="'+COL.pasadura+'"/>';
+      y -= hCar;
+      s += '<rect x="'+x+'" y="'+y+'" width="'+barW+'" height="'+hCar+'" fill="'+COL.carga+'"/>';
+      y -= hTac;
+      s += '<rect x="'+x+'" y="'+y+'" width="'+barW+'" height="'+hTac+'" fill="'+COL.taco+'"/>';
+      if(m.key===r.selectedKey){
+        s += '<rect x="'+(x-4)+'" y="'+(top-6)+'" width="'+(barW+8)+'" height="'+(plotH+10)+'" fill="none" stroke="'+COL.ember+'" stroke-width="2" stroke-dasharray="4 3" rx="5"/>';
+      }
+      s += '<text x="'+cx+'" y="'+(top+plotH+22)+'" text-anchor="middle" font-family="Barlow Condensed" font-size="13" font-weight="600" fill="'+COL.paperDim+'">'+m.name+'</text>';
+    });
+    svg.innerHTML = s;
+  }
+
+  // Diagrama plano (2D, sin isometría) de 2 perforaciones: vista de perfil
+  // del barreno con la cara libre a la izquierda. Todas las medidas
+  // (burden, espaciamiento, altura de banco, taco, largo de carga,
+  // pasadura) se dibujan como cotas dentro del propio SVG con su valor
+  // REAL — el espaciado horizontal entre cara libre / barreno 1 / barreno 2
+  // es un esquema de ancho FIJO (no proporcional a burden/espaciamiento
+  // real), a propósito: así los 2 barrenos quedan siempre juntos y
+  // compactos sin importar cuán grande sea el burden o el espaciamiento
+  // real, y el diagrama ampliado (popup) aprovecha mejor la pantalla del
+  // celular en vez de quedar angosto y alargado. Las cotas de distancia
+  // siguen mostrando el dato real (fmt(B)/fmt(S)/etc.), solo cambia el
+  // dibujo, nunca el número.
+  var RAJO_DIAGRAM_W = 560;
+  var RAJO_DIAGRAM_PADL = 108, RAJO_DIAGRAM_PADR = 248;
+  var RAJO_DIAGRAM_GAP1 = 78, RAJO_DIAGRAM_GAP2 = 78;
+  function buildRajoDiagramSVG(r, v, H, padT, padB){
+    var W = RAJO_DIAGRAM_W, padL = RAJO_DIAGRAM_PADL, padR = RAJO_DIAGRAM_PADR;
+    var B = Math.max(0.2, r.final.burden), S = Math.max(0.2, r.final.esp);
+    var banco = Math.max(0.5, v.banco), taco = Math.max(0, r.final.taco);
+    var carga = Math.max(0, r.final.carga);
+    // La profundidad del fondo del barreno se calcula a partir de taco +
+    // carga (las dos bandas que realmente se dibujan), para que el dibujo
+    // sea siempre consistente aunque el usuario haya ajustado manualmente
+    // taco/carga/pasadura por separado. En el caso normal (sin ajuste
+    // manual) esto coincide exactamente con la pasadura de la fórmula.
+    var pas = Math.max(0, taco+carga-banco);
+
+    var availH = H-padT-padB;
+    var worldH = Math.max(0.4, (banco+pas) * 1.08);
+    var scaleY = Math.max(3, Math.min(availH/worldH, 140));
+
+    function Y(y){ return padT + (banco - y)*scaleY; }
+
+    // Posiciones X fijas (no dependen de B/S reales): cara libre, barreno 1
+    // y barreno 2 quedan siempre a la misma distancia visual entre sí.
+    var faceX = padL;
+    var hole1X = faceX + RAJO_DIAGRAM_GAP1;
+    var hole2X = hole1X + RAJO_DIAGRAM_GAP2;
+    var rightEdge = hole2X + 34;
+    var yCrest = Y(banco), yFloor = Y(0), yToe = Y(banco-taco-carga);
+    var yBlockBottom = pas>0.001 ? yToe : yFloor;
+
+    function dimH(x1, x2, y, label, above){
+      above = above!==false;
+      var s='<line x1="'+x1+'" y1="'+y+'" x2="'+x2+'" y2="'+y+'" stroke="'+COL.ember+'" stroke-width="1.2"/>';
+      s+='<line x1="'+x1+'" y1="'+(y-4)+'" x2="'+x1+'" y2="'+(y+4)+'" stroke="'+COL.ember+'" stroke-width="1.2"/>';
+      s+='<line x1="'+x2+'" y1="'+(y-4)+'" x2="'+x2+'" y2="'+(y+4)+'" stroke="'+COL.ember+'" stroke-width="1.2"/>';
+      var midx=(x1+x2)/2, ly= above ? y-11 : y+11;
+      var tw=label.length*6.3+9;
+      s+='<rect x="'+(midx-tw/2)+'" y="'+(ly-8.5)+'" width="'+tw+'" height="17" rx="4" fill="'+COL.rock+'" fill-opacity="0.9"/>';
+      s+='<text x="'+midx+'" y="'+(ly+4)+'" text-anchor="middle" font-family="Barlow Condensed" font-size="12" font-weight="700" fill="'+COL.ember+'">'+label+'</text>';
+      return s;
+    }
+    function dimV(y1, y2, x, label, right){
+      right = right!==false;
+      var s='<line x1="'+x+'" y1="'+y1+'" x2="'+x+'" y2="'+y2+'" stroke="'+COL.ember+'" stroke-width="1.2"/>';
+      s+='<line x1="'+(x-4)+'" y1="'+y1+'" x2="'+(x+4)+'" y2="'+y1+'" stroke="'+COL.ember+'" stroke-width="1.2"/>';
+      s+='<line x1="'+(x-4)+'" y1="'+y2+'" x2="'+(x+4)+'" y2="'+y2+'" stroke="'+COL.ember+'" stroke-width="1.2"/>';
+      var midy=(y1+y2)/2, tw=label.length*6.3+9;
+      var lx = right ? x+8 : x-8-tw;
+      s+='<rect x="'+lx+'" y="'+(midy-8.5)+'" width="'+tw+'" height="17" rx="4" fill="'+COL.rock+'" fill-opacity="0.9"/>';
+      s+='<text x="'+(lx+tw/2)+'" y="'+(midy+4)+'" text-anchor="middle" font-family="Barlow Condensed" font-size="12" font-weight="700" fill="'+COL.ember+'">'+label+'</text>';
+      return s;
+    }
+
+    var s = '';
+    // masa rocosa: bloque desde la cara libre hasta más allá del 2º barreno
+    s += '<rect x="'+faceX+'" y="'+yCrest+'" width="'+(rightEdge-faceX)+'" height="'+(yBlockBottom-yCrest)+'" fill="rgba(138,120,98,0.16)" stroke="rgba(138,120,98,0.4)" stroke-width="1"/>';
+    // línea de piso (nivel de banco) si hay pasadura, para mostrar el sub-drill bajo el piso
+    if(pas>0.001){
+      s += '<line x1="'+faceX+'" y1="'+yFloor+'" x2="'+rightEdge+'" y2="'+yFloor+'" stroke="'+COL.stone+'" stroke-width="1" stroke-dasharray="3 3" opacity="0.65"/>';
+    }
+    // cara libre (borde izquierdo, resaltado)
+    s += '<line x1="'+faceX+'" y1="'+yCrest+'" x2="'+faceX+'" y2="'+yFloor+'" stroke="'+COL.blast+'" stroke-width="2.6"/>';
+    s += '<text x="'+(faceX-7)+'" y="'+((yCrest+yFloor)/2)+'" text-anchor="end" font-family="Barlow Condensed" font-size="10.5" font-weight="700" fill="'+COL.blast+'" transform="rotate(-90 '+(faceX-7)+' '+((yCrest+yFloor)/2)+')">CARA LIBRE</text>';
+
+    // 2 barrenos, a distancia visual FIJA (no a escala) de la cara libre y
+    // entre sí. Ambos comparten el mismo taco/carga/pasadura, así que las
+    // cotas verticales se dibujan una sola vez, a la derecha del 2º
+    // barreno. Se dibujan compactos (barreno angosto, insignia chica) para
+    // que no dominen el diagrama ni obliguen a agrandar la tarjeta.
+    var holeXs = [hole1X, hole2X];
+    var collarY = yCrest, tacoEndY = Y(banco-taco), toeY = yToe;
+    holeXs.forEach(function(cx, i){
+      var rx = 7.5;
+      s += '<rect x="'+(cx-rx*0.72)+'" y="'+tacoEndY+'" width="'+(rx*1.44)+'" height="'+Math.max(0,toeY-tacoEndY)+'" fill="'+COL.carga+'" stroke="'+COL.rock+'" stroke-width="0.6"/>';
+      s += '<rect x="'+(cx-rx)+'" y="'+collarY+'" width="'+(rx*2)+'" height="'+Math.max(0,tacoEndY-collarY)+'" fill="'+COL.taco+'" stroke="'+COL.rock+'" stroke-width="0.6"/>';
+      s += '<ellipse cx="'+cx+'" cy="'+collarY+'" rx="'+rx+'" ry="3.2" fill="'+COL.taco+'" stroke="'+COL.rock+'" stroke-width="0.8"/>';
+      s += '<ellipse cx="'+cx+'" cy="'+toeY+'" rx="'+(rx*0.7)+'" ry="2.6" fill="'+COL.carga+'" stroke="'+COL.rock+'" stroke-width="0.8"/>';
+      // insignia numerada (en vez de texto largo) para no chocar cuando el espaciamiento es angosto
+      s += '<circle cx="'+cx+'" cy="'+(yCrest-14)+'" r="7.5" fill="'+COL.rock+'" stroke="'+COL.paperDim+'" stroke-width="1"/>';
+      s += '<text x="'+cx+'" y="'+(yCrest-10.5)+'" text-anchor="middle" font-family="Barlow Condensed" font-size="10" font-weight="700" fill="'+COL.paper+'">'+(i+1)+'</text>';
+    });
+
+    // cotas horizontales: burden (cara libre -> barreno 1) y espaciamiento
+    // (barreno 1 -> barreno 2). El trazo es de ancho fijo (ver arriba) pero
+    // el número mostrado es siempre el valor real de B y S.
+    var yDimTop = yCrest - 31;
+    s += dimH(faceX, hole1X, yDimTop, 'B '+fmt(B,2)+' m', true);
+    s += dimH(hole1X, hole2X, yDimTop, 'S '+fmt(S,2)+' m', true);
+
+    // cota vertical: altura de banco, junto a la cara libre
+    s += dimV(yCrest, yFloor, faceX-30, 'H '+fmt(v.banco,1)+' m', false);
+
+    // cotas verticales de taco, largo de carga y pasadura: todas a la
+    // derecha del barreno 2 (fuera de la malla). La pasadura va en una
+    // columna aparte porque su rango (piso -> fondo) puede solaparse en
+    // altura con el de la carga (que incluye la pasadura bajo el piso).
+    var xDim = hole2X + 22;
+    s += dimV(collarY, tacoEndY, xDim, 'Taco '+fmt(taco,2)+' m', true);
+    s += dimV(tacoEndY, toeY, xDim, 'Carga '+fmt(carga,2)+' m', true);
+    if(pas>0.001){
+      s += dimV(yFloor, toeY, xDim+118, 'Pasadura '+fmt(pas,2)+' m', true);
+    }
+
+    return s;
+  }
+
+  // El diagrama compacto de la página (corto, para que el sticky no ocupe
+  // mucha pantalla) y el que se abre al mantener presionado (más alto, para
+  // que se vea grande/legible y aproveche mejor la pantalla del celular)
+  // comparten el mismo ancho y las mismas posiciones X — solo cambia el
+  // alto disponible — así que se generan con la misma función y siempre
+  // muestran el mismo contenido, sincronizado.
+  function renderRajoDiagram(r, v){
+    var mainSvg = $('#rajo-diagram');
+    if(mainSvg){
+      mainSvg.setAttribute('viewBox', '0 0 '+RAJO_DIAGRAM_W+' 170');
+      mainSvg.innerHTML = buildRajoDiagramSVG(r, v, 170, 50, 38);
+    }
+    var modalSvg = $('#rajo-diagram-modal');
+    if(modalSvg){
+      modalSvg.setAttribute('viewBox', '0 0 '+RAJO_DIAGRAM_W+' 520');
+      modalSvg.innerHTML = buildRajoDiagramSVG(r, v, 520, 76, 58);
+    }
+  }
+
+  var rajoGetters, rajoCache;
+  function recalcRajo(){
+    var v = readValues(rajoGetters);
+    var override = rajoOverrideActive ? { active:true, taco:v.tacoManual, carga:v.cargaManual, pas:v.pasaduraManual } : null;
+    rajoCache = calcRajo(v, rajoSelectedMethod, override);
+    renderMethodPicker();
+    renderRajoStats(rajoCache);
+    renderRajoTable(rajoCache);
+    renderRajoChart(rajoCache);
+    renderRajoDiagram(rajoCache, v);
+    if(rajoCache.manual){
+      $('#rajo-note').innerHTML = 'Burden y espaciamiento vienen del método <b>'+rajoCache.final.name+'</b>. Taco, largo de carga y pasadura están <b>ajustados manualmente</b> (grupo "Ajuste manual del barreno") — la tabla de abajo sigue mostrando el valor puro de cada fórmula para comparar, sin el ajuste.';
+    } else {
+      $('#rajo-note').innerHTML = 'Diseño oficial calculado con el método que elegiste arriba: <b>'+rajoCache.final.name+'</b> (columna y barra destacada). Cambia el método en cualquier momento para comparar resultados al instante, o activa el ajuste manual de taco/carga/pasadura en el panel de la izquierda.';
+    }
+  }
+
+  /* ============================================================
+     SUBTERRÁNEA — MALLA DE PERFORACIÓN
+  ============================================================ */
+  var mallaFieldGroups = [
+    { title:'Sección de la galería', fields:[
+      {key:'anchoTunel', label:'Ancho del túnel (AT)', unit:'m', min:3, max:12, step:0.1, value:7},
+      {key:'altHastiales', label:'Altura de los hastiales', unit:'m', min:2.5, max:12, step:0.1, value:7},
+      {key:'flechaArco', label:'Flecha del arco de coronación', unit:'m', min:0, max:3, step:0.05, value:0}
+    ]},
+    { title:'Perforación', fields:[
+      {key:'diamCuele', label:'Diámetro barreno de cuele (D2)', unit:'mm', min:38, max:102, step:1, value:45},
+      {key:'diamPerf', label:'Diámetro de perforación (D1)', unit:'mm', min:38, max:102, step:1, value:45},
+      {key:'gradiente', label:'Gradiente', unit:'m', min:0, max:5, step:0.1, value:2},
+      {key:'avanceMedio', label:'Avance medio de los barrenos', unit:'%', min:60, max:100, step:1, value:82}
+    ]},
+    { title:'Explosivo y roca', fields:[
+      {key:'diamExpl', label:'Diámetro del explosivo', unit:'mm', min:17, max:65, step:0.5, value:25},
+      {key:'densExplS', label:'Densidad del explosivo', unit:'gr/cm³', min:0.8, max:1.5, step:0.01, value:1.2},
+      {key:'densRocaS', label:'Densidad de la roca', unit:'ton/m³', min:1.8, max:3.3, step:0.01, value:2.5}
+    ]}
+  ];
+
+  function calcMalla(v){
+    var diamCuelePulg = v.diamCuele/25.4;
+    var B34 = diamCuelePulg*Math.sqrt(2);
+    var B36 = 0.15+34.1*B34*0.0254-39.4*Math.pow(B34*0.0254,2);
+    var profBarrenos = B36*(v.avanceMedio/100);
+    var avanceEstimado = 0.95*B36;
+
+    var rings = [];
+    var piedra = 1.5*v.diamCuele;
+    var lado = piedra*Math.sqrt(2);
+    rings.push({n:1, piedra:piedra, lado:lado});
+    var targetMm = Math.max(v.anchoTunel, v.altHastiales)*1000;
+    for(var i=2;i<=12;i++){
+      if(rings[rings.length-1].lado >= targetMm) break;
+      piedra = lado;
+      lado = 1.5*piedra*Math.sqrt(2);
+      rings.push({n:i, piedra:piedra, lado:lado});
+    }
+    var anchoTunelMm = v.anchoTunel*1000;
+    var ringsNeeded = rings[rings.length-1].n;
+    var ringsReached = false;
+    for(var j=0;j<rings.length;j++){ if(rings[j].lado>=anchoTunelMm){ ringsNeeded = rings[j].n; ringsReached = true; break; } }
+
+    var dExplM = v.diamExpl/1000;
+    var q = (Math.PI/4)*Math.pow(dExplM,2)*v.densExplS*1000;
+    var burdenZV = 0.88*Math.pow(q,0.35);
+
+    function zona(label, pF, eF, lDiv, mF, nF, oF){
+      return { label:label, piedra:pF*burdenZV, esp:eF*burdenZV, largoCarga:profBarrenos/lDiv,
+               concFondo:mF*q, concColumna:nF*q, retacado:oF*burdenZV };
+    }
+    var zonaRows = [
+      zona('Piso', 1,1.1,3,1,1,0.2),
+      zona('Hastiales', 0.9,1.1,6,1,0.4,0.5),
+      zona('Techo', 0.9,1.1,6,1,0.36,0.5),
+      zona('Destroza — hacia arriba', 1,1.1,3,1,0.5,0.5),
+      zona('Destroza — horizontal', 1,1.1,3,1,0.5,0.5),
+      zona('Destroza — hacia abajo', 1,1.2,3,1,0.5,0.5)
+    ];
+
+    return { diamCuelePulg:diamCuelePulg, B36:B36, profBarrenos:profBarrenos, avanceEstimado:avanceEstimado,
+             rings:rings, ringsNeeded:ringsNeeded, ringsReached:ringsReached, anchoTunelM:v.anchoTunel, q:q, burdenZV:burdenZV, zonaRows:zonaRows };
+  }
+
+  function renderMallaStats(r){
+    var items = [
+      ['Longitud de perforación (H)', r.B36, 'm'],
+      ['Profundidad efectiva', r.profBarrenos, 'm'],
+      ['Avance estimado (0.95×H)', r.avanceEstimado, 'm'],
+      ['Concentración lineal de carga (q)', r.q, 'kg/m'],
+      ['Burden de diseño (zona voladura)', r.burdenZV, 'm']
+    ];
+    var html = items.map(function(it){
+      return '<div class="stat"><span class="label">'+it[0]+'</span><span class="value">'+fmt(it[1])+'<span class="unit">'+it[2]+'</span></span></div>';
+    }).join('');
+    html += '<div class="stat highlight"><span class="label">Anillos de rainura necesarios</span><span class="value">'+(r.ringsReached?r.ringsNeeded:(r.ringsNeeded+'+'))+'<span class="unit">anillos</span></span></div>';
+    $('#malla-stats').innerHTML = html;
+  }
+
+  function renderMallaTable(r){
+    var thead = '<thead><tr><th>Zona</th><th>Piedra (m)</th><th>Espaciamiento (m)</th><th>Long. carga (m)</th><th>Conc. fondo (kg/m)</th><th>Conc. columna (kg/m)</th><th>Retacado (m)</th></tr></thead>';
+    var tbody = '<tbody>'+r.zonaRows.map(function(z){
+      return '<tr><td>'+z.label+'</td><td>'+fmt(z.piedra)+'</td><td>'+fmt(z.esp)+'</td><td>'+fmt(z.largoCarga)+'</td><td>'+fmt(z.concFondo)+'</td><td>'+fmt(z.concColumna)+'</td><td>'+fmt(z.retacado)+'</td></tr>';
+    }).join('')+'</tbody>';
+    $('#malla-table').innerHTML = thead+tbody;
+  }
+
+  function renderRainuraTable(r){
+    var thead = '<thead><tr><th>Anillo</th><th>Piedra (mm)</th><th>Lado de sección (mm)</th><th>Piedra (m)</th><th>Lado (m)</th></tr></thead>';
+    var tbody = '<tbody>'+r.rings.map(function(rg){
+      var official = r.ringsReached && rg.n===r.ringsNeeded;
+      return '<tr><td class="'+(official?'col-official':'')+'">'+rg.n+(official?'<span class="badge-official">Cubre el túnel</span>':'')+'</td>'+
+             '<td class="'+(official?'col-official':'')+'">'+fmt(rg.piedra,1)+'</td>'+
+             '<td class="'+(official?'col-official':'')+'">'+fmt(rg.lado,1)+'</td>'+
+             '<td class="'+(official?'col-official':'')+'">'+fmt(rg.piedra/1000,3)+'</td>'+
+             '<td class="'+(official?'col-official':'')+'">'+fmt(rg.lado/1000,3)+'</td></tr>';
+    }).join('')+'</tbody>';
+    $('#rainura-table').innerHTML = thead+tbody;
+  }
+
+  function renderRainuraChart(r){
+    var svg = $('#rainura-chart');
+    var W=560,H=300, top=34,bottom=16,left=104,right=110;
+    var plotW = W-left-right, plotH = H-top-bottom;
+    var shown = r.rings.slice(0, Math.min(r.rings.length, 8));
+    var anchoMm = r.anchoTunelM*1000;
+    var maxVal = Math.max(shown[shown.length-1].lado, anchoMm) * 1.08;
+    var minVal = Math.max(1, shown[0].piedra * 0.7);
+    var lgMin = Math.log10(minVal), lgMax = Math.log10(maxVal);
+    function xFor(mm){ return left + plotW*(Math.log10(mm)-lgMin)/(lgMax-lgMin); }
+    var rowH = plotH/shown.length;
+    var s = '';
+    shown.forEach(function(rg,i){
+      var y = top + i*rowH;
+      var barY = y + rowH*0.24;
+      var barH = rowH*0.52;
+      var x2 = xFor(rg.lado);
+      var isAnswer = r.ringsReached && rg.n===r.ringsNeeded;
+      s += '<text x="'+(left-10)+'" y="'+(y+rowH/2+4)+'" text-anchor="end" font-family="Barlow Condensed" font-size="12.5" fill="'+COL.paperDim+'">Anillo '+rg.n+'</text>';
+      s += '<rect x="'+left+'" y="'+barY+'" width="'+Math.max(1,x2-left)+'" height="'+barH+'" rx="3" fill="'+(isAnswer?COL.ember:COL.carga)+'" opacity="'+(isAnswer?1:0.8)+'"/>';
+      s += '<text x="'+(x2+7)+'" y="'+(y+rowH/2+4)+'" font-family="Barlow Condensed" font-size="12" font-weight="'+(isAnswer?'700':'400')+'" fill="'+(isAnswer?COL.ember:COL.paperDim)+'">'+fmt(rg.lado,0)+' mm</text>';
+    });
+    var xt = xFor(anchoMm);
+    s += '<line x1="'+xt+'" y1="'+(top-10)+'" x2="'+xt+'" y2="'+(top+plotH+4)+'" stroke="'+COL.ember+'" stroke-width="2" stroke-dasharray="5 4"/>';
+    s += '<text x="'+xt+'" y="16" text-anchor="middle" font-family="Barlow Condensed" font-size="12.5" font-weight="700" fill="'+COL.ember+'">Ancho túnel: '+fmt(anchoMm,0)+' mm</text>';
+    svg.innerHTML = s;
+  }
+
+  var mallaGetters, mallaCache;
+  function recalcMalla(){
+    var v = readValues(mallaGetters);
+    mallaCache = calcMalla(v);
+    renderMallaStats(mallaCache);
+    renderMallaTable(mallaCache);
+    renderRainuraTable(mallaCache);
+    renderRainuraChart(mallaCache);
+    var lastRing = mallaCache.rings[mallaCache.rings.length-1];
+    var ringMsg = mallaCache.ringsReached
+      ? 'El <b>anillo '+mallaCache.ringsNeeded+'</b> es el primero cuyo lado de sección ('+fmt(mallaCache.rings[mallaCache.ringsNeeded-1].lado,0)+' mm) alcanza el ancho del túnel ('+fmt(mallaCache.anchoTunelM*1000,0)+' mm).'
+      : 'Con '+lastRing.n+' anillos (lado = '+fmt(lastRing.lado,0)+' mm) aún no se alcanza el ancho del túnel ('+fmt(mallaCache.anchoTunelM*1000,0)+' mm); la progresión sigue creciendo con la misma regla.';
+    $('#rainura-note').innerHTML = ringMsg+' La concentración de carga (q) se calcula automáticamente a partir del <b>diámetro</b> y la <b>densidad del explosivo</b> (en la planilla original este valor venía en blanco); el burden de la zona de voladura y toda la tabla dependen de q en tiempo real.';
+  }
+
+  /* ============================================================
+     SUBTERRÁNEA — CARGUÍO Y FACTOR DE CARGA
+  ============================================================ */
+  var carguioFieldGroups = [
+    { title:'Tiros por tipo', fields:[
+      {key:'tirosAux', label:'Tiros auxiliares', unit:'tiros', min:0, max:80, step:1, value:42},
+      {key:'tirosAlivio', label:'Tiros de alivio', unit:'tiros', min:0, max:10, step:1, value:1},
+      {key:'tirosContorno', label:'Tiros de contorno', unit:'tiros', min:0, max:60, step:1, value:22},
+      {key:'tirosZapateras', label:'Tiros de zapateras', unit:'tiros', min:0, max:40, step:1, value:10},
+      {key:'tirosRainura', label:'Tiros de rainura', unit:'tiros', min:0, max:30, step:1, value:12}
+    ]},
+    { title:'Geometría de la tronadura', fields:[
+      {key:'diamPerfCargado', label:'Diámetro perforación tiro cargado', unit:'mm', min:32, max:65, step:1, value:45},
+      {key:'longPerf', label:'Longitud de perforación', unit:'m', min:1.5, max:6, step:0.05, value:4},
+      {key:'avanceReal', label:'Avance real de la tronadura', unit:'m', min:1, max:5.5, step:0.01, value:3.28},
+      {key:'areaSeccion', label:'Área de la sección (frente)', unit:'m²', min:10, max:90, step:0.5, value:47},
+      {key:'densRocaC', label:'Densidad de la roca', unit:'ton/m³', min:1.8, max:3.3, step:0.01, value:2.5}
+    ]},
+    { title:'Carga — auxiliares (ANFO / TRONEX)', fields:[
+      {key:'tacoAux', label:'Taco', unit:'m', min:0.3, max:2, step:0.05, value:1},
+      {key:'anchoCartAux', label:'Diámetro de carga ANFO', unit:'cm', min:1.3, max:5, step:0.01, value:2.86},
+      {key:'largoCartAux', label:'Descuento de collar', unit:'cm', min:5, max:51, step:0.1, value:20.3},
+      {key:'densAnfo', label:'Densidad ANFO', unit:'gr/cc', min:0.55, max:1.2, step:0.01, value:0.9},
+      {key:'masaTronexAux', label:'Masa cartucho TRONEX (cebo)', unit:'gr', min:100, max:500, step:1, value:269}
+    ]},
+    { title:'Carga — contorno (SOFTRON)', fields:[
+      {key:'tacoContorno', label:'Taco', unit:'m', min:0.3, max:2, step:0.05, value:1.3},
+      {key:'largoCartContorno', label:'Descuento de collar', unit:'cm', min:5, max:51, step:0.1, value:20.3},
+      {key:'largoVarilla', label:'Largo de varilla SOFTRON', unit:'cm', min:12.7, max:76, step:0.1, value:50.8},
+      {key:'masaVarilla', label:'Masa por varilla', unit:'gr', min:100, max:500, step:1, value:269}
+    ]},
+    { title:'Carga — zapateras (TRONEX)', fields:[
+      {key:'tacoZapateras', label:'Taco', unit:'m', min:0.3, max:2, step:0.05, value:0.8},
+      {key:'largoCartZapateras', label:'Largo de cartucho', unit:'cm', min:5, max:51, step:0.1, value:20.3},
+      {key:'masaCartZapateras', label:'Masa por cartucho', unit:'gr', min:100, max:500, step:1, value:269}
+    ]}
+  ];
+
+  function calcCarguio(v){
+    var U6 = v.largoCartAux/100;
+    var Z3 = v.longPerf - U6 - v.tacoAux;
+    var diamPulgAnfo = v.anchoCartAux/2.54;
+    var Z5 = 0.507*Math.pow(diamPulgAnfo,2)*v.densAnfo*Z3;
+    var Z6 = Z5*v.tirosAux;
+    var Z7 = v.tirosAux*(v.masaTronexAux/1000);
+
+    var U14 = v.largoCartContorno/100;
+    var Z11 = v.longPerf - v.tacoContorno - U14;
+    var P16 = v.largoVarilla/100;
+    var Z13 = Z11/P16;
+    var Z14 = v.tirosContorno*Z13;
+    var Z15 = v.tirosContorno*(v.masaVarilla/1000);
+
+    var Z18 = v.longPerf - v.tacoZapateras;
+    var P24 = v.largoCartZapateras/100;
+    var Z20 = Z18/P24;
+    var Z21 = Z20*v.tirosZapateras;
+    var Z22 = Z21*(v.masaCartZapateras/1000);
+
+    var E24 = v.areaSeccion*v.avanceReal*v.densRocaC;
+    var totalKg = Z6+Z7+Z15+Z22;
+    var factorCarga = totalKg/E24;
+
+    return {
+      longPerf: v.longPerf,
+      aux:{ largoCarga:Z3, taco:v.tacoAux, tiros:v.tirosAux, kgAnfo:Z6, kgTronex:Z7 },
+      contorno:{ largoCarga:Z11, taco:v.tacoContorno, tiros:v.tirosContorno, varillasPorTiro:Z13, totalVarillas:Z14, kg:Z15 },
+      zapateras:{ largoCarga:Z18, taco:v.tacoZapateras, tiros:v.tirosZapateras, cartuchosPorTiro:Z20, totalCartuchos:Z21, kg:Z22 },
+      E24: E24, totalKg: totalKg, factorCarga: factorCarga
+    };
+  }
+
+  function renderCarguioStats(c){
+    var html = '';
+    html += '<div class="stat highlight"><span class="label">Factor de carga</span><span class="value">'+fmt(c.factorCarga,3)+'<span class="unit">kg/ton</span></span></div>';
+    html += '<div class="stat"><span class="label">Toneladas roca volada</span><span class="value">'+fmt(c.E24,1)+'<span class="unit">ton</span></span></div>';
+    html += '<div class="stat"><span class="label">Explosivo total</span><span class="value">'+fmt(c.totalKg,1)+'<span class="unit">kg</span></span></div>';
+    $('#carguio-stats').innerHTML = html;
+  }
+
+  // Igual que el título del diagrama: el nombre de cada ítem usa el
+  // producto real elegido en su selector (carguioProductLabels), no un
+  // nombre genérico fijo — así la tabla de detalle siempre dice qué
+  // explosivo/cartucho está realmente cargado en cada tiro.
+  function renderCarguioTable(c){
+    var thead = '<thead><tr><th>Ítem</th><th>Largo de carga (m)</th><th>Cantidad</th><th>Masa (kg)</th></tr></thead>';
+    var rows = [
+      [carguioProductLabels.anfo+' — auxiliares', fmt(c.aux.largoCarga), c.aux.tiros+' tiros', fmt(c.aux.kgAnfo,1)],
+      [carguioProductLabels.cebo+' — auxiliares', '—', c.aux.tiros+' tiros', fmt(c.aux.kgTronex,1)],
+      [carguioProductLabels.contorno+' — contorno', fmt(c.contorno.largoCarga), c.contorno.tiros+' tiros', fmt(c.contorno.kg,1)],
+      [carguioProductLabels.contorno+' (varillas) — contorno', '—', fmt(c.contorno.totalVarillas,1)+' un', '—'],
+      [carguioProductLabels.zapateras+' — zapateras', fmt(c.zapateras.largoCarga), c.zapateras.tiros+' tiros', fmt(c.zapateras.kg,1)]
+    ];
+    var tbody = '<tbody>'+rows.map(function(r){
+      return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td></tr>';
+    }).join('');
+    tbody += '<tr><td><b>Total</b></td><td>—</td><td>—</td><td class="col-official"><b>'+fmt(c.totalKg,1)+'</b></td></tr></tbody>';
+    $('#carguio-table').innerHTML = thead+tbody;
+  }
+
+  function renderLoadingDiagram(containerId, idPrefix, title, totalLen, taco, carga, style, cartridgeCount){
+    var W=600, H=112, left=24, right=24, tubeY=34, tubeH=32;
+    var usable = W-left-right;
+    var scale = usable/Math.max(totalLen, 0.01);
+    var tacoW = Math.max(0, taco)*scale;
+    var cargaW = Math.max(0, carga)*scale;
+    var x0 = left;
+    var xTacoEnd = x0+tacoW;
+    var xCargaEnd = xTacoEnd+cargaW;
+    var midY = tubeY+tubeH/2;
+
+    var hatchId = idPrefix+'-hatch';
+    var grainId = idPrefix+'-grain';
+    var cartId = idPrefix+'-cart';
+    var count = Math.max(1, Math.round(cartridgeCount||1));
+    var tileW = cargaW/count;
+
+    var defs = '<defs>'+
+      '<pattern id="'+hatchId+'" width="7" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">'+
+        '<rect width="7" height="10" fill="'+COL.taco+'"/><line x1="0" y1="0" x2="0" y2="10" stroke="#8a7862" stroke-width="2.4"/>'+
+      '</pattern>'+
+      '<pattern id="'+grainId+'" width="9" height="9" patternUnits="userSpaceOnUse">'+
+        '<rect width="9" height="9" fill="#c9b48a"/><circle cx="2.2" cy="2.2" r="1" fill="#9c8258"/><circle cx="6.4" cy="5.6" r="1" fill="#9c8258"/><circle cx="4" cy="8" r="0.8" fill="#9c8258"/>'+
+      '</pattern>'+
+      '<pattern id="'+cartId+'" width="'+Math.max(tileW,4)+'" height="'+tubeH+'" patternUnits="userSpaceOnUse">'+
+        '<rect width="'+Math.max(tileW,4)+'" height="'+tubeH+'" fill="'+(style==='zapateras'?'#c2472f':'#d9a63a')+'"/>'+
+        '<rect x="'+Math.max(tileW,4)-1.4+'" y="0" width="1.4" height="'+tubeH+'" fill="rgba(20,13,9,0.55)"/>'+
+      '</pattern>'+
+    '</defs>';
+
+    var s = defs;
+    // taco cap
+    s += '<rect x="'+x0+'" y="'+tubeY+'" width="'+tacoW+'" height="'+tubeH+'" rx="6" fill="url(#'+hatchId+')" stroke="'+COL.stone+'" stroke-width="1.5"/>';
+    // charge body
+    var chargeFill = style==='anfo' ? 'url(#'+grainId+')' : 'url(#'+cartId+')';
+    s += '<rect x="'+xTacoEnd+'" y="'+tubeY+'" width="'+cargaW+'" height="'+tubeH+'" fill="'+chargeFill+'" stroke="'+COL.stone+'" stroke-width="1.5"/>';
+    // outer outline (whole tube)
+    s += '<rect x="'+x0+'" y="'+tubeY+'" width="'+(tacoW+cargaW)+'" height="'+tubeH+'" rx="6" fill="none" stroke="'+COL.paperDim+'" stroke-width="1" opacity="0.5"/>';
+
+    if(style==='anfo'){
+      var primerW = Math.min(cargaW*0.14, 26);
+      s += '<rect x="'+(xCargaEnd-primerW)+'" y="'+tubeY+'" width="'+primerW+'" height="'+tubeH+'" fill="'+COL.red+'"/>';
+    }
+    if(style==='contorno'){
+      var sparks = Math.min(5, Math.max(2, Math.round(cargaW/90)));
+      for(var i=1;i<=sparks;i++){
+        var sx = xTacoEnd + (cargaW*i)/(sparks+1);
+        s += starIcon(sx, midY, 6, COL.ember);
+      }
+      var primerW2 = Math.min(cargaW*0.1, 20);
+      s += '<rect x="'+(xCargaEnd-primerW2)+'" y="'+tubeY+'" width="'+primerW2+'" height="'+tubeH+'" fill="'+COL.red+'"/>';
+    }
+    if(style==='zapateras'){
+      var primerW3 = Math.min(cargaW*0.12, 22);
+      s += '<rect x="'+(xCargaEnd-primerW3)+'" y="'+tubeY+'" width="'+primerW3+'" height="'+tubeH+'" fill="'+COL.red+'"/>';
+    }
+
+    // initiation wire (twisted pair at collar + line through + primer dot at toe)
+    s += '<line x1="4" y1="'+(midY-6)+'" x2="'+x0+'" y2="'+midY+'" stroke="'+COL.blue+'" stroke-width="1.6"/>';
+    s += '<line x1="4" y1="'+(midY+6)+'" x2="'+x0+'" y2="'+midY+'" stroke="'+COL.blue+'" stroke-width="1.6"/>';
+    s += '<line x1="'+x0+'" y1="'+midY+'" x2="'+xCargaEnd+'" y2="'+midY+'" stroke="'+COL.blue+'" stroke-width="1.4" stroke-dasharray="1 3.5" opacity="0.85"/>';
+    s += '<circle cx="'+xCargaEnd+'" cy="'+midY+'" r="3.2" fill="'+COL.red+'" stroke="'+COL.rock+'" stroke-width="1"/>';
+
+    // labels
+    s += '<text x="'+(x0+tacoW/2)+'" y="'+(tubeY+tubeH+18)+'" text-anchor="middle" font-family="Barlow Condensed" font-size="12" fill="'+COL.paperDim+'">Taco '+fmt(taco,2)+' m</text>';
+    var cargaLabel = 'Carga '+fmt(carga,2)+' m';
+    if(style!=='anfo') cargaLabel += ' · ≈'+count+' cartuchos';
+    s += '<text x="'+(xTacoEnd+cargaW/2)+'" y="'+(tubeY+tubeH+18)+'" text-anchor="middle" font-family="Barlow Condensed" font-size="12" fill="'+COL.paper+'">'+cargaLabel+'</text>';
+
+    var container = $('#'+containerId);
+    container.innerHTML = '<h4><span class="panel-title" style="margin:0;"><span class="dot"></span></span>'+title+'</h4>'+
+      '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">'+s+'</svg>';
+  }
+
+  function starIcon(cx, cy, r, color){
+    var pts = [];
+    for(var k=0;k<8;k++){
+      var rad = (k%2===0) ? r : r*0.4;
+      var ang = (Math.PI/4)*k - Math.PI/2;
+      pts.push((cx+rad*Math.cos(ang)).toFixed(1)+','+(cy+rad*Math.sin(ang)).toFixed(1));
+    }
+    return '<polygon points="'+pts.join(' ')+'" fill="'+color+'"/>';
+  }
+
+  // Nombre del producto actualmente cargado en cada tiro — alimenta TANTO
+  // el título del diagrama de carguío COMO el nombre de ítem en la tabla
+  // de detalle bajo las stats (ver wireCarguioTitle más abajo y
+  // renderCarguioTable). Arrancan con el texto genérico original; en
+  // cuanto el usuario elige un producto del catálogo en el selector
+  // correspondiente, se reemplaza por el nombre real de ESE producto
+  // (p.ej. "Premium (ANFO en saco)" en vez de "ANFO a granel"), y tanto el
+  // diagrama como la tabla se vuelven a dibujar con el nombre al día.
+  var carguioProductLabels = {
+    anfo: 'ANFO a granel',
+    cebo: 'cebo TRONEX',
+    contorno: 'SOFTRON, cordón + refuerzos',
+    zapateras: 'TRONEX, carga continua'
+  };
+  function findCatalogItem(items, key){
+    for(var i=0;i<items.length;i++){ if(items[i].key===key) return items[i]; }
+    return null;
+  }
+  // Conecta un <select> de mountExplosivePicker a carguioProductLabels: al
+  // elegir un producto (o volver a "Manual"), actualiza el nombre guardado
+  // y fuerza un recálculo para que el título del diagrama se refresque.
+  function wireCarguioTitle(selectEl, items, stateKey, defaultLabel){
+    if(!selectEl) return;
+    selectEl.addEventListener('change', function(){
+      var item = findCatalogItem(items, selectEl.value);
+      carguioProductLabels[stateKey] = item ? item.label : defaultLabel;
+      recalcCarguio();
+    });
+  }
+
+  var carguioGetters, carguioCache;
+  function recalcCarguio(){
+    var v = readValues(carguioGetters);
+    carguioCache = calcCarguio(v);
+    renderCarguioStats(carguioCache);
+    renderCarguioTable(carguioCache);
+    renderLoadingDiagram('ld-aux','ldaux','Auxiliares ('+carguioProductLabels.anfo+' + '+carguioProductLabels.cebo+')', carguioCache.longPerf, carguioCache.aux.taco, carguioCache.aux.largoCarga, 'anfo', 1);
+    renderLoadingDiagram('ld-contorno','ldcont','Contorno ('+carguioProductLabels.contorno+')', carguioCache.longPerf, carguioCache.contorno.taco, carguioCache.contorno.largoCarga, 'contorno', carguioCache.contorno.varillasPorTiro);
+    renderLoadingDiagram('ld-zapateras','ldzap','Zapateras ('+carguioProductLabels.zapateras+')', carguioCache.longPerf, carguioCache.zapateras.taco, carguioCache.zapateras.largoCarga, 'zapateras', carguioCache.zapateras.cartuchosPorTiro);
+  }
+
+  /* ============================================================
+     INIT
+  ============================================================ */
+  rajoGetters = buildPanel($('#rajo-inputs'), 'Parámetros de diseño', rajoFieldGroups, recalcRajo);
+  mallaGetters = buildPanel($('#malla-inputs'), 'Sección, rainura y roca', mallaFieldGroups, recalcMalla);
+  carguioGetters = buildPanel($('#carguio-inputs'), 'Tiros y carga', carguioFieldGroups, recalcCarguio);
+
+  /* ---- toggle de ajuste manual de taco / carga / pasadura (Rajo) ---- */
+  (function(){
+    var groupTitles = $('#rajo-inputs').querySelectorAll('.group-title');
+    var anchor = null;
+    groupTitles.forEach(function(g){ if(g.textContent==='Ajuste manual del barreno (opcional)') anchor = g; });
+    if(!anchor) return;
+    var row = el('div','override-toggle-row');
+    row.innerHTML = '<label class="override-toggle"><input type="checkbox" id="rajo-override-toggle"><span>Usar estos valores en vez de los del método calculado</span></label>';
+    anchor.insertAdjacentElement('afterend', row);
+    row.querySelector('input').addEventListener('change', function(e){
+      rajoOverrideActive = e.target.checked;
+      if(rajoOverrideActive && rajoCache){
+        setFieldValue($('#rajo-inputs'), 'tacoManual', Math.round(rajoCache.final.taco*100)/100);
+        setFieldValue($('#rajo-inputs'), 'cargaManual', Math.round(rajoCache.final.carga*100)/100);
+        setFieldValue($('#rajo-inputs'), 'pasaduraManual', Math.round(rajoCache.final.pas*100)/100);
+      }
+      recalcRajo();
+    });
+  })();
+
+  /* ---- selección de explosivo real (catálogo ENAEX) ---- */
+  mountExplosivePicker($('#rajo-inputs'), {
+    label: 'Explosivo (catálogo ENAEX — agentes de tronadura a granel)',
+    afterGroupTitle: 'Perforación y explosivo',
+    items: EXPLOSIVOS_GRANEL,
+    fieldMap: { densExpl:'densidad', velDeton:'vod', potRel:'potPeso' },
+    infoHtml: function(p){ return 'Densidad <b>'+p.densidad+' gr/cc</b> · VOD <b>'+p.vod+' m/s</b> · Potencia relativa al ANFO en peso <b>'+p.potPeso+'</b>. Fuente: Guía del Explosivista ENAEX. Puedes seguir ajustando cada deslizador manualmente.'; },
+    onChange: recalcRajo
+  });
+
+  mountExplosivePicker($('#malla-inputs'), {
+    label: 'Explosivo de producción (catálogo ENAEX — encartuchados)',
+    afterGroupTitle: 'Explosivo y roca',
+    items: EXPLOSIVOS_ENCARTUCHADOS,
+    fieldMap: { densExplS:'densidad' },
+    infoHtml: function(p){ return 'Densidad <b>'+p.densidad+' gr/cc</b> · VOD <b>'+p.vod+' m/s</b> · Potencia relativa al ANFO en peso <b>'+p.potPeso+'</b>. Fuente: Guía del Explosivista ENAEX.'; },
+    onChange: recalcMalla
+  });
+
+  var selAnfoAux = mountExplosivePicker($('#carguio-inputs'), {
+    label: 'ANFO a granel (auxiliares)',
+    afterGroupTitle: 'Carga — auxiliares (ANFO / TRONEX)',
+    items: EXPLOSIVOS_AUX_GRANEL,
+    fieldMap: { densAnfo:'densidad' },
+    infoHtml: function(p){ return 'Densidad <b>'+p.densidad+' gr/cc</b> · VOD <b>'+p.vod+' m/s</b>. Fuente: Guía del Explosivista ENAEX.'; },
+    onChange: recalcCarguio
+  });
+  wireCarguioTitle(selAnfoAux, EXPLOSIVOS_AUX_GRANEL, 'anfo', 'ANFO a granel');
+
+  var selCeboAux = mountExplosivePicker($('#carguio-inputs'), {
+    label: 'Cartucho cebo/refuerzo (auxiliares)',
+    afterGroupTitle: 'Carga — auxiliares (ANFO / TRONEX)',
+    items: CARTUCHOS_CEBO,
+    fieldMap: { masaTronexAux:'g' },
+    infoHtml: function(p){ return 'Masa por cartucho <b>'+p.g+' g</b>, según Pesos y Medidas de Explosivos Encartuchados (Guía ENAEX).'; },
+    onChange: recalcCarguio
+  });
+  wireCarguioTitle(selCeboAux, CARTUCHOS_CEBO, 'cebo', 'cebo TRONEX');
+
+  var selCartContorno = mountExplosivePicker($('#carguio-inputs'), {
+    label: 'Cartucho de contorno',
+    afterGroupTitle: 'Carga — contorno (SOFTRON)',
+    items: CARTUCHOS_CONTORNO,
+    fieldMap: { masaVarilla:'g' },
+    infoHtml: function(p){ return 'Masa por unidad de carga <b>'+p.g+' g</b>, según Pesos y Medidas de Explosivos Encartuchados (Guía ENAEX).'; },
+    onChange: recalcCarguio
+  });
+  wireCarguioTitle(selCartContorno, CARTUCHOS_CONTORNO, 'contorno', 'SOFTRON, cordón + refuerzos');
+
+  var selCartZapateras = mountExplosivePicker($('#carguio-inputs'), {
+    label: 'Cartucho de zapateras',
+    afterGroupTitle: 'Carga — zapateras (TRONEX)',
+    items: CARTUCHOS_ZAPATERAS,
+    fieldMap: { masaCartZapateras:'g' },
+    infoHtml: function(p){ return 'Masa por cartucho <b>'+p.g+' g</b>, según Pesos y Medidas de Explosivos Encartuchados (Guía ENAEX).'; },
+    onChange: recalcCarguio
+  });
+  wireCarguioTitle(selCartZapateras, CARTUCHOS_ZAPATERAS, 'zapateras', 'TRONEX, carga continua');
+
+  // Mantener presionado el diagrama de Rajo Abierto lo abre ampliado en un
+  // popup con el fondo difuminado (el diagrama de la página se mantiene
+  // chico/compacto a propósito para no ocupar mucha pantalla estando fijo
+  // arriba). Se exige mantener presionado (no un simple clic/tap) tanto en
+  // mouse como en touch, para que no se abra por accidente al tocar cerca
+  // del diagrama o al hacer scroll.
+  (function(){
+    var holdTarget = $('#rajo-diagram-hold');
+    var backdrop = $('#rajo-diagram-modal-backdrop');
+    var closeBtn = $('#rajo-diagram-modal-close');
+    if(!holdTarget || !backdrop) return;
+    var LONG_PRESS_MS = 420;
+    var timer = null, startX = 0, startY = 0;
+
+    function openModal(){ backdrop.hidden = false; }
+    function closeModal(){ backdrop.hidden = true; }
+
+    function onDown(e){
+      startX = e.clientX; startY = e.clientY;
+      clearTimeout(timer);
+      timer = setTimeout(openModal, LONG_PRESS_MS);
+    }
+    function onMove(e){
+      if(Math.abs(e.clientX-startX) > 10 || Math.abs(e.clientY-startY) > 10){
+        clearTimeout(timer);
+      }
+    }
+    function onUp(){ clearTimeout(timer); }
+
+    holdTarget.addEventListener('pointerdown', onDown);
+    holdTarget.addEventListener('pointermove', onMove);
+    holdTarget.addEventListener('pointerup', onUp);
+    holdTarget.addEventListener('pointerleave', onUp);
+    holdTarget.addEventListener('pointercancel', onUp);
+    holdTarget.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+
+    if(closeBtn) closeBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', function(e){ if(e.target === backdrop) closeModal(); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !backdrop.hidden) closeModal(); });
+  })();
+
+  recalcRajo();
+  recalcMalla();
+  recalcCarguio();
+
+})();
+</script>
+
+</body></html>
