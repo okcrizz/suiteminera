@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de Privacidad – Suite Minera</title>
+<meta name="description" content="Política de privacidad de las aplicaciones de la Suite Minera: qué datos manejan, dónde se almacenan y cómo ejercer tus derechos.">
+<style>
+  :root { --bg:#ffffff; --fg:#1d232b; --muted:#5b6672; --line:#d9dee4; --accent:#b35a00; --card:#f5f7f9; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#12161b; --fg:#e8ecf0; --muted:#9aa5b1; --line:#2a323b; --accent:#ffa94d; --card:#1a2027; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 820px; margin: 0 auto; padding: 32px 20px 64px; }
+  h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 4px; }
+  h2 { font-size: 1.25rem; margin: 2.2rem 0 .6rem; padding-top: .4rem; border-top: 1px solid var(--line); color: var(--accent); }
+  h3 { font-size: 1.05rem; margin: 1.4rem 0 .3rem; }
+  p, li { margin: .5rem 0; }
+  ul { padding-left: 1.3rem; }
+  .meta { color: var(--muted); font-size: .92rem; }
+  .box { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; margin: 1.2rem 0; }
+  table { width: 100%; border-collapse: collapse; margin: .8rem 0; font-size: .95rem; }
+  th, td { text-align: left; vertical-align: top; padding: 9px 10px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; }
+  a { color: var(--accent); }
+  mark { background: #ffe58a; color: #3a2a00; padding: 0 4px; border-radius: 3px; }
+  .toc { columns: 2; column-gap: 28px; font-size: .95rem; }
+  @media (max-width: 600px) { .toc { columns: 1; } table { font-size: .88rem; } }
+</style>
+</head>
+<body>
+<main>
+
+<p><a href="./">‹ Volver al Portal Minero</a></p>
+<h1>Política de Privacidad</h1>
+<p class="meta">Suite Minera · Última actualización: 15 de noviembre de 2026</p>
+
+<div class="box">
+  <strong>En resumen:</strong> las aplicaciones de la Suite Minera funcionan principalmente <strong>sin conexión</strong> y guardan tus datos <strong>solo en tu propio dispositivo</strong>. No tienen publicidad, no usan analítica ni rastreadores, no venden ni comparten tus datos, y no piden cuenta de correo, cámara, micrófono, contactos ni ubicación GPS. La única excepción es la función <em>opcional</em> de envío de reportes de la app Reporte Marina, descrita en la sección 4.
+</div>
+
+<ol class="toc">
+  <li><a href="#responsable">Quién es el responsable</a></li>
+  <li><a href="#apps">Aplicaciones cubiertas</a></li>
+  <li><a href="#local">Datos guardados en tu dispositivo</a></li>
+  <li><a href="#envio">Funciones que envían datos fuera del dispositivo</a></li>
+  <li><a href="#no-recopilamos">Lo que no recopilamos</a></li>
+  <li><a href="#permisos">Permisos del dispositivo</a></li>
+  <li><a href="#terceros">Servicios de terceros</a></li>
+  <li><a href="#eliminacion">Conservación y eliminación de datos</a></li>
+  <li><a href="#seguridad">Seguridad</a></li>
+  <li><a href="#menores">Menores de edad</a></li>
+  <li><a href="#derechos">Tus derechos</a></li>
+  <li><a href="#uso-profesional">Naturaleza de las aplicaciones</a></li>
+  <li><a href="#cambios">Cambios a esta política</a></li>
+  <li><a href="#contacto">Contacto</a></li>
+</ol>
+
+<h2 id="responsable">1. Quién es el responsable</h2>
+<p>El responsable del tratamiento de los datos descritos en esta política es <mark>Cristian Varas</mark>, desarrollador independiente con domicilio en Santiago, Chile (en adelante, “el desarrollador”). Estas aplicaciones son herramientas personales y de apoyo técnico, desarrolladas por una persona natural; no son un producto oficial de ninguna empresa minera.</p>
+
+<h2 id="apps">2. Aplicaciones cubiertas</h2>
+<p>Esta política aplica a las aplicaciones y versiones web de la Suite Minera publicadas por el desarrollador, entre ellas:</p>
+<table>
+  <thead><tr><th>Aplicación</th><th>Para qué sirve</th></tr></thead>
+  <tbody>
+    <tr><td>Diseñador de Frentes</td><td>Diseño paramétrico de mallas de perforación y tronadura de frentes (vistas 2D/3D).</td></tr>
+    <tr><td>SOS ART</td><td>Apoyo en terreno para consulta de controles críticos de seguridad, sin conexión.</td></tr>
+    <tr><td>Reporte Marina</td><td>Registro de producción por turno (carguío y transporte de marina) y generación de reportes.</td></tr>
+    <tr><td>Reporte Equipo</td><td>Checklist de inicio de turno y reporte de término de turno de equipos.</td></tr>
+    <tr><td>Control Minería 360</td><td>Panel de registro diario e indicadores de operación.</td></tr>
+    <tr><td>Calculadoras de ingeniería</td><td>Herramientas de cálculo (geomecánica, resistencia de materiales, fluidos, mecánica y otras).</td></tr>
+    <tr><td>Suite de Conminución</td><td>Calculadoras interactivas de molienda y clasificación.</td></tr>
+    <tr><td>CalTurno</td><td>Calendario personal de turnos.</td></tr>
+    <tr><td>Toque Contador (Wear OS)</td><td>Contador por toques para reloj inteligente.</td></tr>
+    <tr><td>Juego Minero</td><td>Juego de gestión de tránsito en rutas mineras.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="local">3. Datos guardados en tu dispositivo</h2>
+<p>Para funcionar, las aplicaciones guardan información que <strong>tú mismo ingresas</strong>. Estos datos se almacenan localmente en tu dispositivo (por ejemplo, en el almacenamiento interno de la aplicación) y <strong>no se transmiten al desarrollador ni a terceros</strong>, salvo lo indicado en la sección 4. Según la aplicación, pueden incluir:</p>
+<ul>
+  <li><strong>Parámetros y resultados de cálculo:</strong> geometrías, densidades, factores, resultados y configuraciones que ingresas en calculadoras y diseñadores.</li>
+  <li><strong>Registros operacionales que tú ingresas:</strong> turnos, tonelajes, tareas, destinos, equipos, niveles de combustible y AdBlue, estado mecánico, observaciones e historial de reportes.</li>
+  <li><strong>Perfiles locales de usuario:</strong> un nombre o identificador y una contraseña de perfil que permiten separar los datos de distintas personas que usan el mismo dispositivo. Este perfil existe solo en el dispositivo; no es una cuenta en línea.</li>
+  <li><strong>Preferencias de la aplicación:</strong> opciones de visualización, la letra o turno elegido, estado de paneles y contadores.</li>
+</ul>
+<p>Si tú decides exportar esta información (PDF, imagen JPEG, CSV, PNG o copia de respaldo JSON), el archivo se genera y se guarda en tu dispositivo, y eres tú quien decide con quién lo compartes.</p>
+
+<h2 id="envio">4. Funciones que envían datos fuera del dispositivo</h2>
+<p>Algunas funciones requieren Internet y solo se ejecutan cuando <strong>tú las activas expresamente</strong>:</p>
+
+<h3>4.1 Envío de reportes de turno (Reporte Marina)</h3>
+<p>Esta aplicación incluye una función opcional para subir el reporte del turno a una planilla de Google Sheets administrada por el desarrollador, con el fin de que un supervisor pueda revisar la información en una tabla. Al usarla se envían: los datos del reporte (turno, tareas, equipos, destinos y tonelajes) y el identificador del perfil que lo generó. <strong>La contraseña del perfil no se envía.</strong> Si no usas la función de envío, ningún dato sale del dispositivo.</p>
+
+<h3>4.2 Actualización de contenido</h3>
+<p>Si una aplicación ofrece actualizar contenido de referencia (por ejemplo, planos o catálogos) desde un repositorio en línea, la descarga hace que el servidor receptor registre técnicamente tu dirección IP, como ocurre en cualquier conexión a Internet. No se envía información personal adicional.</p>
+
+<h3>4.3 Versiones web</h3>
+<p>Algunas herramientas están disponibles también como sitio web alojado en servicios de terceros (ver sección 7). Al visitar esas páginas, el proveedor de alojamiento puede registrar datos técnicos de conexión (IP, navegador, fecha y hora). Los datos que ingresas en las herramientas siguen guardándose en tu navegador y no en un servidor del desarrollador.</p>
+
+<h2 id="no-recopilamos">5. Lo que no recopilamos</h2>
+<ul>
+  <li>No pedimos registro con correo, teléfono, redes sociales ni cuentas de Google.</li>
+  <li>No usamos publicidad ni SDK de anuncios.</li>
+  <li>No usamos herramientas de analítica, estadísticas de uso ni informes de fallos con envío automático.</li>
+  <li>No recopilamos tu ubicación GPS, contactos, mensajes, micrófono, cámara ni identificadores publicitarios.</li>
+  <li>No vendemos, alquilamos ni cedemos datos a terceros con fines comerciales.</li>
+  <li>No tomamos decisiones automatizadas sobre ti ni elaboramos perfiles.</li>
+</ul>
+
+<h2 id="permisos">6. Permisos del dispositivo</h2>
+<p>Las aplicaciones solicitan solo los permisos mínimos necesarios:</p>
+<ul>
+  <li><strong>Acceso a Internet:</strong> solo para las funciones descritas en la sección 4. Las aplicaciones que no tienen esas funciones operan sin conexión.</li>
+  <li><strong>Almacenamiento / selector de archivos:</strong> para guardar o abrir los archivos que tú exportas o importas (informes, respaldos). No se accede a otros archivos de tu dispositivo.</li>
+</ul>
+
+<h2 id="terceros">7. Servicios de terceros</h2>
+<p>Cuando usas las funciones de la sección 4, intervienen estos proveedores, que tratan datos bajo sus propias políticas de privacidad:</p>
+<ul>
+  <li><strong>Google</strong> (Google Sheets / Google Apps Script / Google Drive), para recibir y almacenar los reportes enviados. <a href="https://policies.google.com/privacy" rel="noopener">Política de Google</a>.</li>
+  <li><strong>Proveedores de alojamiento web</strong> (por ejemplo, GitHub, Netlify, Vercel), para servir versiones web y archivos de actualización.</li>
+  <li><strong>Google Play</strong>, que gestiona la descarga e instalación de las aplicaciones y puede recopilar sus propios datos conforme a su política.</li>
+</ul>
+
+<h2 id="eliminacion">8. Conservación y eliminación de datos</h2>
+<h3>Datos en tu dispositivo</h3>
+<p>Permanecen mientras no los elimines. Puedes borrarlos en cualquier momento:</p>
+<ul>
+  <li>desde la propia aplicación, eliminando reportes, historial o perfiles cuando esa opción esté disponible;</li>
+  <li>desde Ajustes de Android → Aplicaciones → (la aplicación) → Almacenamiento → <em>Borrar datos</em>; o</li>
+  <li>desinstalando la aplicación, lo que elimina todos los datos locales asociados.</li>
+</ul>
+<h3>Datos enviados a la planilla (Reporte Marina)</h3>
+<p>Se conservan mientras sean necesarios para la revisión operacional del reporte. Puedes solicitar su <strong>eliminación o corrección</strong> escribiendo al correo de la sección 14, indicando el perfil y la fecha de los reportes. Responderemos en un plazo máximo de 30 días.</p>
+
+<h2 id="seguridad">9. Seguridad</h2>
+<p>Los datos locales quedan protegidos por el aislamiento de aplicaciones de Android y por el bloqueo de pantalla de tu dispositivo. Los envíos a Internet se realizan mediante conexión cifrada (HTTPS). Ningún sistema es infalible; te recomendamos mantener tu dispositivo actualizado y con bloqueo de pantalla, y no ingresar información que no quieras guardar en él.</p>
+
+<h2 id="menores">10. Menores de edad</h2>
+<p>Las aplicaciones están orientadas a personas que trabajan o estudian en minería y construcción, y no están dirigidas a menores de 18 años. No recopilamos a sabiendas datos de menores.</p>
+
+<h2 id="derechos">11. Tus derechos</h2>
+<p>De acuerdo con la Ley N° 19.628 sobre protección de la vida privada y su modificación por la Ley N° 21.719 sobre protección de los datos personales (a medida que entra en vigencia), puedes solicitar acceso, rectificación, supresión, oposición, portabilidad y bloqueo respecto de los datos personales que el desarrollador trate sobre ti. Como la mayor parte de los datos queda solo en tu dispositivo, tú tienes control directo sobre ellos; para los datos que se hayan enviado conforme a la sección 4, escribe al correo de la sección 14. Si consideras que tus derechos no fueron atendidos, puedes recurrir a la autoridad de protección de datos competente en Chile.</p>
+
+<h2 id="uso-profesional">12. Naturaleza de las aplicaciones</h2>
+<p>Las aplicaciones de la Suite Minera son herramientas de apoyo desarrolladas de forma independiente. <strong>No son aplicaciones oficiales de Codelco ni de ninguna otra empresa, y no están afiliadas ni respaldadas por ellas.</strong> Los resultados de cálculo y la información de referencia son orientativos y <strong>no reemplazan</strong> los procedimientos, estándares, controles críticos, normativa vigente ni el juicio de profesionales competentes. Las decisiones de seguridad y de diseño siguen siendo responsabilidad del usuario y de su organización.</p>
+
+<h2 id="cambios">13. Cambios a esta política</h2>
+<p>Podemos actualizar esta política, por ejemplo al agregar una función nueva que trate datos. Publicaremos la versión vigente en esta misma dirección con su fecha de actualización. Si el cambio es relevante, lo informaremos también en la ficha de la aplicación.</p>
+
+<h2 id="contacto">14. Contacto</h2>
+<p>Para consultas, solicitudes de acceso o eliminación de datos:</p>
+<p>Responsable: <mark>Cristian Varas Contreras</mark><br>
+Correo de contacto: <mark>crizzvaras@hotmail.com</mark><br>
+País: Chile</p>
+
+</main>
+</body>
+</html>
