@@ -1,10 +1,6 @@
-<!doctype html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<style>html{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Portal Minero</title>
+<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <style>
 /* Layout: nav translúcida fija, héroe centrado con curvas de nivel de un tajo abierto, mosaico de apps en dos columnas (tarjetas claras y oscuras alternadas), franja de plataforma y pie de página en columnas, como apple.com. */
@@ -353,8 +349,6 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } html { scroll-behavior: auto; } }
 </style>
-</head>
-<body>
 
 <div class="draft"><b>Bosquejo</b> · Las aplicaciones, cifras y textos son de ejemplo. Los reemplazamos con los tuyos.</div>
 
@@ -628,10 +622,27 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
       <p>Apuntes, esquemas y fotografías de terreno, ordenados por tema para consultarlos cuando los necesites.</p>
     </div>
 
-    <div id="up" hidden>
-      <input id="file" type="file"><label id="drop"></label><div id="staged"></div>
-      <div id="merge" hidden><input id="merge-on" type="checkbox"><b id="merge-n"></b><input id="merge-title"></div>
-      <input id="up-topic"><datalist id="topics"></datalist><button id="up-go" type="button"></button><p id="up-msg"></p>
+    <div class="uploader" id="up" hidden>
+      <label class="drop" id="drop" for="file">
+        <strong>Arrastra tus archivos aquí o elígelos</strong>
+        <span>PDF, imágenes, videos MP4 o WebM y texto. Hasta 20 MB cada uno. Las imágenes que cargues juntas se unen en un solo PDF. Los documentos Word (.docx) conviértelos antes a PDF.</span>
+        <input id="file" type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,.svg,.mp4,.webm,.csv,.md,.json,.txt">
+      </label>
+      <div class="staged" id="staged"></div>
+      <div class="merge" id="merge" hidden>
+        <label class="chk" for="merge-on"><input type="checkbox" id="merge-on" checked> Unir las <b id="merge-n">0</b> imágenes en un solo PDF, ordenadas por nombre</label>
+        <label for="merge-title">Título del PDF
+          <input id="merge-title" placeholder="Si lo dejas vacío, usa el tema" autocomplete="off">
+        </label>
+      </div>
+      <div class="up-row">
+        <label for="up-topic">Tema de estos archivos
+          <input id="up-topic" list="topics" placeholder="Ej.: Perforación y tronadura" autocomplete="off">
+        </label>
+        <datalist id="topics"></datalist>
+        <button class="btn" id="up-go" type="button" disabled>Cargar</button>
+      </div>
+      <p class="up-msg" id="up-msg" role="status"></p>
     </div>
 
     <div class="lib-tools">
@@ -642,6 +653,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
     <p class="note" id="lib-count"></p>
   </section>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
   (function () {
     var TOPICS = ['Geología y minerales', 'Perforación y tronadura', 'Geomecánica', 'Procesamiento de minerales', 'Túneles y TBM', 'Hormigón y construcción', 'Sismos', 'Seguridad', 'Otros'];
@@ -653,7 +665,6 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
     var S = { docs: [], topic: 'all', q: '', shown: PAGE, staged: [], db: null, assets: null, loaded: false, error: '', busy: false, merge: true };
     var mergeBox = $('merge'), mergeOn = $('merge-on'), mergeN = $('merge-n'), mergeTitle = $('merge-title'), topicSel = $('lib-topic');
 
-    function U(p) { return encodeURI(p || ''); }
     function h(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
     function ext(n) { var m = /\.([A-Za-z0-9]+)$/.exec(n); return m ? m[1].toLowerCase() : ''; }
     function fmt(b) { if (b < 1024) return b + ' B'; if (b < 1048576) return Math.round(b / 1024) + ' KB'; return (b / 1048576).toFixed(1).replace('.', ',') + ' MB'; }
@@ -730,14 +741,14 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
     }
 
     function card(d) {
-      var a = h('article', 'doc'), href = U(d.file), k = kind(d.contentType);
+      var a = h('article', 'doc'), href = '/_blob/' + d.asset, k = kind(d.contentType);
       var th = h('a', 'thumb');
       th.href = href; th.target = '_blank'; th.rel = 'noopener';
       th.setAttribute('aria-label', 'Abrir ' + (d.title || 'archivo'));
       if (k === 'img') { var im = h('img'); im.loading = 'lazy'; im.alt = ''; im.src = href; th.appendChild(im); }
       else if (k === 'video') { var v = document.createElement('video'); v.preload = 'metadata'; v.muted = true; v.playsInline = true; v.src = href + '#t=0.5'; th.appendChild(v); }
       else if (k === 'pdf' && d.cover) {
-        var cvr = h('img'); cvr.loading = 'lazy'; cvr.alt = ''; cvr.src = U(d.cover); th.appendChild(cvr);
+        var cvr = h('img'); cvr.loading = 'lazy'; cvr.alt = ''; cvr.src = '/_blob/' + d.cover; th.appendChild(cvr);
         th.appendChild(h('span', 'badge', 'PDF' + (d.pages ? ' · ' + d.pages + (d.pages === 1 ? ' pág.' : ' págs.') : '')));
       }
       else th.appendChild(h('span', 'kind', k === 'pdf' ? 'PDF' : 'TXT'));
@@ -818,7 +829,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
     function showTip(d, el) {
       if (!tip) { tip = h('div', 'tip'); tip.setAttribute('role', 'tooltip'); document.body.appendChild(tip); }
       tip.textContent = '';
-      var cov = h('div', 'cov'), pic = d.cover ? U(d.cover) : (kind(d.contentType) === 'img' ? U(d.file) : '');
+      var cov = h('div', 'cov'), pic = d.cover ? '/_blob/' + d.cover : (kind(d.contentType) === 'img' ? '/_blob/' + d.asset : '');
       cov.style.setProperty('--bk', colorOf(d));
       if (pic) { var im = h('img'); im.alt = ''; im.src = pic; cov.appendChild(im); }
       else cov.appendChild(h('b', '', d.title || d.name || 'Sin título'));
@@ -842,7 +853,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
 
     function bookEl(d, s, flat) {
       var wrap = h('div', 'bk' + (flat ? ' flat' : '')), a = h('a', 'book v' + s.v);
-      a.href = U(d.file); a.target = '_blank'; a.rel = 'noopener';
+      a.href = '/_blob/' + d.asset; a.target = '_blank'; a.rel = 'noopener';
       a.style.setProperty('--bk', colorOf(d));
       a.style.setProperty('--br', s.br);
       a.style.setProperty('--sx', (10 + (s.n >>> 3) % 80) + '%');
@@ -1047,15 +1058,21 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
     render();
     refreshTopics();
 
-    S.db = {};
-    fetch('library/library.json', { cache: 'no-cache' })
-      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(function (list) {
-        S.docs = list.map(function (d) { d.createdAt = Date.parse(d.date + 'T12:00:00') || 0; d.contentType = d.type; d.asset = d.file; return d; })
-          .sort(function (a, b) { return b.createdAt - a.createdAt; });
-        S.loaded = true; refreshTopics(); render();
-      })
-      .catch(function () { S.error = 'Abre el sitio desde su dirección web y recarga la página.'; render(); });
+    (async function init() {
+      var c = window.claude;
+      if (!c || !c.use) { render(); return; }
+      var user = null, canEdit = false;
+      try { user = await c.use('user'); S.db = await c.use('db'); } catch (e) {}
+      try { canEdit = user ? await user.canEdit() : false; } catch (e) {}
+      if (canEdit) { try { S.assets = await c.use('assets'); } catch (e) {} }
+      up.hidden = !(S.assets && S.db);
+      if (!S.db) { render(); return; }
+      S.db.collection('library').orderBy('createdAt', 'desc').limit(500).onSnapshot(function (snap) {
+        S.docs = snap.docs.map(function (d) { var o = d.data(); o.id = d.id; return o; });
+        S.loaded = true; S.error = '';
+        refreshTopics(); render();
+      }, function () { S.error = 'Recarga la página para intentarlo de nuevo.'; render(); });
+    })();
   })();
   </script>
 
@@ -1101,7 +1118,7 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
       <div><h5>Recursos</h5><ul><li><a href="#biblioteca">Biblioteca técnica</a></li><li><a href="#contacto">Guías de uso</a></li><li><a href="#contacto">Novedades</a></li></ul></div>
       <div><h5>Contacto</h5><ul><li><a href="#contacto">Soporte técnico</a></li><li><a href="#contacto">Solicitar una app</a></li></ul></div>
     </div>
-    <div class="legal"><span>© 2026 Portal Minero. Todos los derechos reservados.</span><span>Bosquejo v0.1</span></div>
+    <div class="legal"><span>© 2026 Portal Minero. Todos los derechos reservados.</span><span><a href="privacidad.html">Política de privacidad</a> · Bosquejo v0.1</span></div>
   </div>
 </footer>
 
@@ -1330,5 +1347,5 @@ footer .legal { padding-top: 16px; display: flex; justify-content: space-between
 })();
 </script>
 
-</body>
-</html>
+
+</body></html>
